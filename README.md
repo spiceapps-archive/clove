@@ -4,9 +4,14 @@ Clove is a social media desktop application that was developed back in 2008. It 
 
 ### Videos
 
-- [Ameriprise demo](https://www.youtube.com/watch?v=v1EYy-qLHJE)
+- [Getting started with Clove in 60 seconds](https://www.youtube.com/watch?v=-evt55kkfo8)
 - [auto-post everywhere](https://www.youtube.com/watch?v=R1gFjgVzvPs)
 - [filtering content](https://www.youtube.com/watch?v=J9NWqjvhq8k)
 - [filtering scenes](https://www.youtube.com/watch?v=QR9jhARbFME)
-
-
+- [Clove Scene Demo](https://www.youtube.com/watch?v=4mfpifCktpo)
+- [Clove Scene Sync Demo](https://www.youtube.com/watch?v=dgrVWxYM7Ik)
+- [Branded Clove](https://www.youtube.com/watch?v=oZ2HeK3nx7Y)
+- [Ameriprise demo](https://www.youtube.com/watch?v=v1EYy-qLHJE)
+- [fantasy victory](https://www.youtube.com/watch?v=3XQishsk3OI)
+- [Scout it Out](https://www.youtube.com/watch?v=Lhbk0Jo3C9Y)
+- [early days (pre GUI)](https://www.youtube.com/playlist?list=PL_9d3q-RYY-sEuTMOnuYjzhz_j5-YK1Sw)
