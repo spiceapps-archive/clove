@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   clipContent="false" 
+		   xmlns:binding="com.spice.binding.*"
+		   horizontalScrollPolicy="off" 
+		   verticalScrollPolicy="off" >
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.binding.DataBoundController;
+			import com.spice.clove.plugin.core.content.data.CloveDataSettingName;
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.clove.plugin.core.content.data.meta.ICloveMetadata;
+			import com.spice.clove.plugin.core.content.data.meta.ICloveMetadataList;
+			import com.spice.clove.plugin.flex.views.FlexCloveDataTargetView;
+			import com.spice.impl.utils.AsyncUtil;
+			import com.spice.recycle.factory.RecyclingFactory;
+			import com.spice.vanilla.impl.proxy.ProxyCall;
+			
+			import mx.containers.Box;
+			import mx.containers.BoxDirection;
+			import mx.containers.HBox;
+			import mx.containers.VBox;
+			
+			
+			
+			
+			public var metadataName:String = CloveDataSettingName.METADATA;
+			public var layout:String = "vertical";
+			
+			
+			public var paddingLeft:Number = 0;
+			
+			
+			
+			private var _cloveData:ICloveData;
+			
+			private var _dbc:DataBoundController;
+			
+			private var _attCall:ProxyCall;
+			
+			
+			
+			public static const SEP_GAP:int = 6;
+			
+			private var _attachmentsView:Box;
+			private var _calling:Boolean;
+			
+			
+			private static var _async:AsyncUtil
+			
+			
+			
+			
+			[Bindable(event="renderedDataChange")]
+			public function get cloveData():Object
+			{
+				return this._cloveData;
+			}
+			
+			public function set cloveData(value:Object):void
+			{
+				
+				this._cloveData = ICloveData(value);
+				
+				if(!_async)
+				{
+					_async = AsyncUtil.getTimer(ColumnRowAttachmentsView,10);
+				}
+				
+				
+				this.showHideAttachmens();
+				
+				
+				this.dispatchEvent(new Event("renderedDataChange"));
+			}
+			
+			public function set showAttachments(value:Boolean):void
+			{
+				
+				this.visible = value;
+				
+				if(value)
+				{
+					
+					if(!_attachmentsView)
+					{
+						if(layout == BoxDirection.VERTICAL)
+						{
+							_attachmentsView = new VBox();
+							_attachmentsView.percentWidth = 100;
+							this._attachmentsView.x = this.paddingLeft;
+							_attachmentsView.y = SEP_GAP;
+							
+							_attachmentsView.setStyle("paddingLeft" , 1);
+							_attachmentsView.setStyle("paddingRight", 1);
+							_attachmentsView.setStyle("paddingTop"  , 0);
+							_attachmentsView.setStyle("verticalGap" , 1);
+						}
+						else
+						{
+							_attachmentsView = new HBox();		
+							this._attachmentsView.clipContent = false;
+							_attachmentsView.percentHeight = 100;
+//							_attachmentsView.setStyle("paddingLeft" , 1);
+//							_attachmentsView.setStyle("paddingRight", 1);
+							_attachmentsView.setStyle("paddingTop"  , -2);
+//							_attachmentsView.setStyle("verticalGap" , 1);
+						}
+						
+						
+					}
+					
+					if(!_attachmentsView.parent)
+						addChild(_attachmentsView);
+					
+					
+					
+					
+					
+				}
+				else
+				{
+					if(_attachmentsView && _attachmentsView.parent)
+					{
+						removeChild(_attachmentsView);
+					}
+				}
+				
+				
+			}
+			
+			
+			
+			
+			/*
+			*/
+			
+			private function showHideAttachmens():void
+			{
+				this.visible = false;
+				
+				if(!this._cloveData)
+				{
+					if(this._attCall)
+					{
+						this._attCall.setProxy(null);
+						this._attCall.setData(null);
+					}
+					
+					if(this._dbc)
+					{
+						this._dbc.dataProvider = null;
+					}
+					
+					return;
+				}
+				
+				if(_calling)
+					return;
+				
+				_calling = true;
+				_async.callLater(makeAttachmentsVisible);
+			}
+			
+			
+			/**
+			 */
+			
+			private function makeAttachmentsVisible():void
+			{
+				_calling = false;
+				
+				if(!this._cloveData || this._cloveData.disposed())
+				{
+					return;
+				}
+				
+				
+				var metadata:ICloveMetadataList = ICloveMetadataList(this._cloveData.getSettingTable().getSetting(metadataName));
+				
+				
+				if(!metadata)
+				{
+					return;
+				}
+				
+				this.setVisibleAttachments(metadata.getAllMetadata());
+				
+			}
+			
+			/**
+			 */
+			
+			private function setVisibleAttachments(n:Vector.<ICloveMetadata>):void
+			{
+				if(!n || n.length == 0)
+				{  
+					this.showAttachments = false;
+					
+					if(_dbc)
+					{
+						_dbc.dataProvider = undefined;
+					}
+					
+					return;
+				}
+				this.showAttachments = true;
+				
+				
+				if(!_dbc)
+				{
+					_dbc = new DataBoundController(this._attachmentsView, new RecyclingFactory(FlexCloveDataTargetView),true);
+					_dbc.dataSetter = setAttachmentData;
+				}
+				
+				
+				_dbc.dataProvider = n;
+			}
+			
+			/**
+			 */
+			
+			private function setAttachmentData(view:FlexCloveDataTargetView,data:ICloveMetadata):void
+			{
+				this._cloveData.getItemRenderer().getMetadataView(data).setContentView(data,view);
+				
+				
+				if(this.layout == "vertical")
+					view.percentWidth = 100;
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+	
+</mx:Canvas>

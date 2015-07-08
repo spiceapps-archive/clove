@@ -1,0 +1,808 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 xmlns:mx2="mx.controls.*" 
+		 width="270" 
+		 maxWidth="270"
+		 paddingTop="15"
+		 creationComplete="init();" 
+		 horizontalAlign="center" 
+		 paddingBottom="15" 
+		 verticalGap="5" horizontalScrollPolicy="off" verticalScrollPolicy="off"
+		 mouseDown="event.stopPropagation()" 
+		 xmlns:display="com.spice.display.*" 
+		 xmlns:controls="com.spice.clove.view.controls.*"
+		 implements="com.spice.recycle.IDisposable" 
+		 xmlns:storage="com.spice.utils.storage.*"
+		 xmlns:binding="com.spice.binding.*" 
+		 xmlns:binding1="com.spice.vanilla.impl.utils.binding.*" xmlns:proxy="com.spice.vanilla.flex.proxy.*" xmlns:proxy1="com.spice.vanilla.mx.proxy.*" xmlns:observer="com.spice.vanilla.flash.observer.*">
+	  
+	<mx:Metadata>
+		[Event("close")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			import caurina.transitions.properties.FilterShortcuts;
+			
+			import com.greensock.TimelineMax;
+			import com.greensock.TweenMax;
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.column.ClovePluginColumn;
+			import com.spice.clove.plugin.column.pref.ColumnPreferences;
+			import com.spice.clove.plugin.control.ClovePluginController;
+			import com.spice.clove.plugin.control.ClovePluginMediator;
+			import com.spice.clove.plugin.core.calls.CallCloveContentControllerType;
+			import com.spice.clove.plugin.core.calls.CallCloveContentPreferenceControlType;
+			import com.spice.clove.plugin.core.calls.CallClovePluginControllerType;
+			import com.spice.clove.plugin.core.calls.CallClovePluginType;
+			import com.spice.clove.plugin.core.content.control.ICloveContentController;
+			import com.spice.clove.plugin.impl.content.control.CloveContentControllerSettingType;
+			import com.spice.clove.service.core.account.IServiceAccount;
+			import com.spice.clove.service.core.account.content.control.IAccountContentController;
+			import com.spice.clove.service.core.calls.CallServicePluginType;
+			import com.spice.clove.view.column.ColumnViewController;
+			import com.spice.monkeyPatch.menu.Menu;
+			import com.spice.monkeyPatch.menu.MenuItem;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			import com.spice.utils.SpriteUtil;
+			import com.spice.vanilla.core.proxy.IProxyOwner;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			import mx.events.CollectionEvent;
+			
+			[Bindable] 
+			private var _column:ClovePluginColumn;
+			
+			
+			[Bindable]	
+			private var _feedPrefs:ColumnPreferences;
+			
+			[Bindable] 
+			private var _availableServices:Array;
+			
+			[Bindable]	
+			private var _availableAccounts:Vector.<IServiceAccount>;
+			
+			[Bindable]	
+			private var _availableContent:Array;
+			
+			
+			
+			[Bindable] 
+			private var _selectedPlugin:ClovePluginController; //onSelectService
+			
+			[Bindable]	
+			private var _selectedAccount:IProxyOwner; //onSelectAccount
+			
+			
+			[Bindable] 
+			private var _accountName:String;
+			
+			[Bindable]	
+			public var _showAccountTw:Number = 0;//eased
+			
+			[Bindable] 
+			public var _showContentTw:Number = 0;//eased
+			
+			
+			[Bindable] 
+			public var _showFilterTw:Number = 0;
+			
+			
+			
+			[Bindable] 
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			
+			private var _target:DisplayObject;
+			
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			
+			
+			private static var _columnPrefs:EditFeedView;
+			private var _controller:ColumnViewController;
+			
+			
+			private var _serviceMenu:Menu;
+			private var _accountMenu:Menu;
+			private var _contentMenu:Menu;
+			
+			
+			private var _openTimeout:int;
+			private var _opened:Boolean;
+			  
+			public static function open(position:Point,root:DisplayObjectContainer,target:DisplayObject,column:ClovePluginColumn,controller:ColumnViewController):EditFeedView
+			{
+				if(!_columnPrefs)
+				{
+					_columnPrefs = new EditFeedView();
+					
+				}
+				
+				
+				_columnPrefs.open(position,root,target,column,controller);
+				
+				return _columnPrefs;
+			}
+			
+			public static function close():void
+			{
+				if(_columnPrefs)
+				{  
+					_columnPrefs.close();
+					
+				}
+			}
+			
+			
+			
+			
+			public function finish():void
+			{
+				close();
+				_controller.currentViewState = 0;
+				this._column.loadNewerContent();
+			}
+			
+			
+			public function open(position:Point,root:DisplayObjectContainer,target:DisplayObject,column:ClovePluginColumn,controller:ColumnViewController):void
+			{
+				flash.utils.clearTimeout(_openTimeout);
+				
+				var time:int = 100;
+				
+				
+				if(_opened)
+				{
+					time += 500;
+					close();
+				}
+				//timeout incase we have multiple edits selected
+				_openTimeout = flash.utils.setTimeout(open2,time,position,root,target,column,controller);
+			}
+			
+			public function close():void
+			{
+				try
+				{
+					Tweener.addTween(this,{y:y+20,alpha:0,time:.2,transition:'easeOutCubic',onComplete:removeFromParent});
+				}catch(e:*){}
+				
+				_opened = false;
+				
+				
+				this.dispatchEvent(new Event("close"));
+			}
+			
+			/**
+			 */
+			
+			private function removeFromParent():void
+			{
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//NOTE: By removing THIS from the parent, and re-adding it, it creates more
+				//bindings on the object
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				
+				this.data = null;
+				this.visible = false;
+				return;
+				if(this.parent && this.parent.contains(this))
+				{
+					this.parent.removeChild(this);
+				}
+				
+			}
+			
+			
+			
+			private function open2(position:Point,root:DisplayObjectContainer,target:DisplayObject,column:ClovePluginColumn,controller:ColumnViewController):void
+			{
+				if(!root)
+					return;
+				
+				this.visible = true;
+				_opened = true;
+				
+				this.x = position.x;
+				this.y = position.y-20;
+				this.alpha = 0;
+				
+				if(_target)
+				{  
+					
+					//set the column preferences back to the front pane
+					if(controller != _controller)
+					{
+						_controller.currentViewState = 0;
+						
+						if(this._column)
+						this._column.loadNewerContent();  
+					}
+					
+					_target.removeEventListener(Event.REMOVED_FROM_STAGE,onTargetRemoved);
+				}
+				_target = target;
+				_controller = controller;
+				root.removeEventListener(MouseEvent.MOUSE_DOWN,onRootMouseDown);
+				
+				
+				if(!this.root)
+					//PopUpManager.addPopUp(this,root);
+					root.addChild(this);
+				
+				
+				this.data = column;
+				
+//				Tweener.removeTweens(this);
+				Tweener.addTween(this,{y:position.y,alpha:1,time:.2,transition:'easeOutCubic',delay:.1});
+				
+				root.addEventListener(MouseEvent.MOUSE_DOWN,onRootMouseDown);
+				_target.addEventListener(Event.REMOVED,onTargetRemoved);
+				
+				
+			}
+			
+			[Disposable]
+			override public function set data(value:Object):void
+			{
+				
+				super.data = value;
+				
+				this.removeFeedPreferences();
+				
+				this._column = ClovePluginColumn(value);
+				
+				
+				this._selectedPlugin = null;
+				this._selectedAccount = null;
+				
+				if(!_column)
+				{
+					return;
+				}
+				
+				
+				if(this._column.controller)
+				{
+					this._ignorePulse = true;
+					
+					
+					_selectedPlugin =  ClovePluginColumn(this._column).pluginController;
+					
+					
+					var controller:ICloveContentController = this._column.controller;
+					
+					if(controller is IAccountContentController && IAccountContentController(controller).getAccount())
+					{
+						_selectedAccount = IAccountContentController(controller).getAccount();
+						this._accountName = IAccountContentController(controller).getAccount().getName();
+					}
+					else
+					{
+						_selectedAccount = this._selectedPlugin.plugin;
+						this._accountName = "None";//this._selectedPlugin.displayName;
+					}
+					
+				}
+				
+				this.setAvailableServices();
+				this.setAvailableAccounts();
+				this.setAvailableContent();
+				flash.utils.setTimeout(this.setFilter,100);
+				
+				
+				this._ignorePulse = false; 
+				
+				
+				
+				
+			}
+			
+			
+			public function dispose():void
+			{
+				
+				this.data			   = undefined;
+				this._availableContent = undefined;
+				
+				
+			}
+			
+			
+			
+			private function onRootMouseDown(event:MouseEvent):void
+			{
+				event.currentTarget.removeEventListener(event.type,onRootMouseDown);
+				
+				this.close();
+			}
+			
+			/**
+			 */
+			
+			private function onTargetRemoved(event:Event):void
+			{
+				event.currentTarget.removeEventListener(event.type,onTargetRemoved);
+				
+				if(event.target == event.currentTarget)  
+				{
+					this.close();
+				}
+			}
+			
+			
+			
+			
+			private function init():void
+			{
+				
+				FilterShortcuts.init();
+				
+				
+				var loadedPlugins:IEventDispatcher = this._model.applicationSettings.pluginManager.loadedPlugins;
+				
+				
+				loadedPlugins.addEventListener(CollectionEvent.COLLECTION_CHANGE,setAvailableServices,false,0,true);
+				
+				
+			}
+			
+			private function setAvailableServices(event:* = null):void
+			{
+				var used:Array  = [];
+				var avail:Array = [];
+				var avail2:Array = [];
+				
+				pluginControllersWithContentControllers.dispatch();
+				avail = pluginControllersWithContentControllers.responseData;
+				
+				
+				if(this._serviceMenu)
+				{
+					this._serviceMenu.removeEventListener(Event.SELECT,onServiceSelect);
+				}
+				
+				
+				this._serviceMenu = new Menu();
+				this._serviceMenu.addEventListener(Event.SELECT,onServiceSelect);
+				
+				for each(var plugin:ClovePluginController in avail)
+				{
+					//only use one of the same type of plugin. continue if it's already in the list
+					if(used.indexOf(Object(plugin.plugin).constructor) > -1)
+						continue;
+					
+					used.push(Object(plugin.plugin).constructor);
+					
+					
+					avail2.push(plugin);
+					
+					var mi:MenuItem = new MenuItem(plugin.pluginName);
+					mi.data = plugin;
+					_serviceMenu.addItem(mi);
+				}
+				
+				this._availableServices = avail2;
+				
+				
+				this.pulseGlow(this.serviceButton);
+			}
+			
+			
+			
+			private function setAvailableAccounts():void
+			{
+				if(this._accountMenu)
+				{
+					this._accountMenu.removeEventListener(Event.SELECT,onAccountSelect);
+				}
+				
+				this._accountMenu = new Menu();
+				this._accountMenu.addEventListener(Event.SELECT,onAccountSelect);
+				
+				
+				if(!this._selectedPlugin)
+				{
+					this._availableAccounts = null;
+					if(_showAccountTw == 1)
+						Tweener.addTween(this,{time:.3,_showAccountTw:0});
+					return;
+					
+				}
+				
+				
+				
+				_availableAccounts = this.accounts;
+				
+				
+				var tweenTo:Number = 1;
+				
+				
+				
+				//flag for content that 
+				if(!this._selectedAccount)
+				{
+					this._selectedAccount = this._selectedPlugin.plugin;
+					this._accountName = "None";//this._selectedPlugin.displayName;
+				}
+				
+				//if there are more of the 
+//				if(!)
+//				{
+//					tweenTo = 0;
+//					//flag for content that 
+//					this._selectedAccount = this._selectedPlugin.plugin;
+//					this._accountName = this._selectedPlugin.displayName;
+//				}
+				if(showAccounts())
+				{
+					
+					for each(var account:IServiceAccount in this._availableAccounts)
+					{
+						var mi:MenuItem = new MenuItem(account.getName());
+						mi.data = account;
+						this._accountMenu.addItem(mi);
+					}
+					
+					this.pulseGlow(this.accountButton);
+				}
+				else
+				{
+					tweenTo = 0;
+					_selectedAccount = this._selectedPlugin.plugin;
+				}
+				
+				this.setAvailableContent();
+				
+				Tweener.addTween(this,{time:.3,_showAccountTw:tweenTo});
+			}
+			
+			private function setAvailableContent():void
+			{
+				if(this._contentMenu)
+				{
+					this._contentMenu.removeEventListener(Event.SELECT,onContentSelect);
+				}
+				
+				this._contentMenu = new Menu();
+				
+				
+				this._contentMenu.addEventListener(Event.SELECT,onContentSelect);
+				
+				
+				if(!this._selectedAccount)
+				{
+					if(_showContentTw == 1)
+						Tweener.addTween(this,{time:.3,_showContentTw:0});
+					return;
+				}
+				
+				
+				var available:Vector.<String> = this.availableContentControllers.responseData;
+				
+				
+				for each(var vail:String in this.availableContentControllers.responseData)
+				{
+					var mi:MenuItem = new MenuItem(vail);
+					mi.data = vail;
+					this._contentMenu.addItem(mi);
+				}
+				
+				
+				if(_showContentTw == 0)
+				{
+					Tweener.addTween(this,{time:.3,_showContentTw:1});
+				}
+				
+				//if there is only one feed, then by default add it (RSS)
+				if(!this._column.controller && available.length == 1)
+				{
+					this.selectContentController(available[0]);
+					return;
+				}
+				
+				
+				this.pulseGlow(this.contentButton);
+				
+			}
+			
+			
+			private function setFilter():void
+			{
+				if(!this._column || !this._column.controller)
+				{
+					Tweener.addTween(this,{_showFilterTw:0,time:.3});
+				}
+				else
+				{  
+					Tweener.addTween(this,{_showFilterTw:1,time:.3});
+				}
+			}
+			
+			
+			private function showSelectService():void
+			{
+				this.showMenu(serviceButton,this._serviceMenu);
+			}
+			
+			private function showSelectAccount():void
+			{
+				this.showMenu(accountButton,this._accountMenu);
+			}
+			
+			private function showSelectContent():void
+			{
+				this.showMenu(contentButton,this._contentMenu);
+			}
+			
+			private function onServiceSelect(event:Event):void
+			{
+				
+				this.removeFeedPreferences();
+				this._selectedPlugin = event.target.data;
+				
+				this._selectedAccount = null;  
+				this._accountName = null;
+				//if a new server has been selected, then remove the old one
+				
+				if(this._column.controller)
+					this._column.controller = null;
+				
+				
+				
+				this.setAvailableAccounts();
+				
+			}
+			
+			private function onAccountSelect(event:Event):void
+			{
+				this._selectedAccount = event.target.data;
+				this._accountName = IServiceAccount(event.target.data).getName();
+				
+				this.removeFeedPreferences();
+				
+				if(this._column.controller)
+					this._column.controller = null;
+				
+				this.setAvailableContent();
+				//this._column.
+			}
+			
+			private function onContentSelect(event:Event):void
+			{
+				
+				this.selectContentController(event.target.data);
+				
+			}
+			
+			/**
+			 */
+			
+			private function selectContentController(name:String):void
+			{
+				removeFeedPreferences();
+				
+				this.newContentController.callData = name;
+				this.newContentController.dispatch();
+			}
+			
+			
+			private function showAccounts():Boolean
+			{
+				return accounts.length > 0;
+			}
+			
+			private function get accounts():Vector.<IServiceAccount>
+			{
+				if(!this._selectedPlugin)
+					return new Vector.<IServiceAccount>();
+				
+				var response:Array = ProxyCallUtils.getResponse(CallServicePluginType.SERVICE_PLUGIN_GET_ACCOUNTS,this._selectedPlugin.plugin.getProxy());
+				
+				
+				return response.length > 0 ? response[0] : new Vector.<IServiceAccount>();
+			}
+			
+			
+			private function showMenu(button:DisplayObject,menu:Menu):void
+			{
+				var pt:Point = SpriteUtil.absolutePosition(button);
+				
+				menu.display(button.stage,pt.x,pt.y+serviceButton.height+3);
+			}
+			
+			
+			private var _ignorePulse:Boolean;
+			
+			private function pulseGlow(target:DisplayObject):void
+			{
+				
+				if(this._ignorePulse)
+					return;
+				
+				flash.utils.setTimeout(pulseDelay,500,target);
+				
+			}
+			
+			
+			private function pulseDelay(target:DisplayObject):void
+			{
+				var tm:TimelineMax = new TimelineMax();
+				tm.append(new TweenMax(target,.3,{glowFilter:{color:0x7396B7,alpha:1,blurX:5,blurY:5,strength:5}}));
+				tm.append(new TweenMax(target,.3,{delay:.3,glowFilter:{color:0x7396B7,alpha:0,blurX:5,blurY:5,strength:5}}));
+				//tm.append(new TweenMax(target,.5,{glowFilter:{color:0x7396B7,alpha:0}}));
+				
+			}
+			
+			private function removeFeedPreferences():void
+			{
+				while(prefForm.numChildren > 4)
+				{
+					prefForm.removeChildAt(prefForm.numChildren-2); //the filter is at the end
+				}
+				
+				if(this._feedPrefs)
+				{
+					_pool.addObject(_feedPrefs);
+				}
+				
+				if(this._column && this._column.controller && preferenceControllerBind.responseData)
+				{
+					ProxyCallUtils.quickCall(CallCloveContentPreferenceControlType.REMOVE_PREFERENCE_VIEW,preferenceControllerBind.responseData.getProxy());
+				}
+				
+				this._feedPrefs = null;
+			}
+			
+			private function setFeedPreferences():void
+			{
+				
+				for each(var form:FormItem in formItemsBind.responseData)
+				{
+					prefForm.addChildAt(form,prefForm.numChildren-1); //before filter
+					form.setStyle("fontWeight","bold");
+				} 
+			}
+			
+			
+			private function onEnter(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.ENTER)
+					return;
+				
+				this.finish();
+			}
+			
+			private function setColumnController():void
+			{
+				if(!this._column)
+					return;
+				if(newContentController.responseData)
+				{
+					this._column.controller = newContentController.responseData;
+				}
+				
+				this.setFilter();
+			}
+			
+			//private function getControllerFactoryPreferences()
+			
+			
+		]]>
+	</mx:Script>
+	
+	<proxy1:MXProxyCall id="newContentController" 
+					   proxy="{this._selectedAccount.getProxy()}"
+					   property="{CallClovePluginType.GET_NEW_CONTENT_CONTROLLER}" 
+					   responseDataChange="{setColumnController()}" />
+	
+	<!--<proxy:MXMLCProxyCall id="newAccount" 
+	proxy="{this._selectedPlugin.mediator}" 
+	property="{CallClovePluginControllerType.GET_PLUGIN_CONTROLLER_BY_PLUGIN_FACTORY_CLASS}" 
+	callData="{Object(this._selectedPlugin.plugin).constructor}" 
+	autoCall="true" 
+	bind="true" />-->
+	
+	
+	
+	
+	<proxy1:MXBatchProxyCall id="pluginControllersWithContentControllers"
+							proxy="{ClovePluginMediator.getInstance()}"
+							property="{CallClovePluginControllerType.GET_PLUGIN_CONTROLLER_WITH_CONTENT_CONTROLLERS}"
+							autoCall="true"
+							bind="true"  />
+	
+	<proxy1:MXProxyCall id="preferenceControllerBind" 
+					   proxy="{this._column.controller.getProxy()}" 
+					   property="{CallCloveContentControllerType.GET_PREFERENCE_VIEW_CONTROLLER}"
+					   autoCall="true"/>
+	
+	<proxy1:MXProxyCall id="formItemsBind" 
+					   proxy="{preferenceControllerBind.responseData.getProxy()}"
+					   property="{CallCloveContentPreferenceControlType.GET_PREFERENCE_ITEM_VIEWS}"
+					   responseDataChange="{setFeedPreferences();}"
+					   autoCall="true" />
+	
+	
+	<proxy1:MXProxyCall id="availableContentControllers"
+					   proxy="{this._selectedAccount.getProxy()}"
+					   property="{CallClovePluginType.GET_AVAILABLE_CONTENT_CONTROLLERS}"
+					   autoCall="true"
+					   bind="true"  />
+	
+	
+	
+	
+	
+	<!-- feed changer-->
+	<mx:Form width="100%" paddingBottom="0" id="prefForm" keyUp="onEnter(event);" maxWidth="{this.width}" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+		<mx:FormItem fontWeight="bold" 
+					 label="Service:" 
+					 width="100%" paddingBottom="0" >
+			
+			<mx:Button id="serviceButton" 
+					   label="{this._selectedPlugin ? this._selectedPlugin.pluginName : 'Select Service'}" 
+					   width="100%" maxWidth="{prefForm.width}" 
+					   styleName="hoverDropButton" 
+					   click="showSelectService();" />
+			
+			
+		</mx:FormItem>
+		<mx:FormItem fontWeight="bold" 
+					 label="Account:" 
+					 width="100%"
+					 id="accountFormItem" 	
+					 alpha="{_showAccountTw}" 
+					 height="{accountFormItem.measuredHeight * this._showAccountTw}">
+			
+			<mx:Button id="accountButton" 
+					   label="{this._column.controller ? this._accountName : (this._selectedAccount ?  this._accountName : 'Select Account')}" 
+					   width="100%" maxWidth="{prefForm.width}"
+					   styleName="hoverDropButton" 
+					   click="showSelectAccount();"  
+					   paddingRight="20" />
+			
+		</mx:FormItem>
+		
+		
+		<mx:FormItem fontWeight="bold" 
+					 label="Content:"
+					 width="100%"
+					 id="contentFormItem" 
+					 height="{contentFormItem.measuredHeight * this._showContentTw}" alpha="{this._showContentTw}">
+			
+			<mx:Button id="contentButton" 
+					   label="{this._column.controller ? this._column.getContentControllerName().getData() : (this._selectedAccount ? 'Select Feed' : '')}" 
+					   width="100%" maxWidth="{prefForm.width}"
+					   styleName="hoverDropButton" 
+					   click="showSelectContent();" 
+					   paddingRight="20" />
+			
+			
+		</mx:FormItem>
+		
+		<mx:FormItem label="Filter:" 
+					 fontWeight="bold"
+					 id="filterFormItem" 
+					 width="100%"
+					 height="{filterFormItem.measuredHeight * this._showFilterTw}" alpha="{this._showFilterTw}">
+			<mx:TextInput id="filter" width="100%" text="{columnFilter.data.getData()}" change="{columnFilter.data.setData(filter.text);}"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	
+	
+	
+	<!-- property view -->
+	<!--<display:BindableView view="{this._prefs}" visible="{this._prefs != null}" includeInLayout="{this._prefs != null}"  />-->
+	
+	<mx:Button buttonMode="true" styleName="doneButton" click="finish();" width="61" height="22" />
+	
+	<observer:SettingObserver target="{this._column.controller.getSettings().getNewSetting(BasicSettingType.STRING,CloveContentControllerSettingType.FILTER)}" id="columnFilter" />
+	
+	
+	
+</mx:VBox>

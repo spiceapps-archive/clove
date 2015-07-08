@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin xmlns:mx="http://www.adobe.com/2006/mxml"  
+	xmlns="com.degrafa.skins.*" 
+	xmlns:degrafa="com.degrafa.*"
+	xmlns:geometry="com.degrafa.geometry.*"
+	xmlns:paint="com.degrafa.paint.*">
+	
+    
+    <mx:Script>
+    	<![CDATA[
+    		
+    		  
+    		
+    		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+    		{
+    			super.updateDisplayList(unscaledWidth,unscaledHeight);
+    			
+    			
+				backgroundBG.width = unscaledWidth;
+				backgroundBG.height = unscaledHeight;
+    			
+    		}
+    	]]>
+    </mx:Script>
+    
+    
+    <fills>
+		<paint:SolidFill id="bgFill" color="#E3E3E3" />
+    </fills>
+    
+    <geometry>
+		<degrafa:GeometryComposition>
+			<geometry:RoundedRectangle id="backgroundBG"
+									   cornerRadius="2"
+									   fill="{bgFill}" />
+		</degrafa:GeometryComposition>
+    </geometry>
+    
+</GraphicBorderSkin>

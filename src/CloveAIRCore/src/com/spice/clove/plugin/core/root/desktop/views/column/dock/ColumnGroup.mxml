@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas horizontalScrollPolicy="off" 
+		   width="100%" 
+		   creationComplete="init();"  
+		   dragEnter="dragColumn(event);" 
+		   dragDrop="onDropColumn(event);" 
+		   verticalScrollPolicy="off" 
+		   xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   xmlns:controls="com.spice.controls.*" 
+		   xmlns:icon="com.spice.clove.plugin.core.root2.column.view.dock.icon.*" 
+		   clipContent="false" 
+		   xmlns:storage="com.spice.utils.storage.*" 
+		   xmlns:mxml="com.spice.utils.mxml.*"
+		   implements="com.spice.recycle.IDisposable" 
+		   xmlns:icon1="com.spice.clove.plugin.core.root.desktop.views.column.dock.icon.*" 
+		   xmlns:observer="com.spice.vanilla.flash.observer.*"
+		   xmlns:binding="com.spice.binding.*"
+		   creationPolicy="queued" xmlns:column="com.spice.clove.view.column.*" xmlns:degrafa="com.degrafa.*" xmlns:paint="com.degrafa.paint.*" xmlns:geometry="com.degrafa.geometry.*" xmlns:dock="com.spice.clove.plugin.core.root.desktop.views.column.dock.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.plugin.column.GroupColumn;
+			import com.spice.clove.plugin.core.column.ICloveColumn;
+			import com.spice.clove.plugin.core.root.desktop.views.column.dock.icon.*;
+			import com.spice.clove.plugin.core.root.desktop.views.column.group.single.SingleColumnViewController;
+			import com.spice.recycle.factory.RecyclingFactory;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			import com.spice.vanilla.impl.settings.basic.BooleanSetting;
+			
+			import mx.binding.utils.BindingUtils;
+			import mx.binding.utils.ChangeWatcher;
+			import mx.controls.Alert;
+			import mx.core.UIComponent;
+			import mx.events.CloseEvent;
+			import mx.events.DragEvent;
+			import mx.managers.DragManager;
+			
+			
+			private var _targetColumn:GroupColumn;
+			
+			
+			
+			[Bindable]
+			public var handler:ColumnPicker;
+			
+			[Bindable]
+			public var iconImage:UIComponent;
+			
+			[Bindable] 
+			public var paddingLeft:Number = 15;
+			
+			
+			private const ICON_SIZE:int = 32;
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			[Bindable]
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			[Bindable]	
+			public var bgStyleName:String = "selectedGroupSidebarUp";
+			
+			[Bindable]	
+			public var arrowCollapseStyleName:String = "collapseSidebarButton";
+			
+			[Bindable]	
+			public var arrowExpandStyleName:String = "expandSidebarButton";
+			
+			[Bindable]	
+			public var shadowColor:int = 0xFFFFFF;
+			
+			[Bindable]	
+			public var fontColor:int = 0x576e8e;
+			
+			[Bindable]	
+			public var shadowDistance:int = 1;
+			
+			private var _selected:Boolean;
+			
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Getters / Setters
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			/*
+			*/
+			
+			override public function set data(value:Object):void
+			{
+				if(data == value)
+					return;
+				
+				super.data = value;
+				
+				
+				if(this.data)
+					onControllerSelected(null);
+			}
+			
+			
+			
+			/**
+			 */
+			[Bindable(event="targetColumnChange")]
+			public function get targetColumn():GroupColumn
+			{
+				return this._targetColumn;
+			}
+			
+			/**
+			 */
+			
+			public function set targetColumn(value:GroupColumn):void
+			{
+				if(this._targetColumn == value)
+					return;
+				
+				try
+				{
+					this._targetColumn = value;
+					this.dispatchEvent(new Event("targetColumnChange"));
+				}catch(e:Error)
+				{
+					Logger.logError(e);
+				}
+			}
+			
+			
+			
+			private function onControllerSelected(event:*):void
+			{
+				
+				
+				
+				if(!data || _selected == data.selected)
+					return;
+				
+				_selected = data.selected;
+				
+				if(data.selected)
+				{
+					
+					this.bgStyleName = "selectedGroupSidebar";
+					this.fontColor = 0xFFFFFF;
+					this.shadowColor = 0x000000;
+					shadowDistance = 2;
+					this.arrowExpandStyleName = "expandWhiteSidebarButton";
+					this.arrowCollapseStyleName = "collapseWhiteSidebarButton";
+					
+					  
+//					dockExpandedBind.data.setData(true);
+				}
+				else
+				{
+					this.bgStyleName = "selectedGroupSidebarUp";
+					this.fontColor = 0x576e8e;
+					this.shadowColor = 0xFFFFFF;
+					shadowDistance = 1;
+					this.arrowExpandStyleName = "expandSidebarButton";
+					this.arrowCollapseStyleName = "collapseSidebarButton";
+//					dockExpandedBind.data.setData(false);
+					
+					if(this._model.applicationSettings.mainUISettings.autoCollapseGroups)
+						this.setExpanded(this._selected);
+				}
+			}
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			private var _selectWatch:ChangeWatcher;
+			private var _targetWatch:ChangeWatcher;
+			/*
+			*/
+			
+			private function init():void
+			{
+				_selectWatch = ChangeWatcher.watch(this,["data","selected"],onControllerSelected);	
+				_targetWatch = BindingUtils.bindProperty(this,"targetColumn",this,["data","target"]);
+				onControllerSelected(null);
+			}
+			
+			/*
+			*/
+			
+			private function initTitle():void
+			{
+				
+				var boolSetting:BooleanSetting;
+				
+				if(targetColumn && (boolSetting = BooleanSetting(targetColumn.metadata.getNewSetting(BasicSettingType.BOOLEAN,ColumnMetaData.EDIT_TITLE))).getData())
+				{
+					boolSetting.setData(false);
+					
+					flash.utils.setTimeout(editMode,100);
+				} 
+			}
+			
+			
+			/*
+			*/
+			
+			private function select(event:*):void
+			{
+				if(data)
+				{
+					if(this._model.applicationSettings.mainUISettings.autoCollapseGroups)
+					{
+						this.setExpanded(true);
+					}
+					
+					flash.utils.setTimeout(data.setSelected,300,true);
+				}
+			}
+			
+			/*
+			*/
+			
+			private function dragGroup():void
+			{
+				this.dispatchEvent(new MouseEvent("dragGroup"));
+			}
+			
+			
+			/*
+			*/
+			
+			private function removeGroup():void
+			{
+				Alert.show("Are you sure you want to remove this group?","Remove Group",Alert.CANCEL|Alert.YES,null,onRemove);
+				
+			}
+			
+			/*
+			*/
+			
+			private function onRemove(event:CloseEvent):void
+			{
+				if(event.detail == Alert.CANCEL)
+					return;
+				
+				
+				Tweener.addTween(this,{scaleX:0,scaleY:0,alpha:0,time:.5,onComplete:function():void{ this.parent.removeChild(this)}});
+			}
+			
+			
+			/*
+			*/
+			
+			private function showHideColumns(show:Boolean = false):void
+			{
+				if(dockExpandedBind && dockExpandedBind.data)
+				{
+					this.setExpanded(!Boolean(dockExpandedBind.data.getData()));
+				}
+			}
+			
+			
+			/**
+			 */
+			
+			protected function setExpanded(value:Boolean = false):void	
+			{
+				if(dockExpandedBind && dockExpandedBind.data)
+				{
+					dockExpandedBind.data.setData(value);
+				}
+			}
+			
+			
+			/*
+			*/
+			
+			private function dragColumn(event:DragEvent):void
+			{
+				
+				var dragged:Object = event.dragSource.dataForFormat("draggedData");
+				
+				
+				if(!dragged)
+					return;
+				
+				
+				
+				var ldata:Object = dragged["listData"];
+				
+				
+				if(ldata is SingleColumnViewController)
+				{
+					DragManager.acceptDragDrop(this);
+				}
+				
+				
+				
+				
+			}
+			
+			private function onDropColumn(event:DragEvent):void
+			{
+				
+				
+				
+				var data:SingleColumnViewController = event.dragSource.dataForFormat("draggedData").listData;
+				
+				
+				if(this.targetColumn.children.getItemIndex(col) > -1)
+				{
+					return;
+				}
+				
+				
+				var col:ICloveColumn = targetColumn;
+				
+				
+				//add the column controller to the object pool so we can reuse it
+				ObjectPoolManager.getInstance().addObject(data);
+				
+				
+				this.targetColumn.children.addItem(col);
+			}
+			
+			
+			/*
+			*/
+			
+			public function editMode():void
+			{
+//				this.columnTitle.editMode();
+			}
+			
+			/*
+			*/
+			
+			public function dispose():void
+			{
+				
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+	<mx:Canvas id="groupLabel"
+			   left="-1"
+			   right="0"
+			   height="45" 
+			   horizontalScrollPolicy="off" 
+			   verticalScrollPolicy="off" 
+			   click="{this.select(event)}">
+		
+		<mx:Canvas styleName="{bgStyleName}"
+				   width="100%" 
+				   height="45"  />
+		
+		<icon1:ColumnIcon width="{ICON_SIZE}" 
+						  height="{ICON_SIZE}"
+						  column="{this.targetColumn}" 
+						  verticalCenter="0"
+						  x="{paddingLeft}"  />
+		
+		
+		<mx:HBox  mouseDown="dragGroup();"  
+				  verticalAlign="bottom"
+				  horizontalGap="4" 
+				  x="{ICON_SIZE+5+paddingLeft}"
+				  width="100%" 
+				  verticalCenter="1" 
+				  clipContent="false">
+			
+			
+			<icon1:ColumnTitle click="event.stopPropagation()" 
+							   shadowDistance="{shadowDistance}" 
+							   id="columnTitle" 
+							   shadowColor="{shadowColor}" 
+							   color="{fontColor}"
+							   creationComplete="initTitle();"
+							   data="{this.targetColumn}" 
+							   select="{this.select(event);}" />
+			
+			
+			<mx:Spacer width="100%" height="100%" />
+			<mx:Canvas height="100%" click="event.stopPropagation();" width="30">
+				
+				<mx:Button buttonMode="true"
+						   styleName="{arrowExpandStyleName}"
+						   click="{showHideColumns();}"
+						   visible="{dockExpandedBind.data.getData()}" verticalCenter="0"/>
+				
+				<mx:Button buttonMode="true"
+						   styleName="{arrowCollapseStyleName}"
+						   click="{showHideColumns();}"
+						   visible="{!dockExpandedBind.data.getData()}" verticalCenter="0"/>
+				
+				
+				<!--<dock:ColumnInfoView targetColumn="{this.targetColumn}" 
+									 visible="{!dockExpandedBind.data.getData()}" 
+									 includeInLayout="{!dockExpandedBind.data.getData()}" 
+									 showActivity="false" 
+									 verticalCenter="0" 
+									 right="5" />-->
+			</mx:Canvas>
+			
+			<!--<mx:Label text="{numSumUnreadBind.data.getData()}" 
+					  includeInLayout="{_model.applicationSettings.mainUISettings.autoScroll}"
+					  visible="{numSumUnreadBind.data.getData() > 0}" 
+					  alpha="{_model.applicationSettings.mainUISettings.autoScroll ? 1 : 0}"/>-->
+			
+			
+			
+		</mx:HBox>
+	</mx:Canvas>
+	
+	
+	
+	<!--<controls:ReorganizableList y="{groupLabel.height+2}"
+								direction="vertical" 
+								paddingLeft="{ICON_SIZE+20}" 
+								dropGroupType='singleColumns' 
+								dataProvider="{this.controller.columns}" 
+								height="{dockExpandedBind.data.getData() ? NaN : 0}" 
+								visible="{dockExpandedBind.data.getData()}"
+								itemRenderer="{new RecyclingFactory(MiniView)}" 
+								percentWidth="100" 
+								verticalScrollPolicy="off"
+								gap="1" 
+								verticalGap="0" 
+								horizontalGap="0"
+								horizontalScrollPolicy="off" clipContent="false">
+		
+	</controls:ReorganizableList>-->
+	
+	<mx:VBox y="{groupLabel.height+2}"
+			 paddingLeft="{ICON_SIZE+11}"
+			 verticalGap="1"
+			 left="0" right="{handler.scrollBarsShowing ? 16 : 0}"
+			 visible="{dockExpandedBind.data.getData()}" 
+			 includeInLayout="{dockExpandedBind.data.getData()}" id="colHolder" />
+	
+	
+	<binding:DataBoundController target="{colHolder}" dataProvider="{this.data.columns}" itemRenderer="{new RecyclingFactory(MiniView)}" />
+	
+	
+	<!--<observer:SettingObserver id="numSumUnreadBind" target="{this.targetColumn.metadata.getNewSetting(BasicSettingType.NUMBER,ColumnMetaData.NUM_SUM_UNREAD)}" />-->
+	<observer:SettingObserver id="dockExpandedBind" target="{this.targetColumn.metadata.getNewSetting(BasicSettingType.BOOLEAN,ColumnMetaData.GROUP_EXPANDED)}" />
+	
+	
+	<!--<storage:SettingBind id="numSumUnread" name="{ColumnMetaData.NUM_SUM_UNREAD}" settings="{this.controller.target.metadata}" />
+	<storage:SettingBind id="dockExpanded" initialize="checkExpanded();" name="{ColumnMetaData.GROUP_EXPANDED}" settings="{this.controller.target.metadata}" />-->
+	
+</mx:Canvas>

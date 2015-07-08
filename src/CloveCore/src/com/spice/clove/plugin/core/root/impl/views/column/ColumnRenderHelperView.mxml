@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   backgroundAlpha="0" 
+		   implements="com.spice.recycle.IDisposable">
+<mx:Script>
+	<![CDATA[
+		import com.spice.clove.plugin.column.ClovePluginColumn;
+		import com.spice.clove.plugin.core.column.ICloveColumn;
+		import com.spice.clove.view.column.ClovePluginColumnDataView;
+		import com.spice.recycle.pool.ObjectPoolManager;
+		
+		import mx.core.UIComponent;
+		
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Variables
+        //
+        //--------------------------------------------------------------------------
+		
+		
+		//[Bindable]
+		private var _column:ClovePluginColumn;
+		
+		private var _currentView:*;
+		
+		private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Getters / Setters
+        //
+        //--------------------------------------------------------------------------
+
+		/*
+		 */
+		
+		[Disposable]
+		[Bindable(event="columnChange")]
+		public function get column():ClovePluginColumn
+		{
+			return _column;
+		}
+		
+		/*
+		 */
+		
+		public function set column(value:ClovePluginColumn):void
+		{
+			
+			_column = value;
+			
+			if(value)
+			{
+				if(!(this._currentView is value.viewClass))
+				{
+					this.setNewView();
+				}
+				
+				
+				
+				
+				_currentView.percentHeight = 100;
+				_currentView.percentWidth  = 100;
+				
+				_currentView.data = _column;
+				
+				if(_currentView.hasOwnProperty('dataProvider'))
+					_currentView.dataProvider = _column.dataProvider;
+			}
+			else
+			{
+				this.addCurrentViewToObjectPool();
+			}
+			
+			this.dispatchEvent(	new Event("columnChange"));
+			
+		}
+		
+		/*
+		 */
+		
+		public function get currentView():UIComponent
+		{
+			return _currentView;
+		}
+		
+		/*
+		 */
+		
+		private function setNewView():void
+		{
+			this.addCurrentViewToObjectPool();
+		
+			
+			if(!_currentView) 
+			{
+				_currentView = _pool.getObject(ClovePluginColumn(this._column).viewClass );
+			}
+			
+			
+			
+			
+			this.addChild(_currentView);
+			
+		}
+		
+		public function dispose():void
+		{
+			this.addCurrentViewToObjectPool();
+			
+			this._currentView = undefined;
+			this._column = undefined;
+		}
+		
+		
+		private function addCurrentViewToObjectPool():void
+		{
+			
+			if(this._currentView)
+			{
+				
+				if(this._currentView.parent)
+				{
+					this._currentView.parent.removeChild(this._currentView);
+				}
+				
+				this._pool.addObject(this._currentView);
+							
+				this._currentView.data		   = undefined;
+				this._currentView.dataProvider = undefined;
+				this._currentView 			   = undefined;
+			}
+		}
+		
+	]]>
+</mx:Script>
+</mx:Canvas>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<controls:ResizeableLabel xmlns:mx="http://www.adobe.com/2006/mxml" 
+						  styleName="columnRowTitle"
+						  xmlns:controls="com.spice.clove.plugin.flex.views.controls.*" width="100%">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			
+			public function set cloveData(value:ICloveData):void
+			{
+				if(value)
+				{
+					this.text = value.getTitle();
+				}
+			}
+		]]>
+	</mx:Script>
+</controls:ResizeableLabel>

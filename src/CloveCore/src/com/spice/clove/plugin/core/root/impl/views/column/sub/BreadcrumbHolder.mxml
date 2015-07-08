@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" xmlns:binding="com.spice.binding.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.recycle.factory.RecyclingFactory;
+			import com.spice.clove.plugin.column.crumb.CloveColumnCrumbController;
+			
+			private var _controller:CloveColumnCrumbController;
+			
+			[Bindable(event="controllerChange")]
+			public function get controller():CloveColumnCrumbController
+			{
+				return this._controller;
+			}
+			
+			public function set controller(value:CloveColumnCrumbController):void
+			{
+				if(!value)
+					return;
+					
+				this._controller = value;
+				
+				
+				this.dispatchEvent(new Event("controllerChange"));
+			}
+			
+			override public function addChildAt(child:DisplayObject, index:int):DisplayObject
+			{
+				super.addChildAt(child,index);
+				
+				
+				
+				return child;
+			}
+			
+			
+			private function onRemove(event:Event):void
+			{
+				event.stopImmediatePropagation();
+				
+				controller.selectedIndex = holder.getChildIndex(event.target as DisplayObject) + 1;
+			}
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				
+				if(!holder)
+					return;
+				
+				//thelast crumb should ALWAYS be visible
+				holder.x = this.width - holder.width;
+			}
+			
+			private function init2():void
+			{
+				
+				holder.addEventListener('removeCrumb',onRemove,false,0,true);
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HBox id="holder" verticalAlign="middle" width="100%"  creationComplete="init2();" />
+	
+	<binding:DataBoundController target="{holder}" dataProvider="{this.controller.trail}" itemRenderer="{new RecyclingFactory(Breadcrumb)}" />
+	
+</mx:Canvas>

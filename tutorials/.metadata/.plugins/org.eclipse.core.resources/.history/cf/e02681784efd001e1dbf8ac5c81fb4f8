@@ -1,0 +1,9 @@
+package com.cloveHello.plugin.icons
+{
+	public class CloveHelloPluginIcon
+	{
+		[Embed("virb_32.png")]
+		
+
+	}
+}

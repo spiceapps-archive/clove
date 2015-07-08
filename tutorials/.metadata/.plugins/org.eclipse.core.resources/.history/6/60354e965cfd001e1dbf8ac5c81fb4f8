@@ -1,0 +1,62 @@
+package com.cloveHello.plugin.service
+{
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
+	
+	[Event("complete")]
+	
+	public class TestService extends EventDispatcher
+	{
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Variables
+        //
+        //--------------------------------------------------------------------------
+
+		private var _data:Object;
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+        
+        /**
+		 */
+		 
+		public function TestService()
+		{
+		}
+		
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Public Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		public function call(start:int):void
+		{
+			
+		}
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		private function onTime():void
+		{
+			this.dispatchEvent(new Event(Event.COMPLETE));
+		}
+
+	}
+}

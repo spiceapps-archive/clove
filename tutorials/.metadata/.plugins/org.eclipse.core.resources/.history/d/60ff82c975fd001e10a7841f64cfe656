@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties version="1">
+  <includeClasses>
+    <classEntry path="com.cloveHello.plugin.column.controller.HelloColumnController"/>
+    <classEntry path="com.cloveHello.plugin.CloveHelloPluginFactory"/>
+    <classEntry path="com.cloveHello.plugin.column.views.row.HelloColumnRowView"/>
+    <classEntry path="com.cloveHello.plugin.postable.HelloPostable"/>
+    <classEntry path="com.cloveHello.plugin.preferences.CloveHelloPluginPreferenceView"/>
+    <classEntry path="com.cloveHello.plugin.installer.CloveHelloPluginInstaller"/>
+    <classEntry path="com.cloveHello.plugin.icons.CloveHelloPluginIcon"/>
+    <classEntry path="com.cloveHello.plugin.CloveHelloPlugin"/>
+    <classEntry path="com.cloveHello.plugin.installer.CloveHelloPluginInstallerView"/>
+    <classEntry path="com.cloveHello.plugin.service.cue.CallDataCue"/>
+    <classEntry path="com.cloveHello.plugin.column.render.HelloColumnItemRenderer"/>
+    <classEntry path="com.cloveHello.plugin.column.views.row.HelloColumnRowBodyView"/>
+    <classEntry path="com.cloveHello.plugin.service.vo.MessageVO"/>
+    <classEntry path="com.cloveHello.plugin.CloveHelloPluginSettings"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

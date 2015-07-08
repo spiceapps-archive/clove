@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="nextInstaller();" verticalGap="0" xmlns:display="com.spice.display.*" xmlns:window="com.spice.clove.view.window.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			
+			
+			[Bindable] 
+			public var controller:ServiceInstallationController;
+			
+			
+			[Bindable] 
+			public var view:UIComponent;
+			
+			
+			private var _i:int;
+			
+			
+			private function nextInstaller():void
+			{
+				if(_i >= controller.additionalViews.length)
+				{
+					controller.complete();
+					return;
+				}
+				
+				this.view = controller.additionalViews.source[_i++];
+			}
+			
+			
+		]]>
+	</mx:Script>
+	  
+	<display:BindableView view="{view}" width="100%" height="100%" />
+	
+	<window:WindowFooter>
+		
+		<mx:Spacer width  = "100%" />
+		
+		<!--<mx:Button label  = "Skip" 	
+				   height = "22" click="{nextPlugin();}" />-->
+		
+		<mx:Button label  = "Continue" 
+				   height = "22" 
+				   click  = "{nextInstaller();}" />
+		
+	</window:WindowFooter>
+</mx:VBox>

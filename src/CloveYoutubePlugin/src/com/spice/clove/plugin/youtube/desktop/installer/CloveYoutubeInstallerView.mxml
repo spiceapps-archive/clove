@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="300" height="250">
+	<mx:Button label="finish test" verticalCenter="0" horizontalCenter="0" click="this.dispatchEvent(new Event(Event.COMPLETE));" />
+</mx:Canvas>

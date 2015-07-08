@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:proxy="com.spice.vanilla.mx.proxy.*" width="100%">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.CloveDataSettingName;
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.vanilla.core.observer.IObserver;
+			import com.spice.vanilla.core.proxy.IProxy;
+			import com.spice.vanilla.core.proxy.IProxyOwner;
+			import com.spice.vanilla.flash.observer.WeakObserver;
+			import com.spice.vanilla.impl.proxy.ProxyCall;
+			
+			private var _data:ICloveData;
+			private var _call:ProxyCall;
+			private var _weak:WeakObserver;
+			private var _attachmentSetting:IProxyOwner;
+			
+			public function set cloveData(value:ICloveData):void
+			{
+				_data = value;
+
+
+				if(_attachmentSetting)
+				{
+					_attachmentSetting.getProxy().unbindObserver(_weak);
+				}
+				
+				_attachmentSetting = IProxyOwner(_data.getSettingTable().getSetting(CloveDataSettingName.ATTACHMENTS));
+				
+				if(!_attachmentSetting)
+					return;
+				
+				if(!_call)
+				{
+//					_call = new ProxyCall(
+//					_weak = new WeakObserver(this);
+				}
+				
+				
+				_attachmentSetting.getProxy().bindObserver(_weak);
+			}
+		]]>
+	</mx:Script>
+	
+	
+</mx:VBox>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- [ExcludeClass] -->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			[Bindable] public var iconStyleName:String;
+		]]>
+	</mx:Script>
+</mx:Canvas>

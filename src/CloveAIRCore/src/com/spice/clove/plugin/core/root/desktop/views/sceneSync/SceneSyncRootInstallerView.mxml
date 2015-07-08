@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas clipContent="false" xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="init();" width="100%" xmlns:controls="com.spice.clove.plugin.flex.views.controls.*" xmlns:proxy="com.spice.vanilla.mx.proxy.*" xmlns:observers="com.spice.vanilla.mx.proxy.observers.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.root.impl.models.CloveRootModelLocator;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncablePluginType;
+			import com.spice.vanilla.impl.settings.list.StringTreeListSetting;
+			
+			private var _model:CloveRootModelLocator = CloveRootModelLocator.getInstance();
+			
+			[Bindable] 
+			private var _availableGroups:Array;
+			
+			public static const MAX_FILTER_ITEMS:int = 20;
+			
+			private var _filter:String;
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				if(!value)
+					return;
+				
+				var id:int = Number(value);
+				
+				this.setContent(id);
+			}
+			
+			private function init():void
+			{
+				groupSelector.addEventListener('subscribe',onSubscribe);
+			}
+			
+			private function onSubscribe(event:Event):void
+			{
+				
+				var data:Object = event.target.data;
+				
+				
+				if(data.selected)
+				{
+					_model.rootPlugin.getRootPluginSettings().addUsedSceneGroup(data.id,new StringTreeListSetting(data.label));
+				}
+				else
+				{  
+					_model.rootPlugin.getRootPluginSettings().removeUsedSceneGroup(data.id,data.label);
+				}
+				
+				_model.rootPlugin.remergeScene(data.id);
+//				for each(var group:String in this._availableGroups)
+//				{
+//					if(scene.scene.id.toString() == event.data)
+//					{
+//						if(scene.subscribed)
+//							this.plugin.subscribeToScene(scene.scene);
+//						else
+//							this.plugin.unsubscribeFromScene(scene.scene);
+//						break;
+//					}
+//				}
+			}
+			
+			public function setFilter(name:String):void
+			{
+				this._filter = name;
+				
+				this.setContent(!_filter || _filter  == "" ? Number(data) : -1);
+			}
+			
+			
+			/**
+			 */
+			
+			private function setContent(id:Number):void
+			{
+				var filter:String = id > -1 ? null : this._filter;
+				
+				
+				var groups:Vector.<StringTreeListSetting> = _model.rootPlugin.getRootPluginSettings().getAvailableSceneGroupAsArray(id,filter);
+				
+				
+				var i:int;
+				var avail:Array = [];
+				for each(var group:StringTreeListSetting in groups)
+				{
+					
+					if(filter && filter.length < 2 && i++ > MAX_FILTER_ITEMS)
+						break;
+					
+					var used:StringTreeListSetting = _model.rootPlugin.getRootPluginSettings().getUsedSceneGroupList().getTreeList(group.getParent().getName());
+					
+					if(!used)
+						continue;
+					
+					avail.push({id:group.getParent().getName(),label:group.getName(),selected:used.hasTreeList(group.getName(),false)});
+				}
+				
+				this._availableGroups = avail;
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<mx:TileList columnCount="2"
+				 backgroundAlpha="0"
+				 dataProvider="{this._availableGroups}"
+				 minHeight="{Math.min(this._availableGroups.length*10.5,350)}"
+				 maxHeight="400"  
+				 borderStyle="none"
+				 width="100%"
+				 id="groupSelector"
+				 paddingBottom="0"
+				 paddingTop="0"
+				 selectable="false">
+		<mx:itemRenderer>
+			<mx:Component>
+				<mx:HBox verticalAlign="middle" width="100%">
+					<mx:CheckBox id="subCheckbox" 
+								 selected="{data.selected}" width="100%" 
+								 click="{data.selected = !data.selected; dispatchEvent(new Event('subscribe',true))}" label="{data.label}" />
+					<!--<mx:Image source="{data.icon}" />-->
+					<!--<controls:ResizeableLabel width="100%" text="{data.label}" />-->
+					<!--<mx:Label text="{data.label}" /> --> 
+				</mx:HBox>
+			</mx:Component>
+		</mx:itemRenderer>
+	</mx:TileList>
+</mx:Canvas>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" xmlns:rebundle="com.spice.clove.view.rebundle.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.vo.PluginVO;
+			import com.spice.clove.vo.RebundleVO;
+			import com.spice.clove.commandEvents.PackerEvent;
+			import mx.collections.ArrayCollection;
+			import com.spice.clove.model.PackerModelLocator;
+		
+			[Bindable] 
+			private var _plugins:ArrayCollection = new ArrayCollection();
+			private var _ref:FileReferenceList;
+			
+			[Bindable] 
+			private var _model:PackerModelLocator = PackerModelLocator.getInstance();
+			
+			[Bindable] 
+			private var _aref:FileReference;
+			
+			[Bindable] 
+			private var _arefName:String;
+			
+			private function addPlugins():void
+			{
+				_ref = new FileReferenceList();
+				_ref.addEventListener(Event.SELECT,onPluginsSelect);
+				_ref.browse([new FileFilter("Clove Plugin","*.cplugin")]);
+			}
+			
+			private function onPluginsSelect(event:Event):void
+			{
+				for each(var ev:FileReference in _ref.fileList)
+				{
+					_plugins.addItem(new PluginVO(ev));
+				}
+			}
+			
+			private function rebundle():void
+			{
+				new PackerEvent(PackerEvent.REBUNDLE,new RebundleVO(_plugins.toArray())).dispatch()
+			}
+			
+			
+			
+			
+			
+			
+		]]>
+	</mx:Script>
+	<mx:Panel title="Rebundle Clove Installer" verticalCenter="0" horizontalCenter="0" width="358" height="256">
+		
+		<mx:FormItem label="Plugins:" width="100%" height="100%">
+			<mx:VBox width="100%" height="100%" verticalAlign="bottom">
+				<mx:List id="pluginList" width="100%" height="100%" dataProvider="{_plugins}" labelField="name">
+					<mx:itemRenderer>
+						<mx:Component>
+							<rebundle:RebundlePluginItemView data="{data}" />
+						</mx:Component>
+					</mx:itemRenderer>
+				</mx:List>
+				<mx:HBox>
+					<mx:Button label="add plugin" click="addPlugins();" />
+					<mx:Button label="clear list" click="{_plugins.removeAll()}" />
+				</mx:HBox>
+			</mx:VBox>
+		</mx:FormItem>
+		<mx:ControlBar>
+			<mx:Button label="Rebundle" click="rebundle();" />
+		</mx:ControlBar>
+	</mx:Panel>
+</mx:Canvas>

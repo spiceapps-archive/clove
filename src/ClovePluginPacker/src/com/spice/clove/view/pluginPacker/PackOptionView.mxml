@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%" creationComplete="init();" xmlns:pluginPacker="com.spice.clove.view.pluginPacker.*">
+
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.model.PackerModelLocator;
+			import mx.binding.utils.ChangeWatcher;
+			import com.spice.clove.commandEvents.PackerEvent;
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			
+			
+			private var _list:FileReferenceList;
+			
+			
+			[Bindable(event='fileListChange')] 
+			private var _files:ArrayCollection = new ArrayCollection();
+			
+			[Bindable] 
+			private var _model:PackerModelLocator = PackerModelLocator.getInstance();
+			
+			private function browse():void
+			{
+				_list = new FileReferenceList();
+				_list.addEventListener(Event.SELECT,onFileSelect);
+				_list.browse();
+			}
+			
+			private function onFileSelect(event:Event):void
+			{
+				event.currentTarget.removeEventListener(event.type,onFileSelect);
+				_files.source = _files.source.concat(_list.fileList);
+				
+				dispatchEvent(new Event('fileListChange'));
+			}
+			
+			private function export():void
+			{
+				new PackerEvent(PackerEvent.EXPORT_PLUGIN,_files.source).dispatch();
+			}
+			
+			private function init():void
+			{
+				ChangeWatcher.watch(_model,["packModel","percentDone"],onProgress);
+			}
+			
+			private function onProgress(event:*):void
+			{
+//				progress.setProgress(_model.packModel.percentDone,100);
+			}
+			
+			
+			private function savePacked():void
+			{
+				
+				var bytes:ByteArray = new ByteArray();
+				bytes.writeObject(_model.packModel.file);
+				
+				
+				var ref:FileReference = new FileReference();
+			 	ref.save(bytes,_model.packModel.file.name+".cplugin");
+			}
+		]]>
+	</mx:Script>
+	<mx:Panel title="Plugin Packer" verticalCenter="0" horizontalCenter="0">
+		
+		<pluginPacker:BrowsePluginView />
+		<mx:Button label="save packed plugin" click="savePacked();" visible="{_model.packModel.file != null}" />
+		
+	</mx:Panel>
+</mx:Canvas>

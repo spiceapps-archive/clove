@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:opmlImport="com.spice.clove.plugin.rss.opmlImport.*">
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			public static const INIT_FEED_TITLE:String = "RSS feed";
+			[Bindable] 
+			public var installer:RSSServiceInstaller;
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				this.installer = RSSServiceInstaller(value);
+			}
+		
+		]]>
+	</mx:Script>
+	
+	<!--<opmlImport:OPMLColumnCreator id="opmlImporter" />
+	<mx:TextInput id="feedXML" text="{INIT_FEED_TITLE}" />
+	<mx:Spacer height="20" />
+	<mx:Label text="or"/>
+	<mx:Spacer height="20" />-->
+	<!--<mx:Button label="Import OPML File" click="{opmlImporter.browse()}"/>-->
+	<mx:Button label="complete" click="this.installer.completeInstallation()" />
+</mx:VBox>

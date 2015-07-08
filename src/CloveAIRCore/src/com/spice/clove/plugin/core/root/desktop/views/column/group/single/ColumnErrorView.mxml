@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   clipContent="false"
+		   width="100%"
+		   height="100%"
+		   backgroundColor="#000000"
+		   backgroundAlpha=".5"
+		   buttonMode="true">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable] 
+			public var errorMessage:String;
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Text horizontalCenter="0"
+			 verticalCenter="0"
+			 text="{errorMessage}"
+			 color="#FFFFFF"
+			 fontSize="14" 
+			 textAlign="center" 
+			 width="100%" id="errorViewLabel" />
+	
+	
+</mx:Canvas>

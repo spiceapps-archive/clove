@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button xmlns:mx="http://www.adobe.com/2006/mxml" height="22" icon="{BestBuyIcons.LOGO_ICON}" label="go to shopping cart" click="goToShoppingCart();">
+	<mx:Script>
+		<![CDATA[
+			import flash.net.navigateToURL;
+			
+			import com.spice.clove.plugin.icons.BestBuyIcons;
+			
+			
+			
+			private function goToShoppingCart():void
+			{
+				flash.net.navigateToURL(new URLRequest("http://www.bestbuy.com/site/olspage.jsp?id=pcat17005&type=page&cmp=RMX&ky=2ig7pZws5VIFwj7XQee4qEctochfrtwb0&_requestid=30570"));
+			}
+		]]>
+	</mx:Script>
+</mx:Button>

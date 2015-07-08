@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:ViewStack selectedIndex="1"
+		 creationComplete="init();" 
+		 clipContent="false"
+		 change="{viewChange()}"  
+		 xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 verticalScrollPolicy="off" 
+		 width="100%" 
+		 height="100%" 
+		 xmlns:controls="com.spice.controls.*" 
+		 xmlns:display="com.spice.display.*" 
+		 xmlns:efflex="org.efflex.mx.viewStackEffects.*"
+		 paddingTop="8" 
+		 paddingBottom="0" 
+		 xmlns:binding="com.spice.binding.*" 
+		 xmlns:group="com.spice.clove.plugin.core.root.desktop.views.column.group.*" 
+		 xmlns:mxml="com.spice.utils.mxml.*">
+<mx:Script>
+	<![CDATA[
+		import caurina.transitions.Tweener;
+		
+		import com.spice.clove.commandEvents.CloveEvent;
+		import com.spice.clove.plugin.column.ClovePluginColumn;
+		import com.spice.clove.plugin.core.root.desktop.views.column.group.GroupColumnViewController;
+		import com.spice.recycle.factory.RecyclingFactory;
+		
+		import flash.utils.clearTimeout;
+		import flash.utils.setTimeout;
+		
+		import mx.binding.utils.ChangeWatcher;
+		import mx.events.CollectionEvent;
+		import mx.events.CollectionEventKind;
+		
+		
+		private var _controller:GroupColumnViewController;
+		private var _fading:Boolean;
+		private var _fadeInTimeout:int;
+		
+		[Disposable]
+		[Bindable("controllerChange")]
+		public function get controller():GroupColumnViewController
+		{	
+			return _controller;
+		}
+		
+		public function set controller(value:GroupColumnViewController):void
+		{
+			if(_controller == value)
+				return;
+				
+			var fi:Boolean = _controller != null;
+			
+			_controller = value;
+			
+			//if we're initializing, then don't fade out, fade in.
+			
+			
+			//if(!_fading)
+			{
+				
+				if(fi && alpha == 1)
+					fadeOut();
+				else
+				{
+					alpha = 0;
+					fadeIn();
+				}
+				
+				/* else
+				{
+					this.alpha = 0;
+					fadeIn();
+				} */
+			}
+		}
+		
+		
+		private function fadeOut():void
+		{
+			Tweener.removeTweens(this);
+				//_fading = true;
+			Tweener.addTween(this,{alpha:0,time:.5,onComplete:fadeIn});
+//			flash.utils.setTimeout(fadeIn,500);
+		}
+		
+		private function fadeIn():void
+		{
+			Tweener.removeTweens(this);
+			this.dispatchEvent(new Event("controllerChange"));
+			//_fading = true;
+			flash.utils.clearTimeout(_fadeInTimeout);
+			_fadeInTimeout = flash.utils.setTimeout(fadeInStart,1000);
+		}
+		
+		private function fadeInStart():void
+		{
+			Tweener.removeTweens(this);
+			Tweener.addTween(this,{alpha:1,time:.5,onComplete:onFadeInComplete});
+		}
+		
+		private function onFadeInComplete():void
+		{
+			
+			//this._fading = false;
+		}
+		
+		
+		/*
+		  FIXME: hackish way of restoring the horizontal group view
+		 */
+		 
+		private function viewChange():void
+		{
+			if(this.selectedChild == groupView)
+			{
+				//restore the horizontal group view. in single mode, the column
+				//view is removed
+				//groupHolder.dataProvider = groupHolder.dataProvider;
+			}
+		}
+		
+		private function newColumn(event:CollectionEvent):void
+		{
+			//clove column is BLANK
+			
+			var item:* = event.items[0];
+			
+			if(event.kind != CollectionEventKind.ADD)
+				return;
+			
+			//if(event.kind != CollectionEventKind.ADD || (item is ColumnViewController && Object(item.target).constructor != ClovePluginColumn))
+			//	return;
+				
+			
+			
+			//small baindaid to wait until rendered item
+		 	flash.utils.setTimeout(scrollToColumn,100,event.location);
+		}
+		
+		private function scrollToColumn(location:Number):void
+		{
+			//add a nice looking tween when scrolling over instead of a chunk
+			
+			//find the control view
+			if(location >= groupHolder.numChildren)
+				return;
+			
+			var position:Number = groupHolder.getChildAt(location).x;
+			
+			
+			if(position >= 0)
+			{
+				Tweener.addTween(groupView,{horizontalScrollPosition:position,time:1,delay:1,transition:'easeOutCubic'});
+			}
+			
+		}
+		
+		
+		
+		private var _resizeTimeout:int = -1;
+		
+		/*
+		 */
+		
+		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+		{
+			super.updateDisplayList(unscaledWidth,unscaledHeight);
+			
+			
+			
+			flash.utils.clearTimeout(_resizeTimeout);
+			
+			//on resize, only resize the columns when we stop dragging to save CPU
+			_resizeTimeout = flash.utils.setTimeout(resizeColumns,100);
+		}
+		
+		/*
+		 */
+		
+		private function resizeColumns():void
+		{
+			if(this.groupHolder)	
+			groupHolder.height = this.height;
+		}
+		
+		/*
+		 */
+		
+		private function init():void
+		{
+			
+			ChangeWatcher.watch(this,["controller","currentTargetController"],onStateChange);
+			ChangeWatcher.watch(this,["controller","columns"],onStateChange);
+			ChangeWatcher.watch(this,["controller"],onStateChange);
+			
+			
+			this.onStateChange();
+		}
+		
+		/*
+		 */
+		
+		private function onStateChange(event:* = null):void
+		{
+			
+			
+			if(!this.controller || !this.controller.target || this.controller.target.children.length == 0)
+			{
+				
+				//show button adder
+				this.selectedIndex = 0;
+			}
+			else
+			if(this.controller.expanded)
+			{
+				
+				if(this.controller.currentTargetController)
+				{
+					//on select, go to the target column
+					
+					var tgIndex:int = this.controller.target.children.getItemIndex(this.controller.currentTargetController.target);
+					
+					if(tgIndex > -1)
+						this.scrollToColumn(tgIndex);
+				}
+				//multi view
+				this.selectedIndex = 1;
+			}
+			else
+			{
+				
+				//single view
+				this.selectedIndex = 2;
+			}
+		}
+		
+		/*
+		 */
+		
+		private function addColumn():void
+		{
+			
+			Tweener.addTween(plusButton,{alpha:0,time:.5,transition:'easeOutCubic',onComplete:addColumnSleep});
+			
+		}
+		
+		/*
+		 */
+		
+		private function addColumnSleep():void
+		{
+			//if the controller does not exist, then create it.
+			if(!this.controller)
+			{
+				new CloveEvent(CloveEvent.ADD_GROUP).dispatch();
+			}
+			
+			new CloveEvent(CloveEvent.ADD_COLUMN).dispatch();
+		
+			this.onStateChange();
+		}
+			
+		
+		
+		private function showPlusButton():void
+		{
+			Tweener.addTween(plusButton,{alpha:1,time:.5,delay:.5,transition:'easeOutCubic'});
+		}
+	]]>
+</mx:Script>
+
+	
+	<binding:DataBoundController dataProvider="{this.controller.target.children}" collectionChange="{onStateChange();}" />
+	
+	<binding:DataBoundController target="{groupHolder}" 
+								 dataProvider="{controller.columns}"
+								 itemRenderer="{new RecyclingFactory(HorizontalColumnHolder)}" 
+								 collectionChange="{newColumn(event);}" />
+	
+	<mx:Canvas width="100%" height="100%"  backgroundAlpha="0" backgroundColor="0" show="showPlusButton();" hide="plusButton.alpha = 0">
+		
+		<mx:Button id="plusButton" buttonMode="true" horizontalCenter="0" verticalCenter="0" click="{this.addColumn()}" styleName="newColumnButton" />
+	</mx:Canvas>
+	
+	<mx:Canvas id="groupView" width="100%" height="100%" verticalScrollPolicy="off">
+		
+		
+		<mx:HBox  id="groupHolder" 
+				  paddingLeft="8" 
+				  horizontalGap="8"
+				  height="100%" 
+				  paddingBottom="28"
+				  verticalScrollPolicy="off" />
+		
+		<!--<controls:ReorganizableList id="groupHolder" 
+									verticalScrollPolicy="off"   
+									triggerEvent="startBoxDrag" 
+									direction="horizontal" paddingLeft="4"
+									gap="5"
+									dataProvider="{controller.columns}" paddingBottom="28"
+									itemRenderer="{new RecyclingFactory(HorizontalColumnHolder)}" 
+									collectionChange="newColumn(event);" />-->
+		
+	</mx:Canvas>
+	
+	
+
+	
+	<!--<binding:DataBoundController target="{groupHolder}" dataProvider="{controller.columns}" itemRenderer="{new RecyclingFactory(HorizontalColumnHolder)}" />
+	-->
+	<mx:VBox width="100%" height="100%" paddingLeft="8" paddingRight="8" paddingBottom="4">
+		<group:SingleGroupView controller="{controller.currentTargetController}" width="100%" height="100%" />
+	</mx:VBox>
+</mx:ViewStack>
+
+	

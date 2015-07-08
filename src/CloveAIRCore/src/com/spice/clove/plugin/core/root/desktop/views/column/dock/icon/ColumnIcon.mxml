@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		  xmlns:util="com.spice.clove.util.*" 
+		  buttonMode="true" 
+		  doubleClickEnabled="true" 
+		  doubleClick="{openPrefs();}"
+		  backgroundColor="#0" 
+		  backgroundAlpha="0" xmlns:controls="com.spice.clove.view.controls.*" xmlns:storage="com.spice.utils.storage.*" xmlns:mxml="com.spice.utils.mxml.*" xmlns:observer="com.spice.vanilla.flash.observer.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.ClovePluginColumn;
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.view.icon.ToolIcons;
+			import com.spice.utils.EmbedUtil;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			import com.spice.vanilla.impl.settings.basic.ByteArraySetting;
+			
+			import mx.events.CloseEvent;
+			import mx.graphics.codec.PNGEncoder;
+			
+			private var _column:ClovePluginColumn;
+			
+			
+			[Bindable(event="columnChange")]
+			public function get column():ClovePluginColumn
+			{
+				return this._column;
+			}
+			
+			
+			public function set column(value:ClovePluginColumn):void
+			{
+				this._column = value;
+				
+				this.dispatchEvent(new Event("columnChange"));
+			}
+		
+			private function openPrefs():void
+			{
+				
+				var pref:IconEditor = IconEditor.prepareEditor();
+				pref.addEventListener(Event.COMPLETE,onNewIcon,false,0,true);
+				pref.addEventListener(CloseEvent.CLOSE,onIconEditorClose,false,0,true);
+			}
+			
+			/*
+			 */
+			private function onIconEditorClose(event:*):void
+			{
+				event.target.removeEventListener(Event.COMPLETE,onNewIcon);
+				event.target.removeEventListener(CloseEvent.CLOSE,onIconEditorClose);
+			}
+			
+			/*
+			 */
+			
+			
+			private function onNewIcon(event:Event):void
+			{
+				this.onIconEditorClose(event);
+				
+				var icon:BitmapData = event.target.croppedImage;
+				
+				
+				
+				var encoder:PNGEncoder = new PNGEncoder();
+				
+				
+				ByteArraySetting(columnIconBind.target).setData(encoder.encode(icon));
+			}
+			
+		
+		]]>
+	</mx:Script>
+	
+	<observer:SettingObserver id="columnIconBind" target="{this.column.metadata.getNewSetting(BasicSettingType.BYTE_ARRAY,ColumnMetaData.COLUMN_ICON)}" />
+	
+	
+	<mx:Image source="{columnIconBind.data.getData() ? columnIconBind.data.getData() : EmbedUtil.toImageByteArray(ToolIcons.COLUMN_INIT_ICON)}" width="100%" height="100%" />
+</mx:Canvas>

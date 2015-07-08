@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sceneSync:SceneSyncRootInstallerView  xmlns:mx="http://www.adobe.com/2006/mxml"  width="100%"  xmlns:proxy="com.spice.vanilla.mx.proxy.*" xmlns:sceneSync="com.spice.clove.plugin.core.root.desktop.views.sceneSync.*" xmlns:observers="com.spice.vanilla.mx.proxy.observers.*" >
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.root.impl.models.CloveRootModelLocator;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncablePluginType;
+			
+			[Bindable] 
+			private var _model:CloveRootModelLocator = CloveRootModelLocator.getInstance();
+			
+		]]>
+	</mx:Script>
+	
+
+	<proxy:MXProxyCall id="filterBind" 
+					   proxy="{this._model.rootPlugin.getPluginMediator()}" 
+					   property="{CallSceneSyncablePluginType.SCENE_SYNC_SET_FILTER_STR}" 
+					   bind="true" 
+					   autoCall="true" 
+					   responseDataChange="{setFilter(filterBind.responseData);}" />
+	
+	
+	
+</sceneSync:SceneSyncRootInstallerView>

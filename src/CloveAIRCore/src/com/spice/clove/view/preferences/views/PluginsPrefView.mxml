@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- [ExcludeClass] -->
+<views:PreferenceView xmlns:mx="http://www.adobe.com/2006/mxml" 
+					  width="100%"
+					  height="320"
+					  xmlns:views="com.spice.clove.view.preferences.views.*" 
+					  xmlns:display="com.spice.display.*" 
+					  xmlns:binding="com.spice.binding.*"
+					  xmlns:plugins="com.spice.clove.view.preferences.views.plugins.*">
+	
+	<mx:Script>
+		<![CDATA[
+//			import com.spice.clove.commandEvents.CloveEvent;
+//			import com.spice.clove.model.CloveModelLocator;
+//			import com.spice.clove.plugin.control.ClovePluginController;
+//			import com.spice.clove.plugin.load.IInstalledPluginFactoryInfo;
+//			
+//			import mx.core.UIComponent;
+//			
+//			[Bindable] 
+//			public var currentPreferenceView:UIComponent;
+//			
+//			
+//			[Bindable] 
+//			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+//			
+//			
+//			private function removePlugin():void
+//			{
+//				var i:IInstalledPluginFactoryInfo = IInstalledPluginFactoryInfo(pluginList.selectedItem);
+//				
+//				var cont:ClovePluginController;
+//				cont.pluginName;
+//				
+//				new CloveEvent(CloveEvent.UNINSTALL_PLUGIN_COMPLETELY,i).dispatch();
+//			}
+			
+		]]>
+	</mx:Script>
+	
+	<!--<mx:HBox width="100%" height="100%" paddingTop="15" paddingLeft="15" paddingRight="15" paddingBottom="40">
+		
+		<mx:VBox width="100%" height="100%" > 
+			<mx:List id="pluginList" width="100%" height="100%"  dataProvider="{_model.applicationSettings.pluginManager.availablePlugins}">
+				<mx:itemRenderer>
+					<mx:Component>
+						
+						<mx:HBox verticalAlign="middle" horizontalGap="3">
+							<mx:Script>
+								<![CDATA[
+									import com.spice.clove.plugin.core.calls.CallClovePluginFactoryType;
+									import com.spice.clove.plugin.load.InternalInstalledPluginFactoryInfo;
+									import com.spice.vanilla.flash.utils.ProxyCallUtils;
+									
+									[Bindable] 
+									public var pluginIcon:Object;
+									
+									override public function set data(value:Object):void
+									{
+										super.data = value;
+										
+										if(value)
+											pluginIcon = ProxyCallUtils.getResponse(CallClovePluginFactoryType.GET_ICON_16,InternalInstalledPluginFactoryInfo(value).loadedPluginFactory.getProxy())[0];
+										
+									}
+								]]>
+							</mx:Script>
+							<mx:Image source="{pluginIcon}" />
+							<mx:Label text="{data.name}" />
+						</mx:HBox>
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:List>
+			<mx:HBox>
+				<mx:Button label="-" click="removePlugin();" />
+			</mx:HBox>		
+		</mx:VBox>
+		-->
+		
+	<!--<display:BindableView  id="prefView" 
+							   width="100%"
+							   height="100%" 
+							   view="{currentPreferenceView}" 
+							   creationComplete="{pluginController.pluginPrefView = prefView}" />-->
+	<!--</mx:HBox>-->
+	
+	<mx:Label horizontalCenter="0" verticalCenter="0" fontWeight="bold" text="These settings are not available in this beta." />				
+</views:PreferenceView>

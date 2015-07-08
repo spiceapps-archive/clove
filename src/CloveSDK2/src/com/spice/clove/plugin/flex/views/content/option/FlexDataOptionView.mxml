@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Image xmlns:mx="http://www.adobe.com/2006/mxml"
+		  buttonMode="true"
+		  mouseDown="{notifyViewController();}" 
+		  implements="com.spice.clove.plugin.flash.views.IControllableView">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.calls.CallCloveDataOptionViewControllerType;
+			import com.spice.clove.plugin.core.calls.CallMenuOptionViewController;
+			import com.spice.clove.plugin.core.calls.data.ShowMenuOptionViewData;
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.clove.plugin.core.views.menu.IMenuOptionButtonViewController;
+			import com.spice.clove.plugin.core.views.render.ICloveDataViewController;
+			import com.spice.clove.plugin.flash.views.IControllableView;
+			import com.spice.clove.plugin.impl.icons.attachment.AttachmentIcons;
+			import com.spice.vanilla.core.proxy.IProxyOwner;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			import com.spice.vanilla.impl.observer.Notifier;
+			import com.spice.vanilla.impl.proxy.ProxyCall;
+			  
+			private var _controller:IProxyOwner;
+			
+			
+			
+			public function getController():IProxyOwner
+			{
+				return _controller;
+			}
+			
+			
+			public function setController(value:IProxyOwner):void
+			{
+				_controller = value;
+			}
+			
+			
+			
+			private function notifyViewController():void
+			{  
+				ProxyCallUtils.quickCall(CallMenuOptionViewController.MENU_OPTION_VIEW_CONTROLLER_SHOW_FLOAT,this._controller.getProxy(),new ShowMenuOptionViewData(this.stage,this.stage.mouseX,this.stage.mouseY,this.data));  
+			}
+			
+		]]>
+	</mx:Script>
+</mx:Image>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin
+	xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="com.degrafa.skins.*" 
+	xmlns:paint="com.degrafa.paint.*" 
+	xmlns:degrafa="com.degrafa.*" 
+	xmlns:geometry="com.degrafa.geometry.*">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			import com.spice.clove.skins.mac.MacSkinAssets;
+			
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				
+				bg1.width = unscaledWidth > 5 ? unscaledWidth : 50;
+				
+				
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<fills>
+		<paint:BitmapFill source="{MacSkinAssets.COL_ROW_SEPERATOR}"
+						  id="topFill" 
+						  repeatX="stretch"
+						  repeatY="none" />
+	</fills>
+	
+	<geometry>
+		<degrafa:GeometryComposition>
+			<geometry:RegularRectangle id="bg1" 
+									   width="50"
+									   height="2" 
+									   fill="{topFill}" />
+		</degrafa:GeometryComposition>
+	</geometry>
+	
+</GraphicBorderSkin>

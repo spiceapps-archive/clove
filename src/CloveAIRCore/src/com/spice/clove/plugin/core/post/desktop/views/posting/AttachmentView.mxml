@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 verticalAlign="middle" 
+		 horizontalGap="0"
+		 mouseOver="showDeleteButton(event);" 
+		 mouseOut="hideDeleteButton(event);" 
+		 addedToStage="onAdded();" 
+		 xmlns:util="com.spice.clove.plugin.flex.views.util.*" 
+		 xmlns:proxy="com.spice.vanilla.mx.proxy.*">
+
+	
+	
+	<mx:Script>
+	<![CDATA[
+		import com.spice.clove.plugin.core.post.impl.outgoing.CloveAttachment;
+		import com.spice.clove.post.core.calls.CallCloveAttachmentType;
+		import com.spice.clove.post.core.outgoing.ICloveAttachment;
+		
+		
+		[Bindable] public var attachment:ICloveAttachment;
+		[Bindable] public var isIndex0:Boolean;
+		
+		
+		private function deleteItem():void
+		{
+//			dispatchEvent(new Event("removeItem"));
+			this.parent.removeChild(this);
+		}
+		
+		
+		override public function set data(value:Object):void
+		{
+			
+			super.data = value;
+			
+			this.attachment = ICloveAttachment(value);
+			
+		}
+		
+		
+		
+		private function showDeleteButton(event:MouseEvent):void
+		{
+			if(event.currentTarget != this)
+				return;
+				
+				deleteButton.visible = true;
+				deleteButton.includeInLayout = true;
+		}
+		
+		/*
+		 */
+		
+		private function hideDeleteButton(event:MouseEvent):void
+		{
+			if(event.currentTarget != this)
+				return;
+				
+				deleteButton.visible = false;
+				deleteButton.includeInLayout = false;
+				
+			
+		}
+		
+		private function onAdded():void
+		{
+			this.isIndex0 = this.parent.getChildIndex(this) == 0;
+		}
+		
+	]]>
+</mx:Script>
+	<mx:Label text="," visible="{!isIndex0}" includeInLayout="{!isIndex0}" />
+	<mx:Label text="{attachment.getFileReference().name}"  />
+	<mx:Button id="deleteButton" 
+			   styleName="minusButton" 
+			   click="deleteItem();" 
+			   visible="false" 
+			   includeInLayout="false" 
+			   buttonMode="true"/>
+			  
+	
+	<util:CueProgressView loadState="{progressStateBind.responseData}" />
+	
+	
+	
+	<proxy:MXProxyCall id="progressStateBind" 
+					   proxy="{this.data.getProxy()}" 
+					   property="{CallCloveAttachmentType.GET_ATTACHMENT_LOADING_STATE}" 
+					   bind="true" />
+</mx:HBox>

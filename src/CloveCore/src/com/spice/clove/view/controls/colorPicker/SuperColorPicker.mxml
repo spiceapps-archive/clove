@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"  clipContent="false" creationComplete="init();" xmlns:colorPicker="com.spice.clove.view.controls.colorPicker.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			import com.bridge.ui.utils.tween.easing.Strong;
+			import mx.effects.Tween;
+			import mx.controls.Alert;
+			import com.ei.utils.SpriteUtils;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			import mx.controls.Menu;
+			
+			//--------------------------------------------------------------------------
+	   	    //
+	        //  private Methods
+	        //
+	        //--------------------------------------------------------------------------
+	        
+	        /*
+			 */
+			
+			private const START_VAL:Object = {scaleX:1,scaleY:1,rotation:0,time:.5,transition:'easeOutCubic'};
+			private const END_VAL:Object   = {scaleX:0,scaleY:0,rotation:180,time:.5,transition:'easeOutCubic',onComplete:close};
+			
+			//--------------------------------------------------------------------------
+	   	    //
+	        //  Public Variables
+	        //
+	        //--------------------------------------------------------------------------
+	        
+	        [Bindable] public var currentColor:uint;
+	        [Bindable] public var colorPicked:Boolean;
+	        
+	        
+	        [Embed(source="colorMag2.png")]
+	        public static const COLOR_MAG:Class;
+			
+			//--------------------------------------------------------------------------
+	   	    //
+	        //  Public Methods
+	        //
+	        //--------------------------------------------------------------------------
+	        
+	        /*
+			 */
+			
+			
+			
+			public static function showColorPicker(target:DisplayObject):SuperColorPicker
+			{
+				
+				
+				var absPos:Point = SpriteUtils.getAbsolutePosition(target);
+				
+				var picker:SuperColorPicker = PopUpManager.createPopUp(Application.application as DisplayObject,SuperColorPicker) as SuperColorPicker
+				picker.startTween();
+				picker.x = target.root.mouseX;//absPos.x + target.width/2;//the small notch
+				picker.y = target.root.mouseY;//absPos.y + target.height/2;
+				picker.wheelHolder.x = -13 - target.width/2;
+				picker.wheelHolder.y = -picker.wheelHolder.height + 24 - target.height/2;
+				
+				
+				return picker;
+			}	
+			
+			
+			/*
+			 */
+			
+			public function close():void
+			{
+				
+				this.dispatchEvent(new Event(Event.CLOSE));
+				
+				PopUpManager.removePopUp(this);
+				
+				
+			}
+			
+			//--------------------------------------------------------------------------
+	   	    //
+	        //  Protected Methods
+	        //
+	        //--------------------------------------------------------------------------
+	        
+	        /*
+			 */
+			 
+			protected function startTween():void
+			{
+				this.scaleX = this.scaleY = 0;
+				this.rotation = 180;
+				
+			}
+			
+			
+			
+			
+			
+			//--------------------------------------------------------------------------
+	   	    //
+	        //  Private Methods
+	        //
+	        //--------------------------------------------------------------------------
+	        
+	        /*
+			 */
+			
+			private function init():void
+			{
+				
+				stage.addEventListener(MouseEvent.MOUSE_DOWN,onClearEvent,false,0,true);
+				stage.addEventListener(Event.RESIZE,onClearEvent,false,0,true);
+				
+				Tweener.addTween(this,START_VAL);
+			}
+			
+			/*
+			 */
+			
+			private function onClearEvent(event:*):void
+			{
+				if(event.target == wheel)
+					return;
+					
+					
+				stage.removeEventListener(MouseEvent.MOUSE_DOWN,onClearEvent);
+				stage.removeEventListener(Event.RESIZE,onClearEvent);
+				
+				
+				Tweener.addTween(this,END_VAL);
+			}
+			
+			/*
+			 */
+			
+			private function onColorDown(event:MouseEvent):void
+			{
+				
+				stage.addEventListener(MouseEvent.MOUSE_UP,onStageMouseUp,false,0,true);
+				
+				
+				this.removeEventListener(Event.ENTER_FRAME,onEnterFrame);
+				this.addEventListener(Event.ENTER_FRAME,onEnterFrame);
+			}
+			
+			/*
+			 */
+			
+			private function onEnterFrame(event:Event):void
+			{
+				this.currentColor = wheel.currentColor;
+				
+				this.colorPicked = true;
+				
+				this.dispatchEvent(new Event(Event.CHANGE));
+			}
+			 
+			
+			/*
+			 */
+			
+			private function onStageMouseUp(event:MouseEvent):void
+			{
+				this.removeEventListener(Event.ENTER_FRAME,onEnterFrame);
+			}
+		]]>
+	</mx:Script>
+	<mx:Canvas id="wheelHolder" clipContent="false">
+		
+		<mx:Image id="wheelBG" source="{COLOR_MAG}" rotation="90" x="255" y="-40" includeInLayout="false" />
+		
+		<colorPicker:ColorWheel2 mouseDown="onColorDown(event);"  id="wheel" y="-26" x="41"/>
+	
+	</mx:Canvas>
+</mx:Canvas>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin
+    xmlns:mx="http://www.adobe.com/2006/mxml"  
+    xmlns="com.degrafa.skins.*" xmlns:paint="com.degrafa.paint.*" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*">
+    
+    <mx:Script>
+    	<![CDATA[
+    		import com.spice.clove.skins.mac.MacSkinAssets;
+    		
+    		
+    		
+    		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+    		{
+    			super.updateDisplayList(unscaledWidth,unscaledHeight);
+    			
+    			
+				roundRectangle.width = unscaledWidth > 0 ? unscaledWidth  : 10;
+				roundRectangle.height = unscaledHeight > 0 ? unscaledHeight : 10;
+    			
+    		}
+    	]]>
+    </mx:Script>
+    
+    
+    <fills>
+		<paint:SolidFill id="bgFill" color="#F2F2F2" />
+    	<!--<BitmapFill source="{MacSkinAssets.POST_BG}" id="bgFill" />-->
+    </fills>
+    
+    
+    <strokes>
+    	<paint:SolidStroke id="outerStroke" pixelHinting="true" caps="round" color="#A8A8A8" />
+    </strokes>
+    
+    <geometry>
+		<degrafa:GeometryComposition>
+			<geometry:RoundedRectangle id="roundRectangle" cornerRadius="3" fill="{bgFill}" stroke="{outerStroke}" />
+		</degrafa:GeometryComposition>
+    	
+    </geometry>
+    
+    
+    
+</GraphicBorderSkin>

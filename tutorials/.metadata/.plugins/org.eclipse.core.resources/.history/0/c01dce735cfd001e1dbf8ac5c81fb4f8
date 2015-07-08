@@ -1,0 +1,10 @@
+package com.cloveHello.plugin.service
+{
+	public class TestService
+	{
+		public function TestService()
+		{
+		}
+
+	}
+}

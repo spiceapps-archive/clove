@@ -1,0 +1,24 @@
+$(document).bind("loginFBButtonLoaded",null,function(){var A=$(".loginFBButton").attr("href","/login/dialog").unbind().click(function(B){B.preventDefault();
+$.cookie("last_auth_method","fb",{path:"/"});var C=$(this);$.IEevent(function(){buildDialogs(C,null,true,{onPost:function(E){return false
+},onPreShow:function(){$(document).trigger("loginFormLoaded",null);$(document).trigger("registerFormLoaded",null)
+}})})})});$(document).bind("loginFormLoaded",null,function(){$(".button-login-fb").click(function(C){$(".facebookConnectSpinner").show();
+var B=$(".facebookConnectLogin");B.attr("disabled","disabled").css("display","none").unbind().click(function(){FB_RequireFeatures(["Connect"],function(){FB.Connect.requireSession();
+FB.Facebook.get_sessionState().waitUntilReady(function(E){var F='{"uid": "'+E.uid+'", "expires": "'+E.expires+'", "session_key": "'+E.session_key+'" }';
+window.location="/login/verify/facebookconnect?session="+escape(F)})})});try{FB_RequireFeatures(["Connect"],function(){$(".facebookConnectSpinner").hide();
+B.removeAttr("disabled").css("display","")})}catch(A){$(document).bind("FacebookJSLoaded",function(){$(".facebookConnectSpinner").hide();
+B.removeAttr("disabled").css("display","")}).trigger("loadFacebookJS")}C.preventDefault()})});$(document).bind("loadFacebookJS",null,function(){$(document).unbind("loadFacebookJS");
+var B=false;var A=setInterval(function(){try{FB_RequireFeatures(["XFBML","Connect"],function(){clearInterval(A);
+function E(G){var F=$("#fbinvite");if(F.length&&(!G||!D.meta.user.fbuid||D.meta.user.fbuid!=G)){F.after('<p><strong>Log in to <a href="http://facebook.com" target="_blank">Facebook</a> to invite your friends</strong></p><p><a class="loginFBButton"><img width="195" height="26" style="border-bottom: 3px solid rgb(255, 255, 255);" src="/img/login-fb-connect.gif"/></a></p>').remove();
+$(".loginFBButton").unbind().click(function(H){H.preventDefault();FB.Connect.requireSession();FB.Facebook.get_sessionState().waitUntilReady(function(I){var J='{"uid": "'+I.uid+'", "expires": "'+I.expires+'", "session_key": "'+I.session_key+'" }';
+window.location="/login/verify/facebookconnect?session="+escape(J)})})}}FB.Facebook.init(D.FBConnect.apiKey,"/login/verify/facebookconnect/xd_receiver.php",{ifUserConnected:function(F){E(F)
+},ifUserNotConnected:function(){E()},doNotUseCachedConnectState:true});$(".loginFBButton").unbind().click(function(F){F.preventDefault();
+FB.Connect.requireSession();FB.Facebook.get_sessionState().waitUntilReady(function(G){var H='{"uid": "'+G.uid+'", "expires": "'+G.expires+'", "session_key": "'+G.session_key+'" }';
+window.location="/login/verify/facebookconnect?session="+escape(H)})});FB.Facebook.get_sessionState().waitUntilReady(function(F){if(F&&D.meta.user.loggedIn&&F.uid==D.meta.user.fbuid){$("#h .h-fb").show();
+D.auth.doLogout=function(G,H){switch(D.meta.user.type){case"fb":FB.Connect.logout(function(){jspost("/logout",{logout_check:G,returnpage:H});
+return false});return false;break;case"digg":default:jspost("/logout",{logout_check:G,returnpage:H});
+break}return false};D.namespace({facebook:{showFeedDialog:function(G){FB_RequireFeatures(["XFBML","Connect"],function(){FB.Connect.requireSession();
+if(!G||G.fbuid!=D.meta.user.fbuid){return }var L=D.FBConnect.templateBundleId;var H=null;var J=FB.FeedStorySize.shortStory;
+var K=FB.RequireConnect.require;var I="";var M=null;FB.Connect.showFeedDialog(L,G,H,I,J,K,M)})}}})}})
+});clearInterval(A);$(document).trigger("FacebookJSLoaded")}catch(C){if(!B){jQuery.ajax({type:"GET",url:"http://static.ak.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php",cache:true,dataType:"script"});
+B=true}}},500)});$(document).ready(function(){if($.cookie("last_auth_method")=="fb"){$(document).trigger("loadFacebookJS")
+}});

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cairngorm:ServiceLocator 
+    xmlns:mx="http://www.adobe.com/2006/mxml" 
+    xmlns:cairngorm="com.adobe.cairngorm.business.*" xmlns:renaun="com.renaun.rpc.*">
+    
+   
+<mx:Script>
+	<![CDATA[
+		import com.spice.clove.model.PackerModelLocator;
+		
+		[Bindable] 
+		private var _model:PackerModelLocator = PackerModelLocator.getInstance();
+		
+	]]>
+</mx:Script>
+
+   					 
+   <mx:RemoteObject id="userService" 
+   					 destination="amfphp" 
+   					 endpoint="{_model.configModel.gateway}" 
+   					 source="UserService"  
+   					 makeObjectsBindable="true" 
+   					 showBusyCursor="true"/>
+   	
+   	<mx:RemoteObject id="pluginService" 
+   					 destination="amfphp" 
+   					 endpoint="{_model.configModel.gateway}" 
+   					 source="PluginService" 
+   					 makeObjectsBindable="true" 
+   					 showBusyCursor="true"/>
+   	
+   	<mx:RemoteObject id="bundleService" 
+   					 destination="amfphp" 
+   					 endpoint="{_model.configModel.gateway}" 
+   					 source="AIRBundleService" 
+   					 makeObjectsBindable="true" 
+   					 showBusyCursor="true"/>
+   	
+</cairngorm:ServiceLocator>

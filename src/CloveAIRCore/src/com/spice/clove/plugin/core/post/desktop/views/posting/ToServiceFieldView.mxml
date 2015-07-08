@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" xmlns:binding="com.spice.binding.*" horizontalScrollPolicy="off">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.recycle.factory.RecyclingFactory;
+			import mx.collections.IList;
+			import mx.collections.ArrayCollection;
+			
+			[Bindable] 
+			public var dataProvider:Object;
+			
+			
+			[Bindable] 
+			public var itemRenderer:IFactory = new RecyclingFactory(MessageTarget);
+			
+			[Bindable] 
+			private var _showEllipses:Boolean;
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				if(services)
+					box.x = box.width - box.width;
+				
+				
+				_showEllipses = services.width > this.width;	
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HBox id="box">
+		<mx:HBox id="services" width="100%" horizontalGap="0" />
+	</mx:HBox>
+	
+	<binding:DataBoundController target="{services}" reflective="{true}" dataProvider="{dataProvider}" itemRenderer="{itemRenderer}" />
+</mx:Canvas>

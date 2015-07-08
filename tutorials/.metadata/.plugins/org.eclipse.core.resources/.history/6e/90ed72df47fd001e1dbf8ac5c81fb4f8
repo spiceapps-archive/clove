@@ -1,0 +1,58 @@
+package com.cloveHello.plugin
+{
+	import com.spice.clove.plugin.IClovePlugin;
+	import com.spice.clove.plugin.IPluginFactory;
+	import com.spice.clove.plugin.PluginFactory;
+	import com.spice.clove.plugin.install.IServiceInstaller;
+	import com.spice.utils.storage.INotifiableSettings;
+	
+	public class CloveHelloPluginFactory extends PluginFactory implements IPluginFactory
+	{
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+        
+        /**
+		 */
+		 
+		public function CloveHelloPluginFactory()
+		{
+			super({"Clove Hello"});
+		}
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Getters / Setters
+        //
+        //--------------------------------------------------------------------------
+
+		
+		/**
+		 */
+		
+		public function get installer():IServiceInstaller
+		{
+			return null;
+		}
+		
+		
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Public Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		public function newPlugin():IClovePlugin
+		{
+			return new CloveHelloPlugin();
+		}
+
+	}
+}

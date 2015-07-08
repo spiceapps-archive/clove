@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:display="com.spice.display.*" width="100%">
+<mx:Script>
+	<![CDATA[
+		import mx.controls.HTML;
+		[Bindable] private var _html:String = "";
+		
+		
+		override public function set data(value:Object):void
+		{
+			super.data = value;
+			
+			if(value == null)
+			{
+				//garbage collect
+				this.hide();
+			}
+		}
+		
+		public function more():void
+		{
+			if(!_html)
+			{
+				this._html = String(this.data);
+				
+			}
+			else
+			{
+				hide();
+			}
+		}
+		
+		public function hide():void
+		{
+			_html = '';
+		}
+	]]>
+</mx:Script>
+	<mx:Button label="{_html == '' ? 'more':'hide'}" click="more();" />
+	<mx:HTML height="{_html != '' ? NaN : 0}" width="100%" htmlText="{this._html}" />
+</mx:VBox>

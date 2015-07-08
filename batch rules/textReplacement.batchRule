@@ -1,0 +1,49 @@
+<object complexity="e" type="com.spice.utils.externalizable2::XMLExternalizer">
+  <object complexity="c" type="mx.collections::ArrayList" complexType="com.spice.utils.externalizable2.complex::ComplexExternalizable">
+    <object complexity="e" type="com.spice.utils.externalizable2::XMLExternalizer">
+      <object complexity="c" type="Array" complexType="com.spice.utils.externalizable2.complex::ComplexArray">
+        <object complexity="e" type="com.spice.utils.externalizable2::XMLExternalizer">
+          <object complexity="c" type="com.architectd.batchTextReplacer.core::ReplacementRule" complexType="com.spice.utils.externalizable2.complex::ComplexObject">
+            <object complexity="e" type="com.spice.utils.externalizable2::XMLExternalizer">
+              <object complexity="s" name="search" type="String">groupExpanded</object>
+              <object complexity="b" name="replaceFileName" type="Boolean">false</object>
+              <object complexity="s" name="fileRules" type="String">(\.mxml|\.as)$</object>
+              <object complexity="s" name="replacement" type="String">com.spice.clove.ext.installer.install.services</object>
+              <object complexity="b" name="enabled" type="Boolean">true</object>
+              <object complexity="s" name="progressText" type="String"/>
+              <object complexity="c" name="directories" type="mx.collections::ArrayList" complexType="com.spice.utils.externalizable2.complex::ComplexExternalizable">
+                <object complexity="e" type="com.spice.utils.externalizable2::XMLExternalizer">
+                  <object complexity="c" type="Array" complexType="com.spice.utils.externalizable2.complex::ComplexArray">
+                    <object complexity="e" type="com.spice.utils.externalizable2::XMLExternalizer"/>
+                  </object>
+                </object>
+              </object>
+            </object>
+          </object>
+        </object>
+      </object>
+    </object>
+  </object>
+  <object complexity="c" type="mx.collections::ArrayList" complexType="com.spice.utils.externalizable2.complex::ComplexExternalizable">
+    <object complexity="e" type="com.spice.utils.externalizable2::XMLExternalizer">
+      <object complexity="c" type="Array" complexType="com.spice.utils.externalizable2.complex::ComplexArray">
+        <object complexity="e" type="com.spice.utils.externalizable2::XMLExternalizer">
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/Clove</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveCore</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveDebugger</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveEnterprisePlugin</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveFacebookPlugin</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveFlickrPlugin</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveGooglePlugin</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/ClovePacker</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/ClovePluginPacker</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveRSSPlugin</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveServicePlugin</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveStatPlugin</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveTumblrPlugin</object>
+          <object complexity="s" type="String">/Users/craigcondon/Developer/Projects/flash/CloveTwitterPlugin</object>
+        </object>
+      </object>
+    </object>
+  </object>
+</object>

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 xmlns:mx2="mx.controls.*" 
+		 width="100%" 
+		 creationComplete="init();"  
+		 verticalAlign="middle"
+		 xmlns:display="com.spice.display.*" 
+		 xmlns:controls="com.spice.clove.view.controls.*"
+		 implements="com.spice.recycle.IDisposable" xmlns:storage="com.spice.utils.storage.*" xmlns:observer="com.spice.vanilla.flash.observer.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.ClovePluginColumn;
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.view.column.ColumnViewController;
+			import com.spice.utils.SpriteUtil;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			import flash.utils.clearTimeout;
+			
+			import mx.binding.utils.ChangeWatcher;
+			
+			
+			private var _feedCW:ChangeWatcher;
+			
+			private var _editFeedView:EditFeedView;
+			
+			public var controller:ColumnViewController;
+			
+			
+			private function init():void
+			{
+				this._feedCW = ChangeWatcher.watch(this,["data","controller"],onControllerChange);
+			}
+			
+			private function edit():void
+			{
+				
+				if(!data || (_editFeedView && _editFeedView.data == this.data))
+					return;
+				
+				var abs:Point = SpriteUtil.absolutePosition(this);
+				//abs.x += 5;
+				abs.y += this.height-5;
+				  
+			 	_editFeedView = EditFeedView.open(abs,this.root as DisplayObjectContainer,this,ClovePluginColumn(this.data),controller);
+			 	_editFeedView.addEventListener("close",onEditFeedClose,false,0,true);
+			 	
+			 	editFeedButton.filters = [new GlowFilter(0x2755A3,1,6,6)];
+			}
+			
+			private function onEditFeedClose(event:Event):void
+			{
+				event.currentTarget.removeEventListener(event.type,onEditFeedClose);
+				editFeedButton.filters = [];
+			}
+			
+			private function remove():void
+			{
+				if(this.data)
+				{
+					this.data.dispose();
+				}
+			}
+			
+			
+			public function dispose():void
+			{
+				
+			}
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = ClovePluginColumn(value);
+				
+				
+				
+				//if no column was set
+				if(!value)
+					return;
+				
+				
+				//if the column controller doesn't exist, then go to the edit pane.
+				//calling this method is OKAY since the edit pane is a singleton and will
+				//show only ONE instance at a time.
+				
+				
+				//set the current feed
+				onControllerChange();
+			}
+			
+			private var _editTimeout:int;
+			
+			private function onControllerChange(event:* = null):void
+			{
+				
+				if(data && !data.controller)
+				{
+					
+					//give this display object some time so the correct position can be retrieved.
+					//Otherwise x and y is 0
+					
+					flash.utils.clearTimeout(_editTimeout);
+					_editTimeout = flash.utils.setTimeout(edit,100);
+					return;
+				}
+				
+				
+				//get the plugin controller so we can check if there are multiple of the same type.
+				//IF there are multiples of the same plugin, we use the display name to show the plugin, and
+				//the feed to show the feed type. Otherwise we just show feed information
+				/* var controller:PluginController =  ClovePluginController(PluginColumnController(data.controller).pluginController);
+				
+				
+				
+				//retrieve the plugin list
+				if(_model.applicationSettings.pluginManager.loadedPlugins.getPluginsByClass(Object(controller.plugin).constructor).length > 1)
+				{
+					_pluginName = controller.displayName;	
+				}
+				else
+				{
+					_pluginName = null;
+				}
+				 */  
+				
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<observer:SettingObserver id="columnIconBind" 
+							  target="{this.data.metadata.getNewSetting(BasicSettingType.BYTE_ARRAY,ColumnMetaData.COLUMN_ICON)}" />
+	
+	<observer:SettingObserver id="columnTitleBind"
+							  target="{this.data.metadata.getNewSetting(BasicSettingType.STRING,ColumnMetaData.TITLE)}" />
+	
+	
+	<mx:Image source="{columnIconBind.data.getData()}"
+			  width="16"
+			  height="16" 
+			  visible="{columnIconBind.data.getData() != null}" />
+	
+	<mx:Canvas width="100%" 
+			   horizontalScrollPolicy="off"
+			   verticalScrollPolicy="off">
+		
+		<mx:HBox verticalAlign="middle">
+			<!--<controls:ShadowedLabel text="{_pluginName}" 
+									visible="{_pluginName != null}"
+									includeInLayout="{_pluginName != null}" />
+			<mx:Canvas styleName="whiteBreadcrumbArrow" 
+					   width="19"
+					   visible="{_pluginName != null}" 
+					   includeInLayout="{_pluginName != null}"  height="20" />-->
+			
+			<controls:ShadowedLabel text="{columnTitleBind.data.getData()}" />
+		</mx:HBox>
+		
+	
+	</mx:Canvas>
+	
+	
+	
+	<mx:Button styleName="minusButton" buttonMode="true" click="remove();" />
+	<mx:Button styleName="editFeedButton" id="editFeedButton" height="17" width="46" click="edit();" />
+</mx:HBox>

@@ -1,0 +1,10 @@
+package com.cloveHello.plugin.column.render
+{
+	public class HelloCloveColumnItemRenderer
+	{
+		public function HelloCloveColumnItemRenderer()
+		{
+		}
+
+	}
+}

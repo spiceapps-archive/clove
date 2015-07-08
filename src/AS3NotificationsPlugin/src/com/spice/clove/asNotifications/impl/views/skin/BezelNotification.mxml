@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas width="300"
+		   styleName="notificationBezelSkin" 
+		   horizontalScrollPolicy="off" 
+		   verticalScrollPolicy="off"
+		   borderThickness="0"
+		   borderStyle="solid" 
+		   cornerRadius="5"  
+		   xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:skin1="com.spice.clove.asNotifications.impl.views.skin.*" xmlns:containers="com.spice.display.containers.*">
+	
+	<mx:Style source="../styles/notificationPluginStyle.css" />
+	<mx:Script>
+		<![CDATA[
+			import com.spice.utils.externalizable.complex.ComplexObject;
+			
+			
+			private var _repRegex:RegExp = new RegExp('<[^>]+>','igs');
+			
+			private function initC():void
+			{
+				if(data.icon != null)
+				{
+					iconImage.width = 50;
+					iconImage.height = 50;
+				}
+				
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%" id="hbox1" paddingBottom="5" verticalAlign="top" horizontalGap="3" paddingRight="5" paddingTop="5" paddingLeft="5">
+		<containers:RoundedCanvas width="50" height="50" cornerRadius="5">
+			
+	    <skin1:NotificationIcon id="iconImage" source="{data.icon}" width="50" height="50" creationComplete="initC();" />
+		</containers:RoundedCanvas>
+		<mx:Canvas width="100%" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+			<mx:Label text="{this.data.title}" y="-5"  width="100%" fontWeight="bold">
+				<!--<mx:filters>
+				<mx:DropShadowFilter angle="90" distance="1" alpha=".3"  />
+				</mx:filters>-->
+			</mx:Label>
+			<mx:Text id="message" y="15" text="{this.data.message.replace(_repRegex,'')}" width="100%">
+				<!--<mx:filters>
+				<mx:DropShadowFilter angle="90" distance="1" alpha=".3"  />
+				</mx:filters>-->
+			</mx:Text>
+		</mx:Canvas>
+	</mx:HBox>
+	<mx:filters>
+		<mx:DropShadowFilter angle="90" distance="1" alpha=".3" />
+	</mx:filters>
+	
+</mx:Canvas>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" horizontalScrollPolicy="off" verticalScrollPolicy="off" width="100%" creationComplete="init();">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.meta.ICloveMetadata;
+			
+			
+			[Bindable] 
+			private var _embedHTML:String;
+			
+			
+			private var _data:ICloveMetadata;
+			
+			
+			
+			override public function get data():Object
+			{
+				return this._data;
+			}
+			
+			private function init():void
+			{
+//				trace("G");
+			}
+			
+			override public function set data(value:Object):void
+			{
+				this._data = ICloveMetadata(value);
+				
+				
+				this._embedHTML = '';
+				
+				
+				  
+				if(_data)
+				this._embedHTML = '<object width="100%" height="100%"><param name="movie" value="'+_data.getData()+'"></param><param name="allowFullScreen" value="true"></param><param name="wmode" value="opaque"></param><param name="allowscriptaccess" value="always"></param><embed src="'+this._data.getData()+'" type="application/x-shockwave-flash" wmode="opaque" allowscriptaccess="always" allowfullscreen="true" width="100%" height="100%"></embed></object>';
+			}
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				
+				
+				this.updateVideoSize();
+				
+				//video.scaleX = scale;
+				//video.scaleY = scale;
+			}
+			
+			private function updateVideoSize():void
+			{    
+				if(!video)
+					return;
+				
+				if(Math.abs(video.width - unscaledWidth) < 10)
+				{
+					return;
+				}
+				
+				var width:Number = unscaledWidth;
+				var height:Number = unscaledWidth * (3/4);
+				
+				//				var height:Number = (video.contentHeight * unscaledWidth) / video.contentWidth;
+				
+				//var scale:Number = video.contentWidth / unscaledWidth;
+				
+				if(isNaN(height))
+					return;
+				  
+				  video.height = height - 40;
+				video.width = width - 40;
+				
+				/*
+				
+				 if(!video.content)
+					return;
+				
+				
+				video.content.scaleX = 1.2;
+				video.content.scaleY = 1.2;   */
+				
+			}
+			
+			
+			/**
+			 */
+			
+			private function onPlayerLoaded():void
+			{
+				
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:HTML id="video" htmlText="{_embedHTML}" complete="{updateVideoSize()}" />
+	
+</mx:Canvas>

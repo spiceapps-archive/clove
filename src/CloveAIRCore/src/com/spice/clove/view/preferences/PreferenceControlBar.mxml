@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 xmlns:binding="com.spice.binding.*" 
+		 verticalAlign="bottom" 
+		 paddingLeft="20" 
+		 paddingRight="20" 
+		 paddingTop="20" 
+		 paddingBottom="10" 
+		 width="100%" 
+		 creationComplete="init();">
+		 
+	<mx:Metadata>
+		[Event(name='selectedIndex',type="flash.events.Event")]
+	</mx:Metadata>
+
+	<mx:Script>
+		<![CDATA[
+			import com.spice.binding.DisplayObjectDataBindingProxy;
+			import com.spice.recycle.factory.RecyclingFactory;
+			
+			import mx.containers.ViewStack;
+			
+			
+			private var _viewStack:ViewStack;
+			
+			public function get viewStack():ViewStack
+			{
+				return _viewStack
+			}
+			
+			public function set viewStack(view:ViewStack):void
+			{
+				dpcontroller.dataProvider = new DisplayObjectDataBindingProxy(view);
+				_viewStack = view;
+			}
+			
+			private function init():void
+			{
+				this.addEventListener('newIndex',onNewIndex);
+			}
+			
+			private function onNewIndex(event:Event):void
+			{
+				event.stopImmediatePropagation();
+				
+				
+				
+				viewStack.selectedIndex = this.getChildIndex(event.target as DisplayObject);
+				
+				
+				dispatchEvent(new Event('selectedIndex'));
+				
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<binding:DataBoundController id="dpcontroller" target="{this}" itemRenderer="{new RecyclingFactory(PreferenceControlButtonView)}" />
+	
+	
+</mx:HBox>

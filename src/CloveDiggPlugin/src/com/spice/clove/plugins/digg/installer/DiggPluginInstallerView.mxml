@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"  xmlns:display="com.spice.display.*">
+	<mx:Script>
+		<![CDATA[
+			
+			
+			[Bindable] 
+			private var _service:DiggPluginInstaller;
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				_service = DiggPluginInstaller(value);
+			}
+		]]>
+	</mx:Script>
+	
+	<display:BindableView view="{_service.loginHelper.view}" />
+	
+	
+</mx:Canvas>

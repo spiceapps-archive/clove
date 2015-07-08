@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button xmlns:mx="http://www.adobe.com/2006/mxml" label="Share this App" click="shareApp();">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.calls.CallAppCommandType;
+			import com.spice.clove.twitter.impl.TwitterPlugin;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			
+			[Bindable] 
+			public var plugin:TwitterPlugin;
+			
+			private function shareApp():void
+			{
+				
+				var text:String = ProxyCallUtils.getFirstResponse(CallAppCommandType.GET_SHARE_APP_TEXT,plugin.getPluginMediator());
+				
+				
+				ProxyCallUtils.quickCall(CallAppCommandType.NAVIGATE_TO_URL,plugin.getPluginMediator(),"http://twitter.com/home/?status="+text);
+				
+//				ProxyCallUtils.quickCall(CallPostPluginCommandType.CONCATENATE_TEXT_TO_POST_WINDOW,plugin.getPluginMediator(),text);
+			}
+		]]>
+	</mx:Script>
+</mx:Button>

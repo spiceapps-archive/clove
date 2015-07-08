@@ -1,0 +1,21 @@
+<Bridge xmlns:v="voObjectModel" 
+		xmlns:f="funcModule" 
+		xmlns:c="classModule"
+		xmlns:o="objectModule">
+	
+	<v:template name="DiggStory">
+		
+	</v:template>
+	
+	
+	<c:PrivateDiggCall extends="Cue">
+		<f:init>
+			<c:parent call="init" />
+			
+			<o:OAuthRequest o:id="oar">
+				
+			</o:OAuthRequest>
+		</f:init>
+	</c:PrivateDiggCall>
+	
+</Bridge>

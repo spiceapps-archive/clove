@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:proxy="com.spice.vanilla.mx.proxy.*">
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			
+			import com.spice.clove.plugin.core.calls.CallCloveOAuthType;
+			import com.spice.clove.plugin.core.views.oauth.IOAuthViewController;
+			import com.spice.vanilla.core.proxy.IProxyOwner;
+			import com.spice.vanilla.impl.proxy.ProxyCall;
+			
+			
+			[Bindable] 
+			private var _viewController:IOAuthViewController;
+			
+			
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				
+				_viewController = IOAuthViewController(value);
+				  
+				setHTTPLocationCall.callData = null;
+				setHTTPLocationCall.dispatch();
+//				getHTTPLocationCall.dispatch();
+				
+//				new 
+			}
+			
+			private function finish():void
+			{
+				new ProxyCall( CallCloveOAuthType.SET_OAUTH_PIN,this._viewController.getProxy(),pinTxt.text).dispatch().dispose();
+			}
+			
+			
+			private function setRequestUrl():void
+			{
+				if(!loginWindow || loginWindow.location == getHTTPLocationCall.responseData)
+					return;
+				
+				
+				loginWindow.location = getHTTPLocationCall.responseData || "about:blank";
+			}
+			
+			private function showAuthForm():void
+			{
+				if(showAuthFormCall.responseData)
+				{
+					
+					Tweener.addTween(authForm,{alpha:1,time:.5});
+				}
+				else
+				if(authForm)
+				{
+					authForm.alpha = 0;
+				}
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:VBox minHeight="300" minWidth="400">
+		<mx:HBox  verticalAlign="middle" paddingLeft="10" paddingTop="10" paddingBottom="10">
+			<mx:Image source="{getIconCall.responseData}" />
+			<mx:Label text="{getTitleCall.responseData}" />
+ 		</mx:HBox>
+		<mx:HTML id="loginWindow" creationComplete="{getHTTPLocationCall.dispatch()}"  />
+		
+	</mx:VBox>
+	
+	<mx:Form id="authForm" 
+			 horizontalCenter="0" 
+			 backgroundColor="#000000"
+			 alpha="0"
+			 color="#FFFFFF" 
+			 fontSize="12">
+		<mx:FormItem label="Enter the PIN you see:">
+			<mx:HBox>	
+				<mx:TextInput color="#000000" id="pinTxt" enter="finish();" />
+				<mx:Button label="Done" alpha="{pinTxt.text.length > 0 ? 1 : 0}" includeInLayout="{pinTxt.text.length > 0}" click="this.finish();" />
+			</mx:HBox>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<proxy:MXProxyCall id="getHTTPLocationCall"
+					   proxy="{_viewController.getProxy()}"
+					   bind="true" 
+					   property="{CallCloveOAuthType.GET_OAUTH_CURRENT_HTTP_LOCATION}" responseDataChange="{this.setRequestUrl();}" />
+	
+	
+	
+	
+	<proxy:MXProxyCall id="setHTTPLocationCall"
+					   proxy="{_viewController.getProxy()}" 
+					   callData="{loginWindow.location}"
+					   autoCall="true"
+					   property="{CallCloveOAuthType.SET_OAUTH_CURRENT_HTTP_LOCATION}" />
+	
+	
+	<proxy:MXProxyCall id="showAuthFormCall"
+					   proxy="{_viewController.getProxy()}"
+					   autoCall="true"
+					   bind="true"
+					   property="{CallCloveOAuthType.SHOW_OAUTH_PIN}" responseDataChange="showAuthForm();"/>
+	
+	<proxy:MXProxyCall id="getIconCall"
+					   proxy="{_viewController.getProxy()}"
+					   autoCall="true"
+					   bind="true"
+					   property="{CallCloveOAuthType.GET_OAUTH_ICON}"/>
+	
+	<proxy:MXProxyCall id="getTitleCall"
+					   proxy="{_viewController.getProxy()}"
+					   autoCall="true"
+					   bind="true"
+					   property="{CallCloveOAuthType.GET_OAUTH_TITLE}" />
+	
+	
+	
+
+</mx:Canvas>

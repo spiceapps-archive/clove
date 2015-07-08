@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- [ExcludeClass] -->
+<views:PreferenceView xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" xmlns:views="com.spice.clove.view.preferences.views.*" xmlns:proxy="com.spice.vanilla.mx.proxy.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.control.ClovePluginMediator;
+			import com.spice.clove.proxy.calls.CallCloveInternalType;
+			
+			[Bindable] 
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			private function setPreferenceView():void
+			{
+				if(getSceneSyncViewCall.responseData)
+				this.addChild(getSceneSyncViewCall.responseData);
+			}
+		]]>
+	</mx:Script>
+	
+	<proxy:MXProxyCall id="getSceneSyncViewCall" proxy="{ClovePluginMediator.getInstance()}" property="{CallCloveInternalType.CLOVE_INTERNAL_SET_SCENE_SYNC_PREFERENCE_VIEW}" autoCall="true" responseDataChange="{setPreferenceView();}" />
+</views:PreferenceView>

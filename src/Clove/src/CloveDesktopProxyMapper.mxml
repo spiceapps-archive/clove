@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<clove:CloveProxyMapper xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:clove="com.spice.clove.*" 
+						xmlns:observers="com.spice.vanilla.mx.proxy.observers.*" 
+						xmlns:proxy="com.spice.vanilla.mx.proxy.*" xmlns:events="com.spice.vanilla.mx.events.*">
+
+	<mx:Metadata>
+		[Event("applicationViewChange")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.analytics.core.AnalyticalActionType;
+			import com.spice.clove.analytics.core.AnalyticsPluginHelper;
+			import com.spice.clove.core.CloveAIRSettings;
+			import com.spice.clove.plugin.control.AIRClovePluginController;
+			import com.spice.clove.plugin.control.ClovePluginMediator;
+			import com.spice.clove.plugin.core.calls.CallAppCommandType;
+			import com.spice.clove.plugin.core.calls.CallRegisteredViewType;
+			import com.spice.clove.plugin.core.sceneSync.desktop.SceneSyncDesktopPluginFactory;
+			import com.spice.clove.plugin.core.sceneSync.flex.FXSceneSyncPluginFactory;
+			import com.spice.clove.plugin.desktop.views.oauth.DesktopOAuthPluginInstallerViewController;
+			import com.spice.clove.plugin.install.AvailableInternalService;
+			import com.spice.clove.plugin.install.IAvailableService;
+			import com.spice.clove.proxy.calls.CallCloveInternalType;
+			import com.spice.clove.root.core.calls.CallRootPluginType;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncPluginType;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncablePluginType;
+			import com.spice.clove.twitter.desktop.CloveTwitterDesktopPluginFactory;
+			import com.spice.clove.view.preferences.Preferences;
+			import com.spice.impl.queue.Queue;
+			import com.spice.vanilla.core.proxy.IProxyCall;
+			import com.spice.vanilla.flash.singleton.Singleton;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.Application;
+			import mx.core.UIComponent;
+			//?#PHP_IMPORTS
+			
+			
+			public static const APP_NAME:String = 'Clove';
+			
+			public var applicationView:UIComponent;
+			
+			
+			private var _defaultPlugins:ArrayCollection = new ArrayCollection();
+			
+			private var _localPluginsLoaded:Boolean;
+			
+			private var _mediator:ClovePluginMediator = ClovePluginMediator.getInstance();
+			
+			
+			private var _analyticsHelper:AnalyticsPluginHelper;
+			private var _idling:Boolean;
+			
+			
+			private var _contentControllerQueue:Queue;
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Public Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			public function addDefaultPlugin(plugin:IAvailableService):void
+			{
+				this._defaultPlugins.addItem(plugin);
+			}
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Protected Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			/**
+			 */
+			
+			override protected function init():void
+			{
+				if(true)
+				{
+					
+//					this.addDefaultPlugin(new AvailableInternalService("Twitter",Singleton.getInstance(CloveTwitterDesktopPluginFactory),false,false));
+					//?#ADD_DEFAULT_PLUGINS_FOR_INSTALLER
+//					this.addDefaultPlugin(new AvailableInternalService("Scene Sync",Singleton.getInstance(SceneSyncDesktopPluginFactory),true,false));
+					
+				}
+				
+				this._contentControllerQueue = new Queue();
+				this._contentControllerQueue.start();
+				
+//				NativeApplication.nativeApplication.addEventListener(Event.USER_PRESENT,onUserPresent);
+				NativeApplication.nativeApplication.addEventListener(Event.ACTIVATE,onUserPresent);
+				NativeApplication.nativeApplication.addEventListener(Event.DEACTIVATE,onUserIdle);
+				
+			}
+			
+			private function onUserIdle(event:Event):void
+			{
+				if(!Application.application.stage)
+					return;
+				
+				 if(Application.application.nativeWindow.displayState != NativeWindowDisplayState.MINIMIZED && 
+					Application.application.nativeWindow.visible == true && true)
+					return; 
+				
+				_idling = true;
+				
+				
+				Application.application.stage.frameRate = 1;
+				
+				ProxyCallUtils.quickCall(CallAppCommandType.ENTER_IDLE_MODE,ClovePluginMediator.getInstance());
+			}
+			
+			private function onUserPresent(event:Event):void
+			{
+				if(!_idling)
+					return;
+				
+				_idling = false;
+				
+				Application.application.stage.frameRate = 30;
+				
+				ProxyCallUtils.quickCall(CallAppCommandType.ENTER_ACTIVE_MODE,ClovePluginMediator.getInstance());
+			}
+			
+			/**
+			 */
+			
+			private function getDefaultPlugins(c:IProxyCall):void
+			{
+				  
+				
+				//uncomment for later:
+				
+//				if(!this._localPluginsLoaded)
+//				{
+//					this._localPluginsLoaded = true;
+//					
+//					var list:File = new File(File.applicationDirectory.nativePath+"/default/plugins/dpList.xml");
+//					var stream:FileStream = new FileStream();
+//					stream.open(list,FileMode.READ);
+//					
+//					var script:String = stream.readUTFBytes(stream.bytesAvailable);
+//					stream.close();
+//					
+//					
+//					
+//					this._defaultPlugins.addAll(ex.readObject());
+//				}
+				
+				this.returnDefaultPlugins.respond(c,this._defaultPlugins);
+			}
+			
+			/**
+			 */
+			
+			private function navigateToUrlInApp(value:String):void
+			{      
+				if(value.indexOf("://") == -1)
+				{
+					value = "http://"+value;
+				}
+				
+				this.getAnalyticsHelper().recordAction(AnalyticalActionType.LINK_SELECTED,value);
+				
+				
+//				flash.net.navigateToURL(new URLRequest(value));
+				
+				ProxyCallUtils.quickCall(CallRootPluginType.OPEN_INTERNAL_HTML_WINDOW,this._mediator,value);
+				//ANALYTICS
+			}
+			
+			
+			/**
+			 */
+			
+			private function getViewController(c:IProxyCall):void
+			{
+				switch(c.getType())
+				{
+					case CallRegisteredViewType.GET_NEW_REGISTERED_OAUTH_VIEW_CONTROLLER:
+						return returnOAuthViewController.respond(c,new DesktopOAuthPluginInstallerViewController(c.getData()));
+				}
+			}
+			
+			/**
+			 */
+			
+			private function openSceneSyncPrefView():void
+			{
+				Preferences.open("Scene Sync");
+			}
+			
+			
+			private function getAnalyticsHelper():AnalyticsPluginHelper
+			{
+				if(!this._analyticsHelper)
+				{
+					this._analyticsHelper = new AnalyticsPluginHelper(this._mediator);
+				}
+				
+				return this._analyticsHelper;
+			}
+			
+			private function setApplicationView(value:UIComponent):void
+			{
+				this.applicationView = value;
+				this.dispatchEvent(new Event("applicationViewChange"));
+			}
+		]]>
+	</mx:Script>
+	
+	
+	
+	
+	<proxy:MXProxyTarget id="test" proxy="{this.internalProxyMediator}">
+		
+		<!-- the plugin settings -->
+		<observers:MXProxyResponder notificationsOfInterest="{[CallCloveInternalType.GET_CLOVE_SETTINGS]}"
+									response="{new CloveAIRSettings()}" />
+		
+		<!-- the plugin controller class -->
+		<observers:MXProxyResponder notificationsOfInterest="{[CallCloveInternalType.GET_PLUGIN_CONTROLLER_CLASS]}"
+									response="{AIRClovePluginController}" />
+		
+		
+	</proxy:MXProxyTarget>
+	
+	
+	
+	
+	<proxy:MXProxyTarget proxy="{this.pluginProxyMediator}">
+		
+		
+		<observers:MXProxyResponder notificationsOfInterest="{[CallAppCommandType.GET_GLOBAL_CONTENT_LOADER_QUEUE]}" 
+									response="{this._contentControllerQueue}" />
+		
+		<observers:MXProxyResponder id="openSceneSyncPrefViewResponder" 
+									notificationsOfInterest="{[CallSceneSyncPluginType.OPEN_SCENE_SYNC_PREFERENCE_VIEW]}" 
+									notification="{this.openSceneSyncPrefView();}" />
+		
+		<!-- the whole application view -->
+		<observers:MXProxyResponder id="setAppView" 
+									notificationsOfInterest="{[CallAppCommandType.SET_APP_VIEW]}" 
+									notification="{this.setApplicationView(setAppView.currentCall.getData())}"   />
+		
+		  
+		<!-- navigate to URL -->
+		<observers:MXProxyResponder id="navToUrl2" 
+									notificationsOfInterest="{[CallAppCommandType.NAVIGATE_TO_URL]}" 
+									notification="{this.navigateToUrlInApp(navToUrl2.currentCall.getData())}"   />
+		  
+		
+		
+		<observers:MXProxyResponder id="alertResponder"
+									notificationsOfInterest="{[CallAppCommandType.SHOW_ALERT]}"
+									notification="{Alert.show(alertResponder.currentCall.getData())}" />
+		
+		
+		<observers:MXProxyResponder id="returnDefaultPlugins" 
+									notificationsOfInterest="{[CallAppCommandType.GET_DEFAULT_PLUGINS]}"
+									response="{this.getDefaultPlugins}"  />
+		
+		<observers:MXProxyResponder id="returnOAuthViewController" 
+									notificationsOfInterest="{[ CallRegisteredViewType.GET_NEW_REGISTERED_OAUTH_VIEW_CONTROLLER]}"
+									response="{this.getViewController}"  />
+		
+		<observers:MXProxyResponder notificationsOfInterest="{[ CallAppCommandType.GET_APPLICATION_NAME]}"
+									response="{APP_NAME}"  />
+		
+		
+		<observers:MXProxyResponder notificationsOfInterest="{[CallAppCommandType.GET_SPLASH_PAGE_HTML_URL]}"
+									response="//?#SPLASH_PAGE_HTML_URL"  />
+		
+		<observers:MXProxyResponder notificationsOfInterest="{[CallAppCommandType.GET_SHARE_APP_TEXT]}"
+									response="//?#CUSTOM_SHARE_TEXT"  />
+		  
+		<!--?#ADD_SCENE_SUBSCRIPTIONS-->
+		 
+		<!--<observers:MXProxyResponder id="returnInitialSubscription" 
+									notificationsOfInterest="{[CallSceneSyncablePluginType.SCENE_SYNC_GET_SUBSCRIPTIONS_BY_EMAIL]}" 
+									response="fs@spiceapps.com"   />-->
+		  
+		  
+		<!--<observers:MXProxyObserver notificationsOfInterest="{[CallAppCommandType.SET_APPLICATION_DIMENSIONS]}">
+			<observers:MXProxyResponder id="setAppDimensions" 
+										notification="{this.applicationDimensions = setAppDimensions.currentCall.getData()}" />
+			
+			<observers:MXProxyChangeNotifier data="{applicationDimensions}" />
+		</observers:MXProxyObserver>-->
+		
+		
+	</proxy:MXProxyTarget>  
+	
+
+	
+	
+</clove:CloveProxyMapper>

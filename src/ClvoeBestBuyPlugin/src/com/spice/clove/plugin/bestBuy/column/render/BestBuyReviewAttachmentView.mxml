@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox paddingLeft="1" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.spice.clove.views.controls.*" paddingRight="1" width="100%">
+	<mx:Script>
+		<![CDATA[
+			import mx.binding.utils.BindingUtils;
+			import mx.binding.utils.ChangeWatcher;
+			import flash.net.navigateToURL;
+		
+			[Bindable] 
+			private var _attachment:BestBuyReviewAttachment;
+			
+			[Bindable] 
+			public var expanded:Boolean;
+			
+			
+			private var _reviews:String;
+			
+			
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				_attachment = BestBuyReviewAttachment(value);
+				
+				
+			}
+			
+			private function addToCart():void
+			{
+				this._attachment.addToCart();
+			}
+			
+			private function showReviews():void
+			{
+				this.expanded = !this.expanded;
+				
+				
+				if(this.expanded)
+				{
+					_attachment.fetchReviews();
+				}
+				else
+				{
+					_attachment.reviews = "";
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:HBox width="100%" paddingLeft="36" paddingRight="5" verticalAlign="middle">
+		<mx:Image source="{_attachment.icon}" />
+		<controls:ResizeableLabel text="{_attachment.label}" styleName="columnRowAttachmentLink" click="{showReviews();}" buttonMode="true" width="100%" />
+		<mx:Button label="add to cart" height="20" click="addToCart();" />
+	</mx:HBox>
+	
+	<mx:HTML width="100%" fontSize="12" htmlText="{this._attachment ? this._attachment.reviews : ''}" visible="{this._attachment.reviews != ''}" includeInLayout="{this._attachment.reviews != ''}" />
+</mx:VBox>

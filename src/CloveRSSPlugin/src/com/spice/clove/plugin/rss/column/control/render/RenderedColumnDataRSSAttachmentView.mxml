@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<render:RenderedColumnDataAttachmentView xmlns:mx="http://www.adobe.com/2006/mxml" 
+										 xmlns:render="com.spice.clove.plugin.column.render.*"
+										 xmlns:render2="com.spice.clove.plugin.rss.column.control.render.*"
+										 implements="com.spice.recycle.IDisposable"
+										 xmlns:controls="com.spice.air.controls.BetterHTML" 
+										 xmlns:controls1="com.spice.air.controls.*">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import flash.utils.setTimeout;
+			import com.spice.clove.plugin.rss.CloveRSSPlugin;
+			import com.spice.clove.plugin.column.render.RenderedColumnDataAttachment;
+			
+			override public function set attachment(value:RenderedColumnDataAttachment):void
+			{
+				super.attachment = value;
+				
+				//icky
+				if(CloveRSSPlugin(value.data.column.controller.pluginController.plugin).settings.autoExpandFeeds)
+				{
+					this.expanded = true;
+				}
+			}
+			
+			
+			override public function dispose():void
+			{
+				super.dispose();
+				
+				htmlContent.htmlLoader.cancelLoad();
+				htmlContent.htmlText = "";
+			}
+			
+			
+			override public function styleChanged(styleProp:String):void
+			{
+				super.styleChanged(styleProp);
+				
+				
+				if(htmlContent && this.getStyle("fontSize") > 0)
+				{
+					expanded = expanded;
+					
+					//htmlContent.setStyle("fontSize",this.getStyle("fontSize"));
+				}
+			}
+			
+			override public function set expanded(value:Boolean):void
+			{
+				super.expanded = value;
+				
+				//htmlContent.height = NaN;
+				//htmlContent.htmlLoader.height = NaN;
+				if(!value)
+				{
+					htmlContent.cancelLoad();
+					htmlContent.htmlText = '';
+					
+				}
+				else
+				{
+					setFeed();
+				}
+			}
+			
+			
+			
+			private var _feedSet:Boolean;
+			
+			private function setFeed():void
+			{
+				_feedSet = true;
+				
+												
+				htmlContent.htmlLoader.cancelLoad();
+				htmlContent.htmlLoader.height = 0;
+					
+				htmlContent.htmlText =  "<html><head><style> img{ max-width:100%; border:0; } *{font-size:"+getStyle("fontSize")+"px; !important; } </style></head><body>"+ RenderedColumnDataRSSAttachment(this.attachment).rssBody				+"</body></html>";
+			}
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				if(expanded && !_feedSet)
+					flash.utils.setTimeout(setFeed,100);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HTML   paddingLeft="5" paddingRight="5" id="htmlContent" width="100%" borderStyle="none" visible="{expanded}" includeInLayout="{expanded}" complete="{_feedSet=false}" backgroundAlpha="0" paintsDefaultBackground="false" horizontalScrollPolicy="off" />
+	
+	<!--<mx:HTML backgroundAlpha="0" paintsDefaultBackground="false" resize="resize2();" width="100%" horizontalScrollPolicy="off" complete="resizeWindow(event);" includeInLayout="{expanded}" visible="{expanded}"
+			 id="htmlContent"/>-->
+</render:RenderedColumnDataAttachmentView>

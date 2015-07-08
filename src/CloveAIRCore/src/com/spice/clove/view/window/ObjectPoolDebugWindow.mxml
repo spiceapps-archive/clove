@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" width="400" height="500" xmlns:text="flash.text.*" close="closeWindow();">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.recycle.pool.ObjectPoolManager;
+			import com.spice.utils.queue.global.GlobalQueueManager;
+			
+			import mx.collections.ArrayCollection;
+			
+			
+			private static var _closed:Boolean = true;
+			
+			public static function open():void
+			{
+				
+				if(!_closed)
+					return;
+					
+				_closed = false;
+				
+				new ObjectPoolDebugWindow().open();
+			}
+			[Bindable] 
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			
+			[Bindable] 
+			private var _queue:GlobalQueueManager = GlobalQueueManager.getInstance();
+			
+			[Bindable] 
+			private var _logger:Logger = Logger.getInstance();
+			
+			[Bindable] 
+			private var _filterList:Array;
+			
+			
+			[Bindable] 
+			private var _compared:Array = [];
+			
+			
+			
+			private var _snapshots:ArrayCollection = new ArrayCollection();
+			
+			
+			override public function open(active:Boolean = true):void
+			{
+				_logger.summaryEnabled = true;
+				
+				
+				super.open(active);
+				
+			}
+			
+			private function closeWindow():void
+			{
+				
+				_logger.summaryEnabled = false;
+				this._snapshots.removeAll();
+				_closed = true;
+			}
+			
+			
+			
+			
+		]]>
+	</mx:Script>
+	<mx:TabNavigator width="100%" height="100%">
+		<mx:Canvas label="objects" width="100%" height="100%">	
+			<mx:TextArea width="100%" height="100%" text="{_pool.objectTrace}" />
+		</mx:Canvas>
+		<mx:Canvas label="remote processes" width="100%" height="100%">
+			<mx:TextArea width="100%" height="100%" text="{_queue.summary}" />
+		</mx:Canvas>
+		<mx:Canvas label="traces" width="100%" height="100%">
+			<mx:TextArea width="100%" height="100%" text="{_logger.summary}" />
+		</mx:Canvas>
+		
+	</mx:TabNavigator>
+</mx:Window>

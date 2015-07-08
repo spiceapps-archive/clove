@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<views:PreferenceView xmlns:mx="http://www.adobe.com/2006/mxml" 
+					  width="100%"
+					  height="350" 
+					  xmlns:views="com.spice.clove.view.preferences.views.*" 
+					  xmlns:observers="com.spice.vanilla.mx.proxy.observers.*"
+					  xmlns:proxy="com.spice.vanilla.impl.proxy.*" 
+					  xmlns:proxy1="com.spice.vanilla.mx.proxy.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.control.ClovePluginController;
+			import com.spice.clove.plugin.control.ClovePluginMediator;
+			import com.spice.clove.plugin.core.calls.CallClovePluginInstallerType;
+			import com.spice.clove.plugin.core.calls.CallClovePluginType;
+			import com.spice.clove.plugin.install.IAvailableService;
+			import com.spice.clove.plugin.load.InstalledPluginInfo;
+			import com.spice.clove.service.core.account.IServiceAccount;
+			import com.spice.clove.service.core.calls.CallToServiceAccountType;
+			import com.spice.clove.service.core.calls.CallServicePluginType;
+			import com.spice.vanilla.core.plugin.IPlugin;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			
+			import mx.core.Window;
+			
+			[Bindable] 
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			[Bindable]	
+			//[ProxyBinding(property="serviceAccounts")]
+			private var _accounts:Array;
+			//getAccountPlugins
+			
+			//[Bindable]	
+			//private var _installer:ServiceInstallationController;
+			
+			
+			private function onPluginsChange():void
+			{
+				var accts:Array = this.getAccountsCall.responseData;
+				    
+				var accts2:Array = [];
+				
+				for each(var acct:Vector.<IServiceAccount> in accts)
+				{
+					for each(var act:IServiceAccount in acct)
+					{
+						accts2.push(act);
+					}
+				}
+				
+				this._accounts =accts2;
+				//_plugins = _model.applicationSettings.pluginManager.loadedPlugins.getAccountPlugins();
+			}
+			
+			private function addAccount():void
+			{
+				
+				var available:Array = ProxyCallUtils.getResponse(CallServicePluginType.GET_SERVICE_PLUGIN,ClovePluginMediator.getInstance());
+				
+				
+				var avail:Vector.<IAvailableService> = new Vector.<IAvailableService>();
+				
+				for each(var plugin:IPlugin in available)
+				{
+					var controller:ClovePluginController = ProxyCallUtils.getResponse(CallClovePluginType.GET_PLUGIN_CONTROLLER,plugin.getProxy())[0];
+					
+					var inf:InstalledPluginInfo = controller.getPluginInfo();
+					
+					avail.push(inf.installedPluginFactoryInfo.getAvailableService());
+				}
+				
+				if(avail.length > 0)
+				{
+					ProxyCallUtils.quickCall(CallClovePluginInstallerType.OPEN_PLUGIN_INSTALLER_WITH_AVAILABLE,ClovePluginMediator.getInstance(),avail);
+				}
+				
+			}
+			
+			private function centerWindow(window:Window):void
+			{
+				//reposition the window
+				window.nativeWindow.x = this.stage.nativeWindow.x;
+				window.nativeWindow.y = this.stage.nativeWindow.y;
+				
+			}
+			
+			private function removeAccount():void
+			{
+				var plug:IServiceAccount = IServiceAccount(pluginList.selectedItem);
+				
+				if(!plug)
+					return;
+				
+				
+				ProxyCallUtils.quickCall(CallToServiceAccountType.SERVICE_ACCOUNT_UNINSTALL,plug.getProxy(),plug);
+			}
+		]]>
+	</mx:Script>
+	
+	<proxy1:MXBatchProxyCall proxy="{ClovePluginMediator.getInstance()}" 
+						id="getAccountsCall" 
+						property="{CallServicePluginType.SERVICE_PLUGIN_GET_ACCOUNTS}" 
+						autoCall="true" 
+						bind="true" responseDataChange="onPluginsChange();" />
+	
+	<mx:HBox width="100%" height="100%" paddingTop="15" paddingLeft="15" paddingRight="15" paddingBottom="40">
+		
+		<mx:VBox width="100%" height="100%" > <!--width = 315 -->
+			<mx:List id="pluginList" selectedIndex="0" width="100%" height="100%" dataProvider="{_accounts}">
+				<mx:itemRenderer>
+					<mx:Component>
+						<mx:HBox verticalAlign="middle" horizontalGap="3">
+							<mx:Script>
+								<![CDATA[
+									import com.spice.clove.plugin.core.calls.CallClovePluginFactoryType;
+									import com.spice.clove.plugin.core.calls.CallClovePluginType;
+									import com.spice.clove.plugin.load.InstalledPluginFactoryInfo;
+									import com.spice.clove.service.core.calls.CallToServiceAccountType;
+									import com.spice.vanilla.core.plugin.IPlugin;
+									import com.spice.vanilla.core.plugin.factory.IPluginFactory;
+									import com.spice.vanilla.flash.utils.ProxyCallUtils;
+									
+									[Bindable] 
+									public var pluginIcon:Object;
+									
+									[Bindable] 
+									public var plugin:*;
+									
+									override public function set data(value:Object):void
+									{
+										super.data = value;
+										
+										if(value)
+										{
+											plugin = value.getPlugin();
+											//pluginName = ProxyCallUtils.getFirstResponse(CallServiceAccountType.GET_NAME,value.getProxy());
+											
+											
+											pluginIcon = ProxyCallUtils.getChainResponse([CallClovePluginType.GET_PLUGIN_FACTORY,CallClovePluginFactoryType.GET_ICON_16],plugin.getProxy())[0];
+										}
+									}
+								]]>
+							</mx:Script>
+							
+							
+							<mx:Image source="{pluginIcon}" />
+							<mx:Label text="{pluginName.responseData}" />
+							<proxy1:MXProxyCall proxy="{data.getProxy()}" id="pluginName" autoCall="true" bind="true" property="{CallToServiceAccountType.GET_NAME}" />
+						</mx:HBox>
+						
+						
+					</mx:Component>
+				</mx:itemRenderer>
+			</mx:List>
+			<mx:HBox>
+				<mx:Button label="+" click="addAccount();" />
+				<mx:Button label="-" click="removeAccount();" />
+			</mx:HBox>		
+		</mx:VBox>
+
+	</mx:HBox>
+	
+	
+	
+</views:PreferenceView>
+	

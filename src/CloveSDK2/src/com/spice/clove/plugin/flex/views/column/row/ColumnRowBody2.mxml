@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 verticalScrollPolicy="off" 
+		 horizontalScrollPolicy="off"  
+		 width="100%"
+		 paddingTop="2"
+		 paddingBottom="8" 
+		 verticalGap="8"
+		 styleName="columnRow"
+		 doubleClickEnabled="true"
+		 doubleClick="doubleClickRow();"
+		 implements="com.spice.recycle.IDisposable" 
+		 xmlns:row="com.spice.clove.plugin.flex.views.column.row.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			
+			import mx.core.IDataRenderer;
+			
+			[Bindable] private var _cloveData:ICloveData;
+			
+			
+			
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			
+			
+			private var _factory:IFactory;
+			
+			private var _view:IDataRenderer;
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Getters / Setters
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			[Disposable]
+			override public function set data(value:Object):void
+			{
+				
+				
+				
+				super.data = _cloveData = ICloveData(value);
+				
+				
+				if(Object(_view).hasOwnProperty("renderedData"))
+				{
+					
+					Object(_view).renderedData = value;
+				}
+				else
+				{
+					_view.data = value;
+				}
+				//don't do this >.>
+				if(!value)
+				{
+					return;
+				}
+
+				
+				
+				//rendered data = read data
+				//this._renderedData.markRead();
+				
+				
+				//a bit hackish... we have core logic in the SDK
+				/* if(true || Object(_renderedData.column).itemRenderer)
+				{
+					//cause some mem leaks
+					 Object(_renderedData.column).itemRenderer.reuse(this._renderedData);
+					this._textManager = Object(_renderedData.column).itemRenderer.baseMessageHandler;
+				} */
+				 
+				
+				
+			}
+			
+			/*
+			 */
+			
+			public function get itemRenderer():IFactory
+			{
+				return this._factory;
+			}
+			
+			/*
+			 */
+			
+			public function set itemRenderer(value:IFactory):void
+			{
+				this._factory = value;
+				
+				
+				_view 	= this._factory.newInstance();
+//				_view.x = 5;
+				
+				this.addChildAt(DisplayObject(_view),0);
+			}
+			
+			
+			public function dispose():void
+			{
+				
+				this.data 		   = undefined;
+				this._cloveData    = undefined;
+				
+			}
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			
+			/*
+			 */
+			
+			private function doubleClickRow():void
+			{
+				//this._renderedData.column.dispatchEvent(new CloveColumnEvent(CloveColumnEvent.RENDERED_DATA_ROW_DOUBLE_CLICK,null,false,this._renderedData));
+				
+			}
+			
+			/*
+			 */
+			
+			private function selectIcon():void
+			{
+				
+				//this._renderedData.column.dispatchEvent(new CloveColumnEvent(CloveColumnEvent.RENDERED_DATA_ICON_CLICK,null,false,this._renderedData));
+				
+			}
+			
+			/*
+			 */
+			
+			private function selectLink(event:TextEvent):void
+			{
+				
+				//this._renderedData.column.dispatchEvent(new RenderedDataTextEvent(RenderedDataTextEvent.LINK_SELECT,this._renderedData,event.text));
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	<!-- the main view goes here -->
+	
+	<row:ColumnRowAttachmentsView cloveData="{this._cloveData}"
+							      showAttachments="true" />
+	
+</mx:VBox>

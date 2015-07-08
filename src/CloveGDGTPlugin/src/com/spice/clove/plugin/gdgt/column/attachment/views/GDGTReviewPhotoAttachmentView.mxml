@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<render:RenderedColumnDataAttachmentView xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:render="com.spice.clove.plugin.column.render.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import flash.text.engine.TextElement;
+			import com.spice.clove.plugin.column.render.RenderedColumnDataAttachment;
+			import mx.controls.Image;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			
+			[Bindable] 
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			
+			private var _image:Image;
+			
+			
+			override protected function onClick(event:MouseEvent):void
+			{
+				super.onClick(event);
+				
+				
+				
+				if(this.expanded)
+				{
+					
+					_image = _pool.getObject(Image);
+					_image.source = this.attachment.data.vo.image;
+					
+					
+					this.addChildAt(_image,1);
+				}
+				else
+				if(_image && this.contains(_image))
+				{
+					_pool.addObject(this.removeChild(_image));
+				}
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+</render:RenderedColumnDataAttachmentView>

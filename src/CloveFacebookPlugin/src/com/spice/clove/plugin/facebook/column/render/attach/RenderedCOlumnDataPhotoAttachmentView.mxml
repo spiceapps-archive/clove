@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<render:RenderedColumnDataAttachmentView width="100%" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:render="com.spice.clove.plugin.column.render.*">
+		<mx:Script>
+			<![CDATA[
+				
+				
+				override protected function onClick(event:MouseEvent) : void
+				{
+					super.onClick(event);
+					
+					
+				}
+			]]>
+		</mx:Script>
+		
+		<mx:Canvas>
+			<mx:Image x="18" visible="{!this.expanded}" includeInLayout="{!this.expanded}" source="{RenderedColumnDataPhotoAttachment(this.attachment).src}" />
+				
+		</mx:Canvas>
+	
+		
+</render:RenderedColumnDataAttachmentView>
+

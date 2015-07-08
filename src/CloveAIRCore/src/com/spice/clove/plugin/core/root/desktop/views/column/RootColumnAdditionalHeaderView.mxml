@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display:BindableView xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:display="com.spice.display.*" width="100%" clipContent="false">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.core.UIComponent;
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				
+				this.view = UIComponent(value);
+				
+			}
+		]]>
+	</mx:Script>
+</display:BindableView>

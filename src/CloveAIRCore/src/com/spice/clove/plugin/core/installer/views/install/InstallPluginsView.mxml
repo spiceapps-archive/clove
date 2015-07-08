@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   xmlns:window="com.spice.clove.view.window.*" 
+		   xmlns:display="com.spice.display.*" creationComplete="{nextPlugin();}" backgroundColor="#EAEAEA" xmlns:proxy="com.spice.vanilla.mx.proxy.*" xmlns:views="com.spice.clove.plugin.flex.views.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.calls.CallClovePluginFactoryType;
+			import com.spice.clove.plugin.core.calls.CallClovePluginInstallerType;
+			import com.spice.clove.plugin.core.install.IClovePluginInstaller;
+			import com.spice.clove.plugin.core.installer.views.install.services.ServiceInstallationManager;
+			import com.spice.clove.plugin.core.views.install.IClovePluginInstallerViewController;
+			import com.spice.clove.plugin.install.IAvailableService;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			import com.spice.vanilla.impl.proxy.ProxyCall;
+			
+			import mx.core.IDataRenderer;
+			import mx.core.UIComponent;
+			
+			
+			[Bindable] 
+			private var _controller:ServiceInstallationController;
+			
+			public function get controller():ServiceInstallationController
+			{
+				return _controller;
+			}
+			
+			
+			public function set controller(value:ServiceInstallationController):void
+			{
+				_controller = value;
+			}
+			
+			[Bindable] 
+			private var _currentInstallerView:IClovePluginInstallerViewController;
+			
+			[Bindable] 
+			private var _currentInstaller:IClovePluginInstaller;
+			
+			[Bindable]
+			private var _selectedIndex:int;
+			
+			[Bindable] 
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			
+			[Bindable] 
+			private var _currentService:IAvailableService;
+			
+			
+			private function nextPlugin():void
+			{
+				if(_currentInstaller && this._currentInstallerView)
+				{
+					_pool.addObject(_currentInstallerView);
+				}
+				
+				var selected:Array = controller.manager.selectedPlugins.toArray();
+				
+				
+				if(_selectedIndex > selected.length-1)
+				{
+					if(!controller.skipHello && controller.additionalViews.length > 0)
+					{
+						controller.installationStep = ServiceInstallationController.INSTALL_ADDITIONAL_VIEW;
+					}
+					else
+					{
+						controller.complete();
+					}
+					return;
+				}
+				
+				this._currentService = selected[_selectedIndex++];
+			}
+			
+			
+			private function setInstaller():void
+			{
+				this._currentInstaller = installerBind.responseData;
+				
+				if(this._currentInstaller)
+				this._currentInstaller.initialize();
+			}
+			
+			private function onInstallerComplete():void
+			{
+				if(!installerFinishedBind.responseData)
+				{
+					return;	
+				}
+				
+				nextPlugin();	
+			}
+			
+			private function setInstallerView():void
+			{
+				_currentInstallerView = viewBind.responseData;
+				
+				if(_currentInstallerView)
+//				IDataRenderer(this._currentInstallerView).data = _currentInstaller;
+				_currentInstallerView.setView(installView);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<views:FlexCloveDataTargetView id="installView" />
+	
+	
+	<proxy:MXProxyCall id="installerBind"
+					   proxy="{_currentService.factory.getProxy()}" 
+					   property="{ CallClovePluginFactoryType.GET_INSTALLER}"
+					   bind="true"
+					   autoCall="true" 
+					   responseDataChange="setInstaller();" />
+					   
+	
+	<proxy:MXProxyCall id="installerFinishedBind" 
+					   proxy="{this._currentInstaller.getProxy()}" 
+					   property="{CallClovePluginInstallerType.IS_FINISHED}"
+					   bind="true"
+					   responseDataChange="{onInstallerComplete();}" />
+	
+	
+	<proxy:MXProxyCall id="viewBind" 
+					   proxy="{this._currentInstaller.getProxy()}" 
+					   property="{CallClovePluginInstallerType.GET_INSTALLER_VIEW_CONTROLLER}"
+					   bind="true"
+					   autoCall="true" 
+					   responseDataChange="{setInstallerView();}" />
+	<window:WindowFooter>
+		
+		<mx:Spacer width  = "100%" />
+		
+		<!--<mx:Button label  = "Skip" 	
+				   height = "22" click="{nextPlugin();}" />-->
+		
+		<mx:Button label  = "Continue" 
+				   height = "22" 
+				   click  = "{installerFinishedBind.dispatch(); nextPlugin();}" />
+		
+	</window:WindowFooter>
+</mx:VBox>

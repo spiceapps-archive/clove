@@ -1,0 +1,7 @@
+<Bridge xmlns:func="functionModule">
+	<func id="test" params="a,b,c">
+		<func:call target="cout">
+			<p>it's my birthday</p>
+		</func:call>
+	</func>
+</Bridge>

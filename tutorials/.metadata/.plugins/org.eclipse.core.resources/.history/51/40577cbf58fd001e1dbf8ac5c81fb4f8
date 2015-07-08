@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" implements="com.spice.clove.plugin.prefs.IClovePluginPreferences">
+	<mx:Script>
+		<![CDATA[
+		
+		
+			import mx.collections.ArrayList;
+			
+			[Bindable] 
+			private var _plugins:ArrayList;
+			
+			public function get plugins():ArrayList
+			{
+				return _plugins;
+			}
+			
+			public function set plugins(value:ArrayList):void
+			{
+				_plugins = value;
+			}
+		]]>
+	</mx:Script>
+</mx:Canvas>

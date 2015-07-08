@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<list key="installedFeatures">
+		<item value="com.adobe.coldfusion.extensions:1.0.191910"/>
+		<item value="com.adobe.flexbuilder.feature.core.osx:3.0.214193"/>
+		<item value="com.adobe.flexbuilder.feature.standalone.osx:3.0.214193"/>
+		<item value="com.idefactory.enterpriseide:1.0.8.beta3"/>
+		<item value="com.interaktonline.jseclipse:1.5.5"/>
+		<item value="com.sun.jna:3.0.9"/>
+		<item value="org.eclipse.cvs:1.0.1.R33x_r20070802-7C79_9_KKG-mDM9e3H5D"/>
+		<item value="org.eclipse.eclipsemonkey:1.0.0.200706060947"/>
+		<item value="org.eclipse.jdt:3.3.2.r33x_r20080129-7o7jE7_EDhYDiyVEnjb1pFd7ZGD7"/>
+		<item value="org.eclipse.platform:3.3.1.R33x_r20070911-_19UEkpF-B7Uh2hKy75y"/>
+		<item value="org.eclipse.rcp:3.3.1.R33x_r20070802-8y8eE8sEV3Fz0z0GlHJrXvTAUS"/>
+		<item value="org.tigris.subversion.clientadapter.feature:1.5.3"/>
+		<item value="org.tigris.subversion.clientadapter.javahl.feature:1.5.6.1"/>
+		<item value="org.tigris.subversion.clientadapter.svnkit.feature:1.5.6.1"/>
+		<item value="org.tigris.subversion.subclipse:1.4.8"/>
+		<item value="org.tmatesoft.svnkit:1.2.3.5521"/>
+	</list>
+	<section name="ChooseWorkspaceDialogSettings">
+		<item value="350" key="DIALOG_Y_ORIGIN"/>
+		<item value="560" key="DIALOG_X_ORIGIN"/>
+	</section>
+	<section name="WORKBENCH_SETTINGS">
+		<list key="ENABLED_TRANSFERS">
+		</list>
+	</section>
+	<section name="ResourceNavigator">
+		<item value="" key="ResourceWorkingSetFilter.STORE_WORKING_SET"/>
+		<item value="1" key="ResourceViewer.STORE_SORT_TYPE"/>
+	</section>
+	<section name="org.eclipse.ui.views.problem">
+	</section>
+</section>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   xmlns:util="com.spice.clove.util.*" 
+		   xmlns:disposableState="mx.states.*"
+		   horizontalScrollPolicy="off"   creationComplete="init();"
+		   verticalScrollPolicy="off"  backgroundColor="0" backgroundAlpha="0"
+		   xmlns:storage="com.spice.utils.storage.*" 
+		   xmlns:mxml="com.spice.utils.mxml.*" 
+		   rightMouseDown="{onRightClick();}"
+		   removedFromStage="onRemovedFromStage();"
+		   xmlns:controls="com.spice.clove.view.controls.*" 
+		   xmlns:observer="com.spice.vanilla.flash.observer.*">
+		   
+	<mx:states>
+		<mx:State name="editTitle">
+			<mx:RemoveChild target="{linkbutton1}"/>
+			<disposableState:AddChild position="lastChild">
+				<mx:TextInput id="titleEditor" textAlign="{textAlign}"  width="{linkbutton1.width+10}" text="{titleBinding.data.getData()}" click="{mouseUp(event)}" mouseUp="{mouseUp(event)}" mouseDown="{mouseUp(event)}" enter="{commitTitle();}" />
+			</disposableState:AddChild>
+		</mx:State>
+	</mx:states>
+	
+	<mx:Metadata>
+		[Event(name="select")]
+		[Event(name="titleChange")]
+	</mx:Metadata>
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.commandEvents.CloveEvent;
+			import com.spice.clove.plugin.column.CloveColumn;
+			import com.spice.clove.plugin.column.ClovePluginColumn;
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.plugin.column.HolderColumn;
+			import com.spice.clove.plugin.core.root.impl.models.CloveRootModelLocator;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncPluginType;
+			import com.spice.clove.sceneSync.core.calls.data.SceneSyncShareOnlineCallData;
+			import com.spice.utils.MouseUtil;
+			import com.spice.vanilla.flash.gc.Janitor;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			[Bindable]
+			public var textAlign:String = "left";
+			
+			[Bindable]	
+			public var shadowColor:int = 0xFFFFFF;
+			
+			[Bindable]
+			public var shadowDistance:int = 1;
+			
+			[Bindable]	
+			public var color:int = 0x576e8e;
+			
+			private var _column:ClovePluginColumn;
+			
+			private var _model:CloveRootModelLocator = CloveRootModelLocator.getInstance();
+			
+			
+			private static var _menuJanitor:Janitor;
+			private static var _contextMenu:NativeMenu;
+			
+			
+			
+			[Bindable(event="columnChange")]
+			public function get column():ClovePluginColumn
+			{
+				return _column;
+			}
+			
+//			public function set  column(value:ClovePluginColumn):void
+//			{  
+//				if(_column == value)
+//					return;
+//				
+//				_column = value;	
+//				
+//				this.dispatchEvent(new Event("columnChange"));
+//				
+//				
+//				
+//			}
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				if(_column == value)
+					return;
+				
+				this.contextMenu = value ? _contextMenu : null;
+				
+				_column = ClovePluginColumn(value);
+				
+				this.dispatchEvent(new Event("columnChange"));
+			}
+			
+			
+			private function mouseUp(event:MouseEvent):void
+			{
+				event.stopPropagation();
+				  
+			}  
+			
+			/*
+			 */
+			
+			public function editMode(event:MouseEvent = null):void
+			{
+				this.currentState = 'editTitle';
+				
+				
+				flash.utils.setTimeout(setTitleFocus,100);
+				
+				
+			}
+			
+			/*
+			 */
+			
+			private function onRootDown(event:MouseEvent):void
+			{
+				event.currentTarget.removeEventListener(event.type,onRootDown);
+				
+				this.commitTitle();
+			}
+			
+			private function setTitleFocus():void
+			{
+				 if(!this.titleEditor)
+					return;
+					
+				this.titleEditor.setFocus();
+				this.titleEditor.setSelection(0,titleEditor.text.length); 
+				
+				
+				//listen for when the mouse is down so that we go back to the regular title
+				if(!root)
+				{
+					this.addEventListener(Event.ADDED_TO_STAGE,onAddedToStage);
+					return;
+				}
+				
+				
+				this.root.removeEventListener(MouseEvent.MOUSE_DOWN,onRootDown);
+				this.root.addEventListener(MouseEvent.MOUSE_DOWN,onRootDown,false,0,true);
+				
+			}
+			
+			private function init():void
+			{
+				if(!_contextMenu)
+				{
+					_menuJanitor = new Janitor();
+					//right click
+					var men:NativeMenu = new NativeMenu();  
+					
+					var deleteColItem:NativeMenuItem = new NativeMenuItem("Delete");
+					var refreshItem:NativeMenuItem = new NativeMenuItem("Refresh");
+					var raiItem:NativeMenuItem = new NativeMenuItem("Clear History");
+//					var shareItem:NativeMenuItem = new NativeMenuItem("Share Online");
+					
+					men.addItem(deleteColItem);
+					men.addItem(raiItem);
+					men.addItem(refreshItem);
+//					men.addItem(shareItem);
+					
+					_contextMenu = men;
+				}
+				
+				this.contextMenu = _contextMenu;
+			}
+			
+			private function onRightClick():void
+			{
+				
+				
+				
+				_menuJanitor.cleanUpAllListeners();
+				_menuJanitor.addEventListener(_contextMenu.getItemAt(0),Event.SELECT,deleteCol,false,0,true);
+				_menuJanitor.addEventListener(_contextMenu.getItemAt(1),Event.SELECT,removeAllItems,false,0,true);
+				_menuJanitor.addEventListener(_contextMenu.getItemAt(2),Event.SELECT,refresh,false,0,true);
+//				_menuJanitor.addEventListener(_contextMenu.getItemAt(3),Event.SELECT,shareOnline,false,0,true);
+				
+			}
+			
+			private function displayContextMenu():void
+			{
+			}
+			
+			private function onAddedToStage(event:Event):void
+			{
+				event.currentTarget.removeEventListener(event.type,onAddedToStage);
+				
+				this.root.removeEventListener(MouseEvent.MOUSE_DOWN,onRootDown);
+				this.root.addEventListener(MouseEvent.MOUSE_DOWN,onRootDown,false,0,true);
+			}
+			
+			private function onRemovedFromStage():void
+			{
+				if(root)
+					this.root.removeEventListener(MouseEvent.MOUSE_DOWN,onRootDown);
+			}
+			
+			/*
+			 */
+			
+			private function commitTitle():void
+			{
+				if(root)
+					this.root.removeEventListener(MouseEvent.MOUSE_DOWN,onRootDown);
+				
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//cheap hack
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				
+				if(column is HolderColumn)
+				{
+					HolderColumn(column).useCustomTitle.setData(true);
+				}
+				
+				
+				
+				ClovePluginColumn(column).title = titleEditor.text;
+				currentState='';
+				
+				this.dispatchEvent(new Event("titleChange"));
+			}
+			
+			private function shareOnline(event:Event):void
+			{
+				
+				var route:Vector.<int> = new Vector.<int>();
+				
+				
+				var cp:CloveColumn = this._column;
+				
+				
+				while(cp.parent)
+				{
+					route.unshift(cp.parent.children.getItemIndex(cp));
+					cp = cp.parent;
+				}
+				
+				  
+				
+				ProxyCallUtils.quickCall(CallSceneSyncPluginType.SCENE_SYNC_GENERATE_SHARE_ONLINE_LINK,_model.rootPlugin.getPluginMediator(),new SceneSyncShareOnlineCallData(route));
+			}
+			
+			
+			/*
+			 */
+			
+			private function refresh(event:Event):void
+			{
+				this.column.loadNewerContent();
+			}
+			
+			/*
+			 */
+			
+			private function deleteCol(event:Event):void
+			{
+				_menuJanitor.cleanUpAllListeners();
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//for some reason, on native menu item select, this display object doesn't get GC'd
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!ywa!!!!!!!!!!!!!!!!!
+				
+				//Wednesday; July 21, 2010 - this still holds true. DEFINITELY a bug within the AIR platform.
+//				     Alert.show('DEL');   
+				
+				
+				flash.utils.setTimeout(new CloveEvent(CloveEvent.REMOVE_COLUMN,this.column).dispatch,100);
+				
+				
+			}
+			
+			/*
+			 */
+			
+			private function removeAllItems(event:Event):void
+			{
+				this.column.history.removeAllItems();
+			}
+			
+			
+			/*
+			 */
+			
+			private function select(event:MouseEvent):void
+			{    
+				this.dispatchEvent(new Event("select"));
+			
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<controls:ShadowedLabel rightClick="{onRightClick();}" shadowColor="{shadowColor}" color="{color}" shadowDistance="{shadowDistance}" creationComplete="{MouseUtil.clickHandler(linkbutton1,editMode,select);}" text="{column.title}" id="linkbutton1" textAlign="{textAlign}" />
+	
+	<observer:SettingObserver target="{column.metadata.getNewSetting(BasicSettingType.STRING,ColumnMetaData.TITLE)}" id="titleBinding" />
+	
+	
+</mx:Canvas>

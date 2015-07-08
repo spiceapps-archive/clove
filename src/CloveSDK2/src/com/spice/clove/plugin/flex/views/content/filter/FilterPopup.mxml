@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:binding="com.spice.binding.*" mouseDown="event.stopImmediatePropagation()" mouseUp="event.stopImmediatePropagation()" xmlns:controls="com.spice.clove.plugin.flex.views.controls.*">
+	
+	<mx:Metadata>
+		[Event(name="itemClick",type="mx.events.ItemClickEvent")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import com.spice.utils.SpriteUtil;
+			
+			import flash.utils.setTimeout;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.Application;
+			import mx.events.ItemClickEvent;
+			import mx.events.ListEvent;
+			import mx.managers.PopUpManager;
+			
+			[Bindable] 
+			private var _dataProvider:ArrayCollection;
+			
+			
+			[Bindable] 
+			private var _rowCount:int;
+			
+			
+			[Bindable] 
+			public var maxRowCount:int = 10;
+			
+			[Bindable] 
+			public var focused:Boolean;
+			
+//			public static function display(target:DisplayObject):FilterPopup
+//			{
+//				 
+//				 return displayAtPosition(SpriteUtil.absolutePosition(target));
+//				 
+//			}
+			
+			/**
+			 */
+			
+			public static function displayAtPosition(pt:Rectangle):FilterPopup
+			{
+				
+				var fp:FilterPopup = FilterPopup(PopUpManager.createPopUp(DisplayObject(Application.application),FilterPopup));
+				
+				flash.utils.setTimeout(PopUpManager.bringToFront,10,fp);
+				
+				
+				
+				fp.x = pt.x;
+				fp.y = pt.y;
+				fp.width = pt.width;
+				fp.minHeight = pt.height;
+				
+				fp.contentList.selectedIndex = 0;
+				return fp;
+			}
+			
+			/**
+			 */
+			
+			public function get selectedItem():Object
+			{
+				return this.contentList.selectedItem;
+			}
+			
+			
+			public function get dataProvider():ArrayCollection
+			{
+				return _dataProvider;
+			}
+			
+			
+			public function set dataProvider(value:ArrayCollection):void
+			{
+				_dataProvider = value;
+				this.setDataProvider();
+				this.contentList.selectedIndex = 0;
+				
+			}
+			
+			
+			
+			public function close():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+			
+			override public function setFocus():void
+			{
+				super.setFocus();
+				
+				this.stage.focus = contentList;
+				contentList.setFocus();
+				contentList.selectedIndex = 0;
+			}
+			
+			
+			
+			private function setDataProvider():void
+			{
+				var n:Number = this._dataProvider.length;
+				
+				_rowCount = Math.min(this.maxRowCount,n);
+			}
+			
+			private function itemClick(event:ListEvent):void
+			{
+				this.dispatchEvent(new ItemClickEvent(ItemClickEvent.ITEM_CLICK,false,false,null,-1,null,contentList.selectedItem));
+				this.close();
+				
+				this.dispatchEvent(new Event(Event.COMPLETE));
+			}
+			
+			private function keyboardUp(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.ENTER)
+					return;
+				
+				itemClick(null);
+				
+			}
+		]]>
+	</mx:Script>
+	
+	<!-- we use the data bound controller because it wraps the dp in a list collection view -->
+	
+	<binding:DataBoundController id="dbc" dataProvider="{this._dataProvider}" dataProviderChange="{setDataProvider();}" collectionChange="{setDataProvider();}" />
+	
+	<mx:List focusIn="{this.focused = true}"
+			 rowCount="{_rowCount}" 
+			 focusOut="{this.focused = false}" 
+			 visible="{this._dataProvider.length > 0}" 
+			 id="contentList"
+			 keyUp="keyboardUp(event);"
+			 itemClick="itemClick(event);" 
+			 dataProvider="{this._dataProvider}" 
+			 width="100%">
+		<mx:itemRenderer>
+			<mx:Component>
+				<mx:HBox verticalAlign="middle" width="100%">
+					<mx:Image width="16" height="16" source="{data.getIcon()}" />
+					<controls:ResizeableLabel width="100%" text="{data.getName()}" />
+				</mx:HBox>
+			</mx:Component>
+		</mx:itemRenderer>
+	</mx:List>
+</mx:Canvas>

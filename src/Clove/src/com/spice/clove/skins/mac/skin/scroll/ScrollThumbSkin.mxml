@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin
+    xmlns:mx="http://www.adobe.com/2006/mxml"  
+    xmlns="com.degrafa.skins.*" 
+	xmlns:degrafa="com.degrafa.*" 
+	xmlns:geometry="com.degrafa.geometry.*" 
+	xmlns:paint="com.degrafa.paint.*">
+	
+    <mx:Script>
+        <![CDATA[
+        	import com.spice.clove.skins.mac.MacSkinAssets;
+        	
+            
+            
+            [Bindable]
+            private var awidth:Number=0;
+            
+            [Bindable]
+            private var aheight:Number=0;
+            
+            
+            private const MIN_HEIGHT:Number = 18;
+            
+            [Bindable] private var _cornerRadius:int = 7;
+			
+			
+			[Bindable] public var scrollColor:int;
+			
+
+            override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void{
+                
+                
+                
+            	
+                awidth = Math.max(unscaledWidth,measuredWidth);//unscaledWidth > measuredWidth ? unscaledWidth : measuredWidth;
+            	aheight = Math.max(unscaledHeight,measuredHeight);//unscaledHeight > measuredHeight ? unscaledHeight : measuredHeight;
+				
+				
+				if(this.getStyle("scrollColor"))
+				{
+					this.scrollColor = this.getStyle("scrollColor");
+				}
+                
+                super.updateDisplayList(unscaledWidth, aheight);
+            }
+            
+        	override public function get measuredWidth():Number
+			{
+				return 18;
+			}
+
+			override public function get measuredHeight():Number
+			{
+				return MIN_HEIGHT;
+			}
+        ]]>
+    </mx:Script>
+    
+    <fills>
+    	<paint:BitmapFill  id="scrollThumbColor"
+    					   source="{MacSkinAssets.SCROLL_VERTICAL}" repeatY="stretch" />
+    </fills>
+   
+    <geometry>
+        <degrafa:GeometryComposition
+            state="thumbUpSkin">
+            <geometry:RoundedRectangle
+                id="thumbGeometry_upSkin"
+                cornerRadius="{_cornerRadius}"
+                fill="{scrollThumbColor}"
+                height="{aheight}"
+                width="{awidth}"
+                />
+        </degrafa:GeometryComposition>
+        
+        <degrafa:GeometryComposition
+            state="thumbOverSkin">
+           <geometry:RoundedRectangle
+                id="thumbGeometry_overSkin"
+                cornerRadius="{_cornerRadius}"
+                fill="{scrollThumbColor}"
+                height="{aheight}"
+                width="{awidth}"
+                />
+        </degrafa:GeometryComposition>
+        
+        <degrafa:GeometryComposition
+            state="thumbDownSkin">
+            <geometry:RoundedRectangle
+                id="thumbGeometry_downSkin"
+                cornerRadius="{_cornerRadius}"
+                fill="{scrollThumbColor}"
+           
+                height="{aheight}"
+                width="{awidth}"
+                />
+        </degrafa:GeometryComposition>
+        
+        <degrafa:GeometryComposition
+            state="thumbDisabledSkin"
+            >
+            <geometry:RoundedRectangle
+                id="thumbGeometry_disabledSkin"
+                cornerRadius="{_cornerRadius}"
+                fill="{scrollThumbColor}"
+                height="{aheight}"
+                width="{awidth}"
+                />
+        </degrafa:GeometryComposition>
+        
+    </geometry>
+    
+</GraphicBorderSkin>

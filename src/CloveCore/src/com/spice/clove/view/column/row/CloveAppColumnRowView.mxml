@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<row:ColumnRowBody xmlns:mx="http://www.adobe.com/2006/mxml" 
+				   xmlns:row="com.spice.clove.plugin.flex.views.column.row.*"
+				   mouseOver="showOptions(event);"
+				   mouseOut="hideOptions(event);" 
+				   width="100%" 
+				   xmlns:controls="com.spice.clove.plugin.flex.views.controls.*" 
+				   creationComplete="init();">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.content.data.CloveAppData;
+			import com.spice.clove.plugin.core.calls.CallCloveContentItemRendererType;
+			import com.spice.clove.plugin.core.calls.data.LinkSelectedCallData;
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.clove.plugin.flex.views.column.row.ColumnRowOptions;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			
+			public static const ICON_PADDING:int = 4;
+			public static const ROW_PADDING:int = 10;
+			public static const ICON_SIZE:int = 50;
+			public static const PADDING_LEFT:int = 6;
+			public static const PADDING_RIGHT:int = 8;
+			public static const ATT_ICON_SIZE:int = 21;
+			
+			public static const MESS_X_POS:int = ICON_SIZE + ICON_PADDING + PADDING_LEFT;
+			
+			
+			private var _hideInterval:int;
+			
+			
+			private var _data:ICloveData;
+			
+			private var _initialized:Boolean;
+			
+			
+			override public function set data(value:Object):void
+			{
+				_data = ICloveData(value);
+				
+				if(this._initialized)
+				{
+					this.setViewData();
+				}
+			}
+			
+			
+			private function init():void
+			{
+				this._initialized = true;
+				this.setViewData();
+			}
+			
+			
+			private function setViewData():void
+			{
+				
+				//we add this for speed since binding data is slow as hell
+				rowIcon.cloveData    = this._data;
+				rowOptions.cloveData = this._data;
+				dateLabel.cloveData = this._data;
+				attachmentsView.cloveData = this._data;
+				columnRowTitle.text  = _data ? this._data.getTitle() : null;
+				columnRowMessage.htmlText = _data ? this._data.getMessage() : null;
+			}
+			
+			
+			public function showOptions(event:MouseEvent):void
+			{
+				
+				if(!_data)
+					return;
+				
+				
+				var options:* = CloveAppData(this._data).getColumn().dataOptionControllers;
+				
+				if(!rowOptions  || options.length == 0)
+					return;
+				
+				rowOptions.options   = options;
+				
+				rowOptions.showOptions();
+				
+				
+				//a mouse-out event doesn't get dispatched  after a native item select
+				//so this is a hackish- fix.
+				flash.utils.clearInterval(_hideInterval);
+				
+				_hideInterval = flash.utils.setInterval(hideOptions,100);
+			}
+			
+			public function hideOptions(event:MouseEvent = null):void
+			{
+				if(rowOptions && !new Rectangle(x,y,width,height).contains(mouseX,mouseY))
+				{
+					flash.utils.clearInterval(_hideInterval);
+					
+					rowOptions.hideOptions();
+				}
+				
+			}
+			
+			private function onLinkSelected(event:TextEvent):void
+			{  
+				ProxyCallUtils.quickCall(CallCloveContentItemRendererType.LINK_SELECTED,this._data.getItemRenderer().getProxy(),new LinkSelectedCallData(_data,event.text));
+				 
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+	<row:ColumnRowIcon x="{PADDING_LEFT}" 
+					   iconSize="{ICON_SIZE}" 
+					   id="rowIcon"  />
+	
+	<mx:HBox id="topBar"
+			 left="{MESS_X_POS}"
+			 horizontalGap="5"
+			 verticalAlign="bottom" 
+			 right="{PADDING_RIGHT}">
+		
+		<!--<row:ColumnRowAttachmentsView cloveData="{this.cloveData}"
+		paddingLeft="3"
+		metadataName="{CloveDataSettingName.INFORMATIVE_ATTACHMENTS}"
+		layout="{BoxDirection.HORIZONTAL}"
+		height="16"  /> -->  
+		
+		<row:ColumnRowTitle id="columnRowTitle"  />
+		
+		<row:ColumnRowDateLabel id="dateLabel" />
+		
+		<!-- COLUMN ROW OPTIONS ADDED HERE -->
+		
+		<row:ColumnRowOptions id="rowOptions"  />
+	</mx:HBox>
+	
+	<row:ColumnRowMessage id="columnRowMessage" 
+						  y="{topBar.y+topBar.height}"
+						  minHeight="{ICON_SIZE}"
+						  left="{MESS_X_POS}"
+						  right="{PADDING_RIGHT}"
+						  link="onLinkSelected(event);" />
+	
+	
+	<row:ColumnRowAttachmentsView id="attachmentsView"
+								  paddingLeft="{PADDING_LEFT+ICON_SIZE-ATT_ICON_SIZE}"
+								  paddingBottom="6"
+								  y="{columnRowMessage.y+columnRowMessage.height+PADDING_LEFT}" 
+								  width="100%" 
+								  styleName="attSeperator" />
+	
+	
+</row:ColumnRowBody>

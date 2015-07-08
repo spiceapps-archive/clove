@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button xmlns:mx="http://www.adobe.com/2006/mxml" label="Manage Scenes" click="{openPrefs();}">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.sceneSync.impl.SceneSyncPlugin;
+			import com.spice.clove.plugin.core.sceneSync.impl.models.SceneSyncPluginModelLocator;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncPluginType;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			
+			private function openPrefs():void
+			{
+				
+				ProxyCallUtils.quickCall(CallSceneSyncPluginType.OPEN_SCENE_SYNC_PREFERENCE_VIEW,SceneSyncPlugin(SceneSyncPluginModelLocator.getInstance().plugin).getPluginMediator());
+			}
+		]]>
+	</mx:Script>
+	
+</mx:Button>

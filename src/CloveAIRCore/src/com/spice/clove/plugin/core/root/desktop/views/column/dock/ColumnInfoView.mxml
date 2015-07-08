@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox verticalAlign="middle" height="17" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:column="com.spice.clove.view.column.*" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*" xmlns:observer="com.spice.vanilla.flash.observer.*" xmlns:paint="com.degrafa.paint.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.ClovePluginColumn;
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			[Bindable] 
+			public var targetColumn:ClovePluginColumn;
+			
+			[Bindable] 
+			public var showActivity:Boolean;
+		]]>
+	</mx:Script>
+	
+	<mx:Container visible="{showActivity}">
+		
+		<column:ColumnActivityView column="{targetColumn}" scaleX=".8" scaleY=".8" />
+		
+	</mx:Container>
+	
+	<mx:Canvas width="10" height="10"  visible="{numUnreadBind.data.getData() != 0}" includeInLayout="{numUnreadBind.data.getData() != 0}">
+		<degrafa:Surface  verticalCenter="-1" horizontalCenter="0">
+			<degrafa:fills>
+				<paint:GradientFillBase  id="numUnreadBG" angle="90">
+					<paint:GradientStop color="#67a0ff" /> 
+					<paint:GradientStop color="#005ffc" /> 
+				</paint:GradientFillBase>
+			</degrafa:fills>
+			<degrafa:GeometryGroup>
+				<geometry:Circle fill="{numUnreadBG}" radius="5" />
+			</degrafa:GeometryGroup>
+		</degrafa:Surface>
+		
+		
+	</mx:Canvas>
+	<observer:SettingObserver id="numUnreadBind" target="{targetColumn.metadata.getNewSetting(BasicSettingType.NUMBER,ColumnMetaData.NUM_SUM_UNREAD)}" />
+	
+</mx:HBox>

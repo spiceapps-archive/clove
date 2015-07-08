@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display:AutoResizingWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+							xmlns:display="com.spice.air.display.*" 
+							title="{controller.title}" 
+							xmlns:install="com.spice.clove.plugin.core.installer.views.install.*" 
+							xmlns:display1="com.spice.display.*">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			
+			[Bindable] 
+			public var controller:ServiceInstallationController;  
+			
+			[Bindable] 
+			public var onlyPlugins:Boolean;
+			  
+		]]>
+	</mx:Script>
+	
+	
+	<mx:ViewStack id="installViewStack" resizeToContent="true" selectedIndex="{controller.installationStep}">
+		<install:CloveHelloView controller="{controller}" />
+		<install:SelectPluginsView controller="{controller}" />
+		<install:InstallPluginsView controller="{controller}"/>
+		<install:AdditionalInstallationViews controller="{controller}" />
+	</mx:ViewStack>
+</display:AutoResizingWindow>

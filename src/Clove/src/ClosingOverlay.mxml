@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   backgroundColor="#000000"
+		   backgroundAlpha=".4" width="100%" height="100%">
+	<mx:Label text="Closing..." horizontalCenter="0" verticalCenter="0" fontSize="32" color="#FFFFFF" />
+</mx:Canvas>

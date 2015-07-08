@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Label xmlns:mx="http://www.adobe.com/2006/mxml"
+		  creationComplete="init();" 
+		  styleName="columnRowDate" >
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.impl.utils.TimeUtil;
+			
+			import mx.binding.utils.ChangeWatcher;
+			
+			
+			private var _cw:ChangeWatcher;
+			
+			public function get cloveData():ICloveData
+			{
+				return this.data as ICloveData;
+			}
+			
+			private function init():void
+			{
+				_cw = ChangeWatcher.watch(this,["data","datePosted"],onDatePostedChange);
+			}
+			
+			
+			public function set cloveData(value:ICloveData):void
+			{
+				this.data = value;
+			}
+			
+			override public function set data(value:Object) : void
+			{
+				super.data = value;
+				
+				if(!value)
+				{
+					return;
+				}
+				
+				onDatePostedChange();
+			}
+			
+			
+			private function onDatePostedChange(event:* = null):void
+			{
+				if(!data)
+					return;
+				
+				this.text = TimeUtil.getShortTime(new Date(Number(data.datePosted)));
+				
+			}
+		]]>
+	</mx:Script>
+</mx:Label>

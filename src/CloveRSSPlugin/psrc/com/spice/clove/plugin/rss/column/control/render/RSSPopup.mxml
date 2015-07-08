@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml">
+<mx:Script>
+	<![CDATA[
+		import mx.managers.PopUpManager;
+		
+		[Bindable] public var html:String;
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		private function setSize():void
+		{
+			this.nativeWindow.width = rssView.width;
+			this.nativeWindow.height = rssView.height;
+		}
+	]]>
+</mx:Script>
+	
+	<mx:HTML id="rssView" htmlText="{html}" htmlRender="setSize()" />
+</mx:Window>

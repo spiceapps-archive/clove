@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" paddingLeft="7" paddingRight="5" width="100%" xmlns:row="com.spice.clove.views.column.row.*" xmlns:controls="com.spice.clove.views.controls.*" xmlns:filters="flash.filters.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugins.digg.cue.DiggStoryCue;
+			import com.architectd.digg2.calls.stories.DiggStoryCall;
+			import com.architectd.digg2.data.StoryData;
+			import com.architectd.digg2.events.DiggEvent;
+			import com.spice.clove.plugin.column.render.RenderedColumnData;
+			import com.spice.clove.plugins.digg.DiggPlugin;
+			
+			[Embed("DiggButton-N.png")]
+			public static const DIGG_BUTTON_UP:Class;
+			
+			
+			[Embed("DiggButton-P.png")]
+			public static const DIGG_BUTTON_DOWN:Class;
+			
+			[Bindable] 
+			private var _renderedColumnData:RenderedColumnData;
+			
+			public function get renderedData():RenderedColumnData
+			{
+				return this._renderedColumnData;
+			}
+			
+			public function set renderedData(value:RenderedColumnData):void
+			{
+				this._renderedColumnData = value;
+				
+				if(!value)
+					return;
+					
+				var p:DiggPlugin = value.column.controller.pluginController.plugin as DiggPlugin;
+				
+				
+				_diggSuccess = p.model.settings.hasDugg(value.vo.id);
+			}
+			
+			[Bindable] 
+			private var _diggSuccess:Boolean;
+			
+			
+			private function diggit():void
+			{
+				var p:DiggPlugin = renderedData.column.controller.pluginController.plugin as DiggPlugin;
+				
+				
+				new DiggStoryCue(p,renderedData.vo.id).addEventListener(DiggEvent.NEW_DATA,onData,false,0,true);
+				
+			}
+			
+			private function onData(event:DiggEvent):void
+			{
+				_diggSuccess = event.data[0].success;
+			}
+			
+			private function goToArticle():void
+			{
+				flash.net.navigateToURL(new URLRequest(_renderedColumnData.vo.shortUrl));
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:VBox>
+		<mx:Canvas>
+			
+			<row:ColumnRowIcon renderedData="{_renderedColumnData}" iconSize="48" />
+			
+			<mx:Canvas verticalCenter="4" 
+							horizontalCenter="0" >
+				
+			<mx:Label text="{this._renderedColumnData.vo.diggs}" fontWeight="bold" color="#FFFFFF" />
+				<mx:filters>
+					<filters:GlowFilter color="#000000" blurX="3" blurY="3" alpha=".5" />
+					<filters:DropShadowFilter color="#000000" blurX="1" blurY="1" alpha=".5" angle="90" distance="1" />
+				</mx:filters>
+			</mx:Canvas>
+		</mx:Canvas>
+		<mx:Button upSkin="{DIGG_BUTTON_UP}" 
+				   overSkin="{DIGG_BUTTON_UP}" 
+				   downSkin="{DIGG_BUTTON_DOWN}" 
+				   click="diggit();" 
+				   visible="{!_diggSuccess}"
+				   enabled="{!_diggSuccess}" />
+				   
+	</mx:VBox>
+	<mx:VBox width="100%">
+		<mx:Canvas width="100%">
+			
+			<row:ColumnRowTitle renderedData="{this._renderedColumnData}" buttonMode="true" width="{NaN}" click="{goToArticle();}"/>
+			<!--<row:ColumnRowDateLabel renderedData="{this._renderedColumnData}" />-->
+			
+			<row:ColumnRowOptions right="0" renderedData="{this._renderedColumnData}" />
+		</mx:Canvas>
+		
+		<row:ColumnRowMessage renderedData="{this._renderedColumnData}" />
+	</mx:VBox>
+</mx:HBox>

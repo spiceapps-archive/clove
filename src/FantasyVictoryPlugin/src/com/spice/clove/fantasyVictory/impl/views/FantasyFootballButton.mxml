@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button xmlns:mx="http://www.adobe.com/2006/mxml" label="Fantasy Sports" click="showBookmarkMenu();">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.fantasyVictory.impl.FantasyVictoryPlugin;
+			import com.spice.clove.plugin.core.calls.CallAppCommandType;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			
+			private var _menu:NativeMenu;
+			
+			
+			[Bindable] 
+			public var plugin:FantasyVictoryPlugin;
+			
+			
+			private function showBookmarkMenu():void
+			{
+				if(!_menu)
+				{
+					_menu = new NativeMenu();
+					_menu.addItem(new NativeMenuItem("Yahoo!")).addEventListener(Event.SELECT,onYahooSelect);
+					_menu.addItem(new NativeMenuItem("CBS")).addEventListener(Event.SELECT,onCBSSelect);
+				}
+				
+				_menu.display(this.stage,this.stage.mouseX,this.stage.mouseY);
+			}
+			
+			private function onYahooSelect(event:Event):void
+			{
+				ProxyCallUtils.quickCall(CallAppCommandType.NAVIGATE_TO_URL,plugin.getPluginMediator(),"http://football.fantasysports.yahoo.com/");	
+			}
+			
+			private function onCBSSelect(event:Event):void
+			{
+				ProxyCallUtils.quickCall(CallAppCommandType.NAVIGATE_TO_URL,plugin.getPluginMediator(),"http://www.cbssports.com/fantasy");
+			}
+		]]>
+	</mx:Script>
+</mx:Button>

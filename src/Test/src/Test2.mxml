@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" 
+						layout="vertical"
+						creationComplete="init();" xmlns:binding="com.spice.concrete.utils.settings.binding.*" xmlns:text="com.spice.flex.views.text.*">
+	<mx:Script>
+		<![CDATA[
+			import com.architectd.service.oauth.OAuthDesktopLoginHelper;
+			import com.architectd.service.oauth.OAuthServiceCue;
+			import com.architectd.twitter2.TwitterService;
+			import com.spice.clove.fantasyVictory.impl.service.FantasyVictoryService;
+			import com.spice.core.text.command.ITextCommandTarget;
+			import com.spice.impl.text.command.TextCommandManager;
+			import com.spice.impl.text.command.TextCommandTarget;
+			import com.spice.impl.text.command.handle.link.TextCommandUrlHandler;
+			
+			import flash.utils.getTimer;
+			
+			import flashx.textLayout.edit.EditManager;
+			
+			import org.iotashan.oauth.OAuthSignatureMethod_PLAINTEXT;
+			
+			
+			
+				
+			[Bindable] 
+			private var _test:String = "";
+			
+			public static const SET_TEST_CHANGE:String = "setTestChange";
+			
+			
+			private var _manager:TextCommandManager;
+			
+			
+			private function init():void
+			{
+				
+				var time:Number = flash.utils.getTimer();
+				
+				for(var j:int = 0; j < 100000; j++)
+				{
+					for(var i:int = 0; i < 5000; i++)
+					{
+						
+					}
+					
+					
+				}
+				
+				
+				trace(flash.utils.getTimer() - time);
+				
+				
+				
+				
+				return;
+				var fs:FantasyVictoryService = new FantasyVictoryService();
+				fs.loadQBS();
+//				var serv:TwitterService = new TwitterService();
+//				serv.search("google");
+				
+//				var key:String = "dj0yJmk9YWtKTTlFWGFaMXFjJmQ9WVdrOVRuRmthRzVOTjJzbWNHbzlOak0yTVRVM09EWXkmcz1jb25zdW1lcnNlY3JldCZ4PWE5";
+//				var secret:String = "7b30e9129dd6e99e21e6d256ff475f9b098b2d6a";
+//				var requestTokenUrl:String = "https://api.login.yahoo.com/oauth/v2/get_request_token";
+//				var requestUrl:String = "https://api.login.yahoo.com/oauth/v2/request_auth";
+//				var authTokenUrl:String = "https://api.login.yahoo.com/oauth/v2/request_auth";
+//				
+//				var accessTokenUrl:String= "accessTokenUrl";
+//				
+//				var oauth:OAuthServiceCue = new OAuthServiceCue(key,secret,requestTokenUrl,authTokenUrl,authTokenUrl,authTokenUrl,"username",new OAuthDesktopLoginHelper(),null,null,new OAuthSignatureMethod_PLAINTEXT());
+//				oauth.initialize();
+			}
+			
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Text id="test" />
+</mx:WindowedApplication>

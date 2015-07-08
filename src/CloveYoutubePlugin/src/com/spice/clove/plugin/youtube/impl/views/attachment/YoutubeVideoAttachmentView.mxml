@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" horizontalScrollPolicy="off" verticalScrollPolicy="off">
+	<mx:Script>
+		<![CDATA[
+			
+			[Embed(source="youtube.swf")]
+			public static const YOUTUBE_PLAYER:Class;
+			
+			
+			[Bindable] 
+			private var _embedHTML:String;
+			
+			
+			private var _uid:String;
+			
+			public function get videoUID():String
+			{
+				return this._uid;
+			}
+			
+			/**
+			 */
+			
+			public function set videoUID(value:String):void
+			{
+				this._uid = value;
+				
+				this._embedHTML = null;
+				this._embedHTML = '<object width="100%" height="100%"><param name="movie" value="http://www.youtube.com/v/'+value+'?fs=1&amp;hl=en_US"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/'+value+'?fs=1&amp;hl=en_US" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="100%" height="100%"></embed></object>';
+			}
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				
+				
+				this.updateVideoSize();
+				
+				//video.scaleX = scale;
+				//video.scaleY = scale;
+			}
+			
+			private function updateVideoSize():void
+			{    
+				if(!video)
+					return;
+				
+				if(Math.abs(video.width - unscaledWidth) < 10)
+				{
+					return;
+				}
+				
+				var width:Number = unscaledWidth;
+				var height:Number = unscaledWidth * (3/4);
+				
+				//				var height:Number = (video.contentHeight * unscaledWidth) / video.contentWidth;
+				
+				//var scale:Number = video.contentWidth / unscaledWidth;
+				
+				if(isNaN(height))
+					return;
+				  
+				  video.height = height - 40;
+				video.width = width - 40;
+				
+				/*
+				
+				 if(!video.content)
+					return;
+				
+				
+				video.content.scaleX = 1.2;
+				video.content.scaleY = 1.2;   */
+				
+			}
+			
+			private function init():void
+			{  
+				/* video.loaderContext = new LoaderContext(true);
+				video.loaderContext.allowLoadBytesCodeExecution = true;
+				video.loaderContext.allowCodeImport = true; */
+				
+			}
+			
+			/**
+			 */
+			
+			private function onPlayerLoaded():void
+			{
+				
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:HTML id="video" htmlText="{_embedHTML}" paintsDefaultBackground="false"  complete="{updateVideoSize()}" />
+	
+	<!--<mx:SWFLoader id="video"  creationComplete="init();" initialize="{init();}" source="{YOUTUBE_PLAYER}" complete="onPlayerLoaded();" trustContent="true" loadForCompatibility="true"    />-->
+</mx:Canvas>

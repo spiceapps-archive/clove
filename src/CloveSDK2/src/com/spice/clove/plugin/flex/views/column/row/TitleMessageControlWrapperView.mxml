@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:UIComponent xmlns:mx="http://www.adobe.com/2006/mxml" 
+				><!--implements="mx.core.IDataRenderer"-->
+	<!--<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.option.ColumnDataOptionListener;
+			import com.spice.display.BindableView;
+			
+			import mx.core.IDataRenderer;
+			
+			
+			private var _data:ColumnDataOptionListener;
+			
+			
+			public function get data():Object
+			{
+				return _data;
+			}
+			
+			public function set data(value:Object):void
+			{
+				
+				if(_data)
+				{
+					_data.icon.parent.removeChild(_data.icon);
+					_data = undefined;
+				}
+				
+				_data = ColumnDataOptionListener(value);
+				
+				if(!value)
+					return;
+				
+				
+				this.addChild(_data.icon)
+				
+				
+			}
+		]]>
+	</mx:Script>-->
+</mx:UIComponent>

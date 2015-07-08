@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 horizontalGap="0" 
+		 verticalGap="0"
+		 width="100%" 
+		 height="100%" 
+		 clipContent="false"
+		 creationPolicy="queued" 
+		 xmlns:dock="com.spice.clove.plugin.core.root.desktop.views.column.dock.*" 
+		 xmlns:binding="com.spice.binding.*"
+		 xmlns:observers="com.spice.vanilla.mx.proxy.observers.*" 
+		 xmlns:proxy="com.spice.vanilla.mx.proxy.*" 
+		 xmlns:group="com.spice.clove.plugin.core.root.desktop.views.column.group.*">
+	
+	<mx:VBox id="additionalHeaders" 
+			 width="100%" 
+			 verticalGap="0" 
+			 borderSides="{['bottom']}" 
+			 color="#CCCCCC"
+			 borderStyle="solid" 
+			 visible="{this._model2.headerViews.length > 0}" 
+			 includeInLayout="{this._model2.headerViews.length > 0}" />
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			
+			import com.spice.clove.analytics.core.AnalyticalActionType;
+			import com.spice.clove.analytics.core.AnalyticsPluginHelper;
+			import com.spice.clove.analytics.core.AnalyticsTimer;
+			import com.spice.clove.commandEvents.CloveEvent;
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.core.root.impl.models.CloveRootModelLocator;
+			import com.spice.clove.post.core.calls.CallToPostPluginType;
+			import com.spice.clove.root.core.calls.CallRootPluginType;
+			import com.spice.recycle.factory.RecyclingFactory;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			import com.spice.vanilla.core.observer.INotification;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			
+			private const BUTTON_Y:int = 6;
+			private const BUTTON_PADDING:int = 20;
+			private const BUTTON_GAP:int = 11;
+			
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			private var _model2:CloveRootModelLocator = CloveRootModelLocator.getInstance();
+			private var _analytics:AnalyticsTimer;
+			private var _currentLocation:String;
+			
+			
+			[Disposable]
+			[Bindable]
+			public var cvc:RootColumnViewController;
+			
+			
+			private function startWindowDrag(event:MouseEvent):void
+			{
+				
+				if(event.target != footer)
+					return;
+				
+				this.stage.nativeWindow.startMove();
+				
+				
+			}
+			
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				this.cvc = RootColumnViewController(value);
+			}
+			
+			private function closeHtmlWindow():void
+			{
+				Tweener.addTween(htmlOverlay,{y:Capabilities.screenResolutionY+300,time:1.5,transition:'easeInOutCubic',onComplete:setHTMLLocationToNull});
+				
+				this._analytics.stopAndRecordTime();
+			}
+			
+			
+			
+			
+			/**
+			 */
+			
+			private function showHtmlWindow(n:INotification):void
+			{
+				this._currentLocation = n.getData();
+				
+				if(this._currentLocation.indexOf("://") == -1)
+				{
+					this._currentLocation = "http://"+this._currentLocation;
+				}
+				
+				
+				if(!this._analytics)
+				{
+					this._analytics = new AnalyticsTimer(new AnalyticsPluginHelper(this._model2.rootPlugin.getPluginMediator()),
+						AnalyticalActionType.TIME_VIEWING_HTML_PAGE,
+						null,
+						-1);
+				}
+				
+				this._analytics.stopAndRecordTime();
+				htmlOverlay.includeInLayout = true
+				htmlOverlay.visible = true;
+				
+				
+				Tweener.addTween(htmlOverlay,{y:0,time:1.5,transition:'easeInOutCubic',onComplete:setCurrentHTMLLocation});
+			}
+			
+			private function setCurrentHTMLLocation():void
+			{
+				this.htmlWindow.location = this._currentLocation;
+				
+				
+				this._analytics.setContent(this._currentLocation);
+				this._analytics.startTimer();
+				
+			}
+			
+			private function setHTMLLocationToNull():void
+			{
+				this.htmlWindow.location = "about:blank";
+				htmlOverlay.includeInLayout = false;
+				htmlOverlay.visible = false;
+				
+				
+			}
+			
+			private function showWindowInBrowser():void
+			{
+				flash.net.navigateToURL(new URLRequest(htmlWindow.location));
+				this.closeHtmlWindow();
+			}
+			
+			private function submitFeedback():void
+			{
+				ProxyCallUtils.quickCall(CallRootPluginType.OPEN_INTERNAL_HTML_WINDOW,this._model2.rootPlugin.getProxy(),"http://getsatisfaction.com/spice_apps/");
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+	<mx:HBox width="100%" 
+			 height="100%"
+			 horizontalGap="0" 
+			 verticalScrollPolicy="off"
+			 creationPolicy="queued">
+		
+		
+		<dock:ColumnPicker  height="100%" 
+							groupControllers="{cvc.groupControllers}" 
+							visible="{_model.applicationSettings.getUiSettings(this).dockVisible}" 
+							includeInLayout="{_model.applicationSettings.getUiSettings(this).dockVisible}" />
+		
+		
+		<mx:VBox id="groupHolder" 
+				 width="100%" 
+				 height="100%"
+				 paddingBottom="0"
+				 verticalGap="0">
+			
+			
+			<mx:Canvas width="100%" height="100%" clipContent="false">
+				
+				<group:GroupView controller="{GroupColumnViewController(cvc.currentTargetController)}" 
+								 width="100%" 
+								 height="100%"
+								 clipContent="false"
+								 paddingBottom="5" />
+				
+				
+				<mx:VBox id="htmlOverlay" 
+						 backgroundColor="#777777" 
+						 clipContent="false" 
+						 width="100%" 
+						 height="100%"
+						 y="{Capabilities.screenResolutionY}">
+					
+					<mx:HBox paddingLeft="5" 
+							 paddingTop="5" 
+							 width="100%" 
+							 paddingRight="6">
+						
+						<mx:Button label="Close Window" 
+								   click="closeHtmlWindow();" /> 
+						<mx:Button label="Show In Browser"
+								   click="showWindowInBrowser();" /> 
+						<mx:TextInput id="location" 
+									  text="{htmlWindow.location}" 
+									  enter="{htmlWindow.location = location.text}"
+									  width="100%" />
+					</mx:HBox>
+					
+					<mx:Canvas width="100%" 
+							   height="100%">
+						<mx:HTML id="htmlWindow" 
+								 width="100%" 
+								 height="100%"  />
+					</mx:Canvas>
+					
+				</mx:VBox>
+				
+				
+			</mx:Canvas>
+			
+			<mx:HBox id="footer" 
+					 width="100%" 
+					 height="34" 
+					 verticalScrollPolicy="off"
+					 paddingTop="6"
+					 verticalAlign="top"
+					 horizontalGap="0"
+					 styleName="footerBackground"
+					 mouseDown="startWindowDrag(event);" 
+					 creationPolicy="queued">
+				
+				<mx:Button id="plusFooterButton"
+						   buttonMode="true" 
+						   styleName="plusFooterButton" 
+						   click="{new CloveEvent(CloveEvent.ADD_COLUMN).dispatch()}" />
+				
+				<mx:Button id="refreshAllFooterButton"
+						   buttonMode="true" 
+						   click="{ProxyCallUtils.quickCall(CallRootPluginType.REFRESH_ALL_FEEDS,this._model2.rootPlugin.getProxy());}" 
+						   styleName="refreshAllFooterButton" />
+				
+				<mx:Button id="columnsFooterButton" 
+						   buttonMode="true" 
+						   styleName="columnsFooterButton"  
+						   selected="{!_model.applicationSettings.core.groupExpanded}" 
+						   click="{_model.applicationSettings.core.groupExpanded = !_model.applicationSettings.core.groupExpanded}" />
+				
+				
+				<mx:Spacer width="{BUTTON_GAP}"/>
+				
+				<mx:Button buttonMode="true" 
+						   id="postFooterButton" 
+						   click="{ openPostWindowCall.dispatch()}"
+						   styleName="postFooterButton" />
+				
+				<mx:Spacer width="100%" />
+				
+				<mx:Button label="Feedback" click="submitFeedback();" />
+				
+				<mx:Spacer width="{BUTTON_GAP}" />
+				
+				<mx:HBox id="additionalFooterItems" 
+						 horizontalGap="{BUTTON_GAP}"  />
+				
+				
+			</mx:HBox>
+			
+			
+		</mx:VBox>
+		
+		
+		
+	</mx:HBox>
+	
+	<binding:DataBoundController dataProvider="{this._model2.headerViews}" 
+								 target="{additionalHeaders}"
+								 itemRenderer="{new RecyclingFactory(RootColumnAdditionalHeaderView)}" />
+	
+	<binding:DataBoundController target="{additionalFooterItems}"
+								 dataProvider="{this._model2.footerViews}" 
+								 itemRenderer="{new RecyclingFactory(RootColumnAdditionalHeaderView)}"/>
+	
+	
+	<observers:MXProxyBinding id="openHtmlCall" 
+							  proxy="{_model2.rootPlugin.getProxy()}" 
+							  notificationsOfInterest="{[CallRootPluginType.OPEN_INTERNAL_HTML_WINDOW]}" handler="{this.showHtmlWindow}" />
+	
+	<proxy:MXProxyCall id="openPostWindowCall"
+					   property="{CallToPostPluginType.OPEN_POST_WINDOW}" 
+					   proxy="{_model2.rootPlugin.getPluginMediator()}" 
+					   autoCall="false" />
+</mx:VBox>

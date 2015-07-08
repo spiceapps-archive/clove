@@ -1,0 +1,10 @@
+package com.cloveHello.plugin.icons
+{
+	public class CloveHelloPluginIcon
+	{
+		public function CloveHelloPluginIcon()
+		{
+		}
+
+	}
+}

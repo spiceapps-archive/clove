@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:single="com.spice.clove.plugin.core.root.column.view.single.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.util.ColumnUtil;
+			import com.spice.clove.view.column.ColumnViewController;
+			
+			[Bindable] 
+			public var controller:SingleColumnViewController;
+			
+			
+			public function save():void
+			{
+				controller.currentView = SingleColumnViewController.COL_VIEW;
+				
+				ColumnUtil.refreshColumn(controller.target);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:HBox width="100%">
+		<mx:Text text="Preferences" />
+		<mx:Spacer width="100%"/>
+		<single:AddFeedButton label="+" controller="{this.controller}" />
+		<mx:Button label="back" click="{this.save()}"/>
+	</mx:HBox>
+	
+	<single:ColumnPreferenceView controller="{controller}" />
+</mx:VBox>

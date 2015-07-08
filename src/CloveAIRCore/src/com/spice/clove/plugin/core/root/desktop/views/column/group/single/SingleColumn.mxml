@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CREATION POLICY SET TO ALL because when installing a new column, the data isn't rendered properly -->
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+			  xmlns:viewStackEffects="org.efflex.mx.viewStackEffects.*"
+			  xmlns:single="com.spice.clove.plugin.core.root2.column.view.group.single.*"
+			  width="100%" 
+			  height="100%" 
+			  backgroundAlpha="0"
+			  xmlns:single1="com.spice.clove.plugin.core.root.desktop.views.column.group.single.*" >
+	
+
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.root.impl.views.column.ColumnRenderHelperView;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			
+			import mx.binding.utils.ChangeWatcher;
+			import mx.effects.easing.Cubic;
+			
+			
+			
+			//FALSE in single column mode
+			public var showPrefs:Boolean = true;
+			
+			
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			private var _controller:SingleColumnViewController;
+			
+			private var _view:DisplayObject;
+			private var _initialized:Boolean;
+			
+			
+			[Bindable(event="controllerChange")]
+			public function get controller():SingleColumnViewController
+			{
+				return _controller;
+			}
+			
+			public function set controller(value:SingleColumnViewController):void
+			{  
+				
+				this._controller = value;
+				init();
+				
+				this.dispatchEvent(new Event("controllerChange"));
+			}
+			
+			
+			private function init():void
+			{
+				if(_initialized)
+					return;
+				
+				_initialized = true;
+				ChangeWatcher.watch(this,["controller","currentViewState"],onControllerViewChange);
+				onControllerViewChange();
+			}
+			
+			
+			private function onControllerViewChange(event:* = null):void
+			{
+				if(!_controller)
+				{
+					this.removeView();
+					return;
+				}
+				
+				if(_controller.currentViewState == SingleColumnViewController.DATA_COLUMN_VIEW)
+				{
+					var crv:ColumnRenderView = this.getView(ColumnRenderView);
+					
+					
+					try
+					{
+						crv.showPrefs = this.showPrefs;
+						crv.controller = this._controller; 
+					}catch(e:Error)
+					{
+						Logger.logError(e);
+					}
+				}
+				else
+				{
+					var pref:NewColumn = this.getView(NewColumn);
+					pref.controller = controller;
+				}
+			}
+			
+			
+			private function getView(clazz:Class):*
+			{
+				if(_view && _view is clazz)
+				{
+					return _view;
+				}
+				else
+				{
+					this.removeView();
+					
+					_view = _pool.getObject(clazz);
+					
+					this.addChild(_view);
+					
+				}
+				
+				return _view;
+			}
+			
+			private function removeView():void
+			{
+				if(_view && _view.parent)
+				{
+					Object(_view).controller = null;
+					_pool.addObject(_view.parent.removeChild(_view));
+				}
+				this._view = null;
+			}
+		]]>
+	</mx:Script>
+	
+	
+
+</mx:Canvas>

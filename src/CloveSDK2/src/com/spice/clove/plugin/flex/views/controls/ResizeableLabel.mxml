@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:UIComponent xmlns:mx="http://www.adobe.com/2006/mxml"
+		   creationComplete="init();">
+	
+	
+	<mx:Metadata>
+		[Style(name="color", type="uint", format="Color", inherit="yes")]
+	</mx:Metadata>
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.recycle.pool.ObjectPoolManager;
+			
+			import mx.controls.Label;
+			
+			
+			private var _text:String;
+			private var _textAlign:String = "left";
+			private static var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			  
+			public var labelOverlay:UIComponent;
+			public var labelItem:Label;
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,this.labelItem.textHeight);
+				
+				this.labelItem.setActualSize(Math.min(this.width,this.labelItem.measuredWidth),this.labelItem.textHeight);
+				  
+				
+				if(labelOverlay)
+				{
+					with(labelOverlay.graphics)
+					{
+						clear();
+						beginFill(0,0);
+						drawRect(0,0,this.labelItem.width,unscaledHeight);
+					}
+				}
+			}
+			
+			
+			
+			override public function get measuredHeight():Number
+			{
+				return this.labelItem ? this.labelItem.textHeight : 15;
+			}
+			
+			
+			
+			private function init():void
+			{
+				labelItem.text = this._text;
+				labelItem.setStyle("textAlign",this._textAlign);
+				labelItem.setStyle("color",this.getStyle("color"));
+				
+				if(this.buttonMode)
+				{
+					this.labelOverlay = _pool.getObject(UIComponent);
+					addChild(labelOverlay);
+				}
+				/* else
+					if(this.labelOverlay)
+					{
+						if(labelOverlay.parent)
+						{
+							_pool.addObject(labelOverlay.parent.removeChild(labelOverlay));
+						}
+						labelOverlay = null;
+					} */
+			}
+			
+			
+			public function get color():uint
+			{
+				return this.getStyle("color");
+			}
+			
+			/**
+			 */
+			
+			public function set color(value:uint):void
+			{
+				this.setStyle("color",value);  
+				
+				if(labelItem)
+				{
+					labelItem.setStyle("color",value);
+				}
+			}
+			
+			public function get text():String
+			{
+				return this._text;
+			}
+			
+			/**
+			 */
+			
+			public function set text(value:String):void
+			{
+				this._text = value;
+				
+				if(labelItem)
+				{
+					labelItem.text = value;
+				}
+			}
+			
+			public function get textAlign():String
+			{
+				return this._textAlign;
+			}
+			
+			public function set textAlign(value:String):void
+			{
+				this._textAlign = value;
+				
+				if(labelItem)
+				{
+					labelItem.setStyle("textAlign",this._textAlign);
+				}
+			}
+			
+			/**
+			 */
+			
+			override protected function createChildren():void
+			{
+				super.createChildren();
+				
+				
+				this.labelItem = new Label();
+				this.addChild(labelItem);
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+</mx:UIComponent>

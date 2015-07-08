@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   mouseUp="selectIcon();" 
+		   xmlns:containers="com.spice.display.containers.*" 
+		   implements="com.spice.recycle.IDisposable">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.calls.CallCloveContentItemRendererType;
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			import com.spice.vanilla.impl.proxy.ProxyCall;
+			
+			[Bindable] 
+			public var iconSize:int = 50;
+			
+			[Bindable] 
+			private var _cloveData:ICloveData;
+			
+			
+			
+			public function get cloveData():ICloveData
+			{
+				return this._cloveData;
+			}
+			
+			
+			
+			public function set cloveData(value:ICloveData):void
+			{
+				this.data = value;
+			}
+			
+			
+			override public function set data(value:Object) : void
+			{
+				super.data = value;
+				
+				
+				_cloveData = ICloveData(value);
+				
+				
+			}
+			
+			
+			public function dispose():void
+			{
+				
+				iconImage.source = undefined;
+			}
+			
+			
+			
+			private function selectIcon():void
+			{
+				ProxyCallUtils.quickCall(CallCloveContentItemRendererType.CLOVE_DATA_ICON_CLICK,
+					this._cloveData.getItemRenderer().getProxy(),
+					this._cloveData);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+	<containers:RoundedCanvas cornerRadius="5" 
+							  y="5" 
+							  click="{this.dispatchEvent(new Event('iconSelect'));}" 
+							  buttonMode="true" >
+		
+		<mx:Image id="iconImage" 
+				  source="{this._cloveData.getIcon()}" 
+				  width="{this.iconSize}" 
+				  height="{this.iconSize}" 
+				  buttonMode="true"/>
+		
+	</containers:RoundedCanvas>
+	
+	<mx:filters>
+		<mx:DropShadowFilter alpha=".3" 
+							 distance=".5" 
+							 angle="90" />
+	</mx:filters>
+	
+	
+</mx:Canvas>

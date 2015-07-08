@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox verticalAlign="middle" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:row="com.spice.clove.views.column.row.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.render.RenderedColumnData;
+			
+			[Bindable] 
+			public var renderedData:RenderedColumnData;
+			
+		]]>
+	</mx:Script>
+	
+	<row:ColumnRowMessage renderedData="{renderedData}" />
+	<mx:Label text="-" />
+	<row:ColumnRowDateLabel renderedData="{renderedData}" />
+</mx:HBox>

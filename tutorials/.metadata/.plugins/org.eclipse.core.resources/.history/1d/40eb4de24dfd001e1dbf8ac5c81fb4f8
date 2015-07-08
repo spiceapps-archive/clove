@@ -1,0 +1,8 @@
+package com.cloveHello.plugin
+{
+	[Bindable] 
+	public class CloveHelloPluginSettings
+	{	
+
+	}
+}

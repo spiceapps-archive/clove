@@ -1,0 +1,194 @@
+/* - - - - - - - - - - - - - - - - - - - - -
+
+Title : Lightbox CSS
+Author : Kevin Hale
+URL : http://particletree.com/features/lightbox-gone-wild/
+
+Created : January 13, 2006
+Modified : February 1, 2006
+
+- - - - - - - - - - - - - - - - - - - - - */
+
+img {
+	border: 0;
+}
+
+#lightbox {
+	display: none;
+	position: absolute;
+	top: 60%;
+	left: 50%;
+	z-index: 1600001;
+	margin: -280px 0 0 -330px;
+}
+
+#lightbox strong, .lightbox-content strong, .lightbox-footer strong {
+	font-size: 135%;
+	line-height: 100%;
+	font-weight: normal;
+	color: #fff;
+	margin: 0;
+}
+
+.lightbox-footer strong a {
+	color: #fff;
+}
+
+.lightbox-footer strong a:hover {
+	color: #ccc;
+}
+
+#lightbox[id]{
+	position: fixed;
+	padding-top: 13px;
+	width: 660px;
+}
+
+.lightbox-content {
+	background: url(/img/lightbox-background.gif) no-repeat 0 0;
+	height: 406px;
+	width: 660px;
+	padding-top: 10px;
+    position: relative;
+}
+
+.lightbox-player-youtube {
+	clear: both;
+	margin: 0 auto;
+	padding: 0 5px;
+	width: 625px;
+	height: 350px;
+	background: #1F1F1F url(/img/lightbox-loading.gif) no-repeat 50% 50%;
+}
+
+.lightbox-player-rev3 {
+	clear: both;
+	margin: 0 auto;
+	padding: 10px 5px !important;
+	width: 625px;
+	height: 330px; 
+	background: #1f1f1f url(/img/lightbox-loading.gif) no-repeat 50% 50%;
+}
+
+.lightbox-player-google {
+	clear: both;
+	margin: 0 auto;
+	padding: 10px;
+	width: 600px;
+	height: 326px;
+	background: #1F1F1F url(/img/lightbox-loading.gif) no-repeat 50% 50%;
+}
+
+.lightbox-player-metacafe {
+	clear: both;
+	margin: 0 auto;
+	padding: 0 5px;
+	width: 600px;
+	height: 345px;
+	background: #1F1F1F url(/img/lightbox-loading.gif) no-repeat 50% 50%;
+}
+
+.lightbox-player-vsocial {
+	clear: both;
+	margin: 0 auto;
+	padding: 0 5px;
+	background: #1F1F1F url(/img/lightbox-loading.gif) no-repeat 50% 50%;
+}
+
+/* close button */
+.lightbox-close:visited, .lightbox-close {
+	display: block;
+	float: right;
+	height: 19px;
+	margin: 0 10px 6px 0;
+	padding: 2px 23px 0 0;
+	font-weight: bold;
+	line-height: 1em;
+	background: url(/img/lightbox-close.gif) no-repeat 100% 0;
+	color: #fff;
+	text-decoration: none;
+}
+
+.lightbox-close:hover {
+	background-position: 100% -110px;
+	color: #fff;
+	text-decoration: underline;
+}
+
+/* digg it button */
+
+#lightbox-digg {
+	float: left;
+	height: 38px;
+	background: url(/img/lightbox-digg-left.gif) no-repeat;
+	min-width: 7.4em;
+}
+
+#lightbox-digg div {
+	float: left;
+	height: 32px;
+	min-width: 2.5em;
+	color: #50470D;
+	font-size: 110%;
+	font-weight: bold;
+	padding: 8px 5px 0 3px;
+	text-align: center;
+	margin: 0;
+	background: url(/img/lightbox-digg-middle.gif) no-repeat 100% 0;
+} * html #lightbox-digg div { width: 3em; }
+
+#lightbox-digg #lightbox-digg-it a, #lightbox-digg #lightbox-digg-it span {
+	float: left;
+	display: block;
+	min-width: 2.5em;
+	height: 28px;
+	color: #37618D; 
+	padding: 10px 6px 0 6px;
+	font-size: 85%;
+	font-weight: bold;
+	text-decoration: none;
+	text-align: center;
+	margin: 0;
+	background: #fff url(/img/lightbox-digg-right.gif) no-repeat 100% 100%;
+} * html #lightbox-digg a, #lightbox-digg #lightbox-digg-it span { width: 3em; }
+
+.lightbox-title {
+	text-align: left;
+}
+
+.lightbox-footer {
+	padding: 0 20px 20px 20px;
+	min-height: 40px;
+	width: 620px;
+	background: url(/img/lightbox-background.gif) no-repeat 0 100%;
+} * html .lightbox-footer { height: 40px; }
+
+#overlay{
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 1600000;
+	background-image: url(/img/lightbox-overlay.png);
+	filter: alpha(opacity=80);
+}
+
+#overlay[id]{
+	position:fixed;
+}
+
+#lightbox.done #lbLoadMessage{
+	display:none;
+}
+#lightbox.done #lbContent{
+	display:block;
+	position: relative;
+}
+#lightbox.loading #lbContent{
+	display:none;
+}
+#lightbox.loading #lbLoadMessage{
+	display:block;
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   width="100%"
+		   height="100%" 
+		   xmlns:single="com.spice.clove.plugin.core.root.desktop.views.column.group.single.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.root.desktop.views.column.group.single.SingleColumn;
+			import com.spice.clove.plugin.core.root.desktop.views.column.group.single.SingleColumnViewController;
+			import com.spice.clove.view.column.ColumnViewController;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			private var _controller:ColumnViewController;
+			
+			private var _currentView:SingleColumn
+			
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Getters / Setters
+			//
+			//--------------------------------------------------------------------------
+			
+//			[Bindable(event="controllerChange")]
+			public function get controller():ColumnViewController
+			{
+				return this._controller;
+			}
+			
+			public function set controller(value:ColumnViewController):void
+			{
+				this._controller = value;
+				
+				
+				
+				if(this._currentView && this._currentView.parent == this)
+				{
+					
+					//turn preferences back on for multiple column mode
+					this._currentView.showPrefs = true;
+					_pool.addObject(this.removeChild(this._currentView));
+				}
+				
+				
+				if(this._controller)
+				{
+					
+					
+					this._currentView = this._pool.getObject(this._controller.viewClass);
+					this._currentView.controller = SingleColumnViewController(this._controller);
+					
+					//turn preferences off
+					this._currentView.showPrefs = false;
+					
+					//				this._currentView.percentWidth = 100;
+					this._currentView.x = 0;
+					
+					this.addChild(this._currentView);
+				}
+				
+				
+//				this.dispatchEvent(new Event("controllerChange"));
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+</mx:Canvas>

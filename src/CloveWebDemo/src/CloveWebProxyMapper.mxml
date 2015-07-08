@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<clove:CloveProxyMapper xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:clove="com.spice.clove.*" 
+						xmlns:observers="com.spice.vanilla.mx.proxy.observers.*" 
+						xmlns:proxy="com.spice.vanilla.mx.proxy.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.core.storage.CloveSettings;
+			import com.spice.clove.plugin.control.ClovePluginController;
+			import com.spice.clove.plugin.core.calls.CallAppCommandType;
+			import com.spice.clove.proxy.calls.CallCloveInternalType;
+			import com.spice.utils.storage.TempSettings;
+			
+			import mx.controls.Alert;
+			import mx.core.UIComponent;
+			
+			
+			[Bindable] 
+			public var applicationView:UIComponent;
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Protected Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			/**
+			 */
+			
+			override protected function init():void
+			{
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+	
+	<proxy:MXProxyTarget id="test" proxy="{this.internalProxyMediator}">
+		
+		<!-- the plugin settings -->
+		<observers:MXProxyResponder notificationsOfInterest="{[CallCloveInternalType.GET_CLOVE_SETTINGS]}"
+									response="{new CloveSettings('Clove',new TempSettings())}" />
+		
+		<!-- the plugin controller class -->
+		<observers:MXProxyResponder notificationsOfInterest="{[CallCloveInternalType.GET_PLUGIN_CONTROLLER_CLASS]}"
+									response="{ClovePluginController}" />
+		
+		
+	</proxy:MXProxyTarget>
+	
+	
+	
+	<proxy:MXProxyTarget proxy="{this.pluginProxyMediator}">
+		
+		
+		<!-- the whole application view -->
+		<observers:MXProxyResponder id="setAppView" 
+									notificationsOfInterest="{[CallAppCommandType.SET_APP_VIEW]}" 
+									notification="{this.applicationView = setAppView.currentCall.getData()}"   />
+		
+		
+		<observers:MXProxyResponder id="alertResponder"
+									notificationsOfInterest="{[CallAppCommandType.SHOW_ALERT]}"
+									notification="{Alert.show(alertResponder.currentCall.getData())}" />
+		<!--<observers:MXProxyObserver notificationsOfInterest="{[CallAppCommandType.SET_APPLICATION_DIMENSIONS]}">
+			<observers:MXProxyResponder id="setAppDimensions" 
+										notification="{this.applicationDimensions = setAppDimensions.currentCall.getData()}" />
+			
+			<observers:MXProxyChangeNotifier data="{applicationDimensions}" />
+		</observers:MXProxyObserver>-->
+		
+		
+	</proxy:MXProxyTarget>
+	
+	<!--
+	
+	
+	<MXProxyTargets proxy="{internalProxyMediator}">
+	<MXProxyObservers notificationsOfInterest="{[CallCloveInternalType.GET_CLOVE_SETTINGS]}">
+	<MXProxyBinding>
+	<response>
+	<MXProxyResponseHandler ... /> or function, or regular data 
+	</response>
+	</MXProxyBinding>
+	<MXProxyResponseHandler>
+	<response>
+	</response>
+	</MXProxyResponseHandler>
+	
+	</MXProxyObservers>
+	
+	<MXProxyCall ... />
+	</MXProxyTargets>
+	
+	
+	
+	-->
+	
+	<!--<proxy:MXMLCProxyResponder availableCalls="{[CallCloveInternalType.GET_CLOVE_SETTINGS]}" 
+	responseData="{new CloveAIRSettings();}" />-->
+	
+</clove:CloveProxyMapper>

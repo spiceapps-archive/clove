@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" paddingLeft="0" 
+													 paddingRight="0" 
+													 paddingBottom="0" 
+													 paddingTop="18" 
+													 verticalGap="18" 
+													 layout="vertical" 
+													 minWidth="330"
+													 maxWidth="330"
+													 minHeight="180" 
+													 resizable="false" close="checkDone();" 
+													 showStatusBar="false" alpha="0"
+													 creationComplete="init();" 
+													 verticalScrollPolicy="off" 
+													 horizontalScrollPolicy="off" 
+													 alwaysInFront="true" >
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			
+			import com.spice.recycle.JanitorManager;
+			
+			import flash.events.KeyboardEvent;
+			import flash.ui.Keyboard;
+			
+			import mx.core.Application;
+			import mx.events.CloseEvent;
+		
+			[Bindable] 
+			public var text:String;
+			
+			[Bindable] 
+			public var titleText:String;
+			
+			[Bindable] 
+			public var showIgnoreOption:Boolean;
+			
+			[Bindable] 
+			public var flags:int;
+			
+			[Bindable] 
+			public var closeHandler:Function;
+			
+			[Bindable] 
+			private var _showCancel:Boolean;
+			
+			[Bindable] 
+			private var _showNo:Boolean;
+			
+			[Bindable] 
+			private var _showYes:Boolean;
+			
+			[Bindable] 
+			private var _showOk:Boolean;
+			
+			[Bindable] 
+			private var _done:Boolean;
+			
+			/**
+		     *  Value that enables a Yes button on the Alert control when passed
+		     *  as the <code>flags</code> parameter of the <code>show()</code> method.
+		     *  You can use the | operator to combine this bitflag
+		     *  with the <code>OK</code>, <code>CANCEL</code>,
+		     *  <code>NO</code>, and <code>NONMODAL</code> flags.
+		     */
+		    public static const YES:uint = 0x0001;
+		    
+		    /**
+		     *  Value that enables a No button on the Alert control when passed
+		     *  as the <code>flags</code> parameter of the <code>show()</code> method.
+		     *  You can use the | operator to combine this bitflag
+		     *  with the <code>OK</code>, <code>CANCEL</code>,
+		     *  <code>YES</code>, and <code>NONMODAL</code> flags.
+		     */
+		    public static const NO:uint = 0x0002;
+		    
+		    /**
+		     *  Value that enables an OK button on the Alert control when passed
+		     *  as the <code>flags</code> parameter of the <code>show()</code> method.
+		     *  You can use the | operator to combine this bitflag
+		     *  with the <code>CANCEL</code>, <code>YES</code>,
+		     *  <code>NO</code>, and <code>NONMODAL</code> flags.
+		     */
+		    public static const OK:uint = 0x0004;
+		    
+		    /**
+		     *  Value that enables a Cancel button on the Alert control when passed
+		     *  as the <code>flags</code> parameter of the <code>show()</code> method.
+		     *  You can use the | operator to combine this bitflag
+		     *  with the <code>OK</code>, <code>YES</code>,
+		     *  <code>NO</code>, and <code>NONMODAL</code> flags.
+		     */
+		    public static const CANCEL:uint= 0x0008;
+		
+		    /**
+		     *  Value that makes an Alert nonmodal when passed as the
+		     *  <code>flags</code> parameter of the <code>show()</code> method.
+		     *  You can use the | operator to combine this bitflag
+		     *  with the <code>OK</code>, <code>CANCEL</code>,
+		     *  <code>YES</code>, and <code>NO</code> flags.
+		     */
+		    public static const NONMODAL:uint = 0x8000;
+			
+			
+			public static function show(text:String = "",title:String = "",flags:uint = 0x4,parent:Sprite = null,closeHandler:Function = null,iconClass:Class = null,defaultButtonFLag:uint = 0x4):Alert
+			{
+				var alert:Alert = new Alert();
+				alert.open();
+				alert.closeHandler = closeHandler;
+				alert.titleText = title;
+				alert.text = text;
+				alert.flags = flags;
+				
+				return alert;
+			}
+			
+			
+			
+			private function init():void
+			{
+//				Application.application.enabled = false;
+				
+				_showNo     = (this.flags & NO)     > 0;
+				_showCancel = (this.flags & CANCEL) > 0;
+				_showYes    = (this.flags & YES)    > 0;
+				_showOk     = (this.flags & OK)     > 0;
+				
+				Tweener.addTween(this,{alpha:1,transition:'easeInOutCubic'});
+				
+				this.minHeight = this.measuredHeight;
+					
+				if(this.height >= this.measuredHeight)
+				{
+					this.minHeight = this.measuredHeight;
+					this.maxHeight = this.height;
+					return;
+				}
+				
+				this.maxHeight = this.measuredHeight;
+				
+				this.nativeWindow.y = this.measuredHeight;
+				
+//				Tweener.addTween(this,{minHeight:this.measuredHeight,time:1,y:0,transition:'easeInOutCubic'});
+//				Tweener.addTween(this.nativeWindow,{y:this.measuredHeight,time:1,transition:'easeInOutCubic'});
+			}
+			
+			
+			
+			
+			private function checkDone():void
+			{
+				Application.application.enabled = true;
+				//if the user has NOT selected a button, then we re-open it
+//				if(!_done)
+//					Alert.show(this.text,this.titleText,this.flags,null,this.closeHandler);
+			}
+			
+			private function closeWindow(flag:int):void
+			{
+				_done = true;
+				
+				Application.application.enabled = true;
+				
+				if(this.closeHandler != null)
+					this.closeHandler(new CloseEvent(CloseEvent.CLOSE,false,false,flag));
+				
+				this.close()
+			}
+			
+			
+			/**
+			 */
+			
+			override public function close():void
+			{
+				super.close();
+				
+				
+				JanitorManager.dispose(this);
+				
+				this.closeHandler = undefined;
+				Tweener.removeAllTweens();
+			}
+			
+			
+			/**
+			 */
+			
+			private function handleKey(event:KeyboardEvent):void
+			{
+				if(event.keyCode == Keyboard.ENTER)
+				{
+					this.closeWindow(Alert.YES);
+				}
+			}
+			
+			
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" id="messageHolder" height="100%" paddingLeft="30" horizontalAlign="center" paddingRight="30">	
+		<mx:Text width="100%" text="{titleText}" fontWeight="bold" />
+		<mx:Text width="100%" text="{text}" />
+	</mx:VBox>	
+	<mx:HBox height="34" styleName="footerBackground" verticalAlign="middle" width="100%" paddingRight="10">
+		<mx:Spacer width="100%" />
+		<mx:Button height="20" minWidth="75" label="Cancel" visible="{_showCancel}" includeInLayout="{_showCancel}" click="{closeWindow(Alert.CANCEL)}" />
+		<mx:Button height="20" minWidth="75" label="No"  visible="{_showNo}" includeInLayout="{_showNo}" click="{closeWindow(Alert.NO)}"/>
+		<mx:Button height="20" minWidth="75" label="OK" visible="{_showOk}" includeInLayout="{_showOk}"  click="{closeWindow(Alert.OK)}" />
+		<mx:Button id="yesBtn" height="20" minWidth="75" label="Yes"  visible="{_showYes}" includeInLayout="{_showYes}" keyDown="handleKey(event);" creationComplete="yesBtn.setFocus()" click="{closeWindow(Alert.YES)}"/>
+	</mx:HBox>
+</mx:Window>

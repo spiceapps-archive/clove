@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 verticalGap="0" 
+		 left="-1"
+		 right="0"
+		 verticalScrollPolicy="off"
+		 color="#000000" 
+		 backgroundColor="#EBEBEB"
+		 width="100%" 
+		 xmlns:icon="com.spice.clove.plugin.core.root.desktop.views.column.dock.icon.*" 
+		 xmlns:storage="com.spice.utils.storage.*"
+		 xmlns:controls="com.spice.clove.view.controls.*" xmlns:observer="com.spice.vanilla.flash.observer.*">
+	<mx:Metadata>
+		[Event("hideInfo")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.view.column.ColumnViewController;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			import flash.utils.setTimeout;
+			
+			[Bindable]	
+			private var _controller:ColumnViewController;
+			
+			
+			private var _mouseY:int = -1;
+			
+			
+			public function get controller():ColumnViewController
+			{
+				return _controller;
+			}
+			
+			public function set controller(value:ColumnViewController):void
+			{
+				_controller = value;
+			}
+			
+			
+			private function onDraggerDown():void
+			{
+				_mouseY = -1;
+				this.root.addEventListener(MouseEvent.MOUSE_UP,onRootMouseUp);
+				this.addEventListener(Event.ENTER_FRAME,onDragging);
+				
+			}
+			
+			private function onRootMouseUp(event:MouseEvent):void
+			{
+				this.root.removeEventListener(MouseEvent.MOUSE_UP,onRootMouseUp);
+				this.removeEventListener(Event.ENTER_FRAME,onDragging);
+			}
+			
+			private var _staticHeight:Number;
+			
+			private function onDragging(event:Event):void
+			{
+				//finding the offset width from the mouse position will help make the resizing smoother, and elimiate any jitter
+				if(_mouseY == -1)
+				{
+					_mouseY = this.root.mouseY;// + this.mouseY;
+					_staticHeight = this.height;
+				}
+				
+				var delta:Number = _mouseY - this.root.mouseY;
+				
+				//set the postion based on the initial mouse position;
+				var diffPosition:Number = _staticHeight + delta;
+				
+				this.height = diffPosition <= measuredHeight ? diffPosition : measuredHeight;
+				
+				//snap to 0
+				if(this.height <= head.height)
+				{
+					this.height = 0;
+					onRootMouseUp(null);
+					
+					flash.utils.setTimeout(dispatchEvent,100,new Event("hideInfo"));
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HBox id="head" verticalAlign="middle" width="100%" styleName="groupInfoBG" paddingLeft="7" paddingTop="4" height="27" paddingRight="7">
+		<mx:Label text="INFORMATION" fontSize="10" color="#000000" />
+		
+		<mx:Spacer width="100%" />
+		<mx:Button styleName="groupInfoDragger" buttonMode="true" mouseDown="{onDraggerDown();}" />
+	</mx:HBox>
+	<mx:Form width="100%" verticalScrollPolicy="off">
+		<mx:FormItem label="Name:">
+			<icon:ColumnTitle color="{0x838383}" shadowDistance="0" data="{_controller.target}" />
+		</mx:FormItem>
+		<mx:FormItem label="Icon:">
+			<mx:Canvas width="39" height="39" styleName="groupIconBG">
+				<controls:SmoothImage source="{columnIconBind.data.getData()}"  
+						  buttonMode="true" 
+						  horizontalCenter="0" 
+						  verticalCenter="1" 
+						  width="32" 
+						  height="32" />
+				
+			</mx:Canvas>
+		</mx:FormItem>
+	</mx:Form>
+	
+	<observer:SettingObserver id="columnIconBind" target="{_controller.target.metadata.getNewSetting(BasicSettingType.BYTE_ARRAY,ColumnMetaData.COLUMN_ICON)}" />
+	
+	
+</mx:VBox>

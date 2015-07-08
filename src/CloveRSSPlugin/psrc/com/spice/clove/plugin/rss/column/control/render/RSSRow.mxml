@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox verticalAlign="top" xmlns:mx="http://www.adobe.com/2006/mxml" minHeight="50" paddingLeft="7" paddingTop="5" paddingRight="5" width="100%" xmlns:row="com.spice.clove.views.column.row.*" xmlns:code="http://code.google.com/p/flexlib/">
+	<mx:Script>
+		<![CDATA[
+			import mx.skins.Border;
+			import com.spice.clove.plugin.rss.CloveRSSPlugin;
+			import com.spice.clove.plugin.column.render.RenderedColumnData;
+			
+			
+			[Bindable] 
+			private var _renderedColumnData:RenderedColumnData;
+			
+			[Bindable]	
+			private var _expanded:Boolean;
+			
+			
+			public function get renderedData():RenderedColumnData
+			{
+				return this._renderedColumnData;
+			}
+			
+			public function set renderedData(value:RenderedColumnData):void
+			{
+				if(value != this._renderedColumnData && !_expanded && this._renderedColumnData)
+					this.hideFeeds();
+					
+				this._renderedColumnData = value;
+				
+				
+				if(!value)
+					return;
+					
+				
+				//icky
+				if(CloveRSSPlugin(value.column.controller.pluginController.plugin).settings.autoExpandFeeds)
+				{
+					setFeed();
+				}
+					
+			}
+			
+			
+			
+			public function showHideFeeds():void
+			{
+				_expanded = !_expanded;
+				
+				//htmlContent.height = NaN;
+				//htmlContent.htmlLoader.height = NaN;
+				if(!_expanded)
+				{
+					hideFeeds();
+				}
+				else
+				if(this._renderedColumnData)	
+				{
+					setFeed();
+				}
+			}
+			
+			private function hideFeeds():void
+			{
+				htmlContent.cancelLoad();
+				htmlContent.htmlText = '';
+					
+			}
+			
+			private var _feedSet:Boolean;
+			
+			
+			override public function styleChanged(styleProp:String):void
+			{
+				super.styleChanged(styleProp);
+				
+				if(styleProp == "fontSize" && _expanded)
+					setFeed();
+			}
+			
+			private function setFeed():void
+			{
+				_feedSet = true;
+				_expanded = true;
+				
+				//
+				
+				
+				#var rss _renderedColumnData.message			
+				#var html "<html><head><style> img{ max-width:100%; !important; border:0; } *{font-size:"+getStyle("fontSize")+"px; !important; } </style></head><body>"+rss+"</body></html>"
+				
+				htmlContent.htmlLoader.cancelLoad();
+				htmlContent.htmlLoader.height = 0;
+					
+				htmlContent.htmlText = html;
+			}
+			
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				//
+				if(this.contentHolder.width != (unscaledWidth -  this.getStyle("paddingRight")-this.contentHolder.x))
+				if(_expanded && !_feedSet)
+					flash.utils.setTimeout(setFeed,500);
+					
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				
+				
+			}
+			
+			
+			private function feedComplete():void
+			{
+				
+				_feedSet = true;
+				//
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<!-- broken http://www.engadget.com/favicon.ico -->
+
+	<mx:HBox id="contentHolder" width="100%" verticalAlign="middle">
+		<code:IconLoader source="{_renderedColumnData.icon}" brokenImageSkin="@Embed('001.png')" brokenImageBorderSkin="{Border}"  width="16" height="16" />
+		<row:ColumnRowTitle renderedData="{this._renderedColumnData}" />	
+		<row:ColumnRowDateLabel renderedData="{this._renderedColumnData}" />
+		<mx:Image source="@Embed('Scroll.png')" buttonMode="true" click="{showHideFeeds();}" />
+	</mx:HBox>
+	<mx:HTML   paddingLeft="26" paddingRight="5" id="htmlContent" width="100%" borderStyle="none" visible="{_expanded}" includeInLayout="{_expanded}" complete="{ feedComplete(); }" backgroundAlpha="0" paintsDefaultBackground="false" horizontalScrollPolicy="off" />
+</mx:VBox>

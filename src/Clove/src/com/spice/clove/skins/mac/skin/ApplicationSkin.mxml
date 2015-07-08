@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin xmlns:mx="http://www.adobe.com/2006/mxml"  
+				   xmlns="com.degrafa.skins.*" 
+				   xmlns:degrafa="com.degrafa.*"
+				   xmlns:geometry="com.degrafa.geometry.*"
+				   xmlns:paint="com.degrafa.paint.*">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.skins.mac.MacSkinAssets;
+			
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				//if(unscaledWidth == awidth && unscaledHeight == aheight || isNaN(unscaledWidth) || isNaN(unscaledHeight))
+				//	return;
+				
+				
+				unscaledWidth = isNaN(unscaledWidth) ? Capabilities.screenResolutionX : unscaledWidth;
+				unscaledHeight = isNaN(unscaledHeight) ? Capabilities.screenResolutionY : unscaledHeight;
+				
+				
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				appBackground.width = unscaledWidth;
+				appBackground.height = unscaledHeight;
+				
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<fills>
+		<paint:ComplexFill id="bgFill">
+			
+			<paint:BitmapFill repeatX="repeat"
+							  repeatY="repeat" 
+							  source="{MacSkinAssets.BG_TAIL}"/>
+			
+			<paint:BitmapFill repeatX="repeat"
+							  repeatY="none"
+							  offsetY="-1" 
+							  source="{MacSkinAssets.BG}"/>
+			
+		</paint:ComplexFill>
+		
+	</fills>
+	
+	<geometry>
+		<degrafa:GeometryComposition>
+			<geometry:RoundedRectangle id="appBackground" 
+									   cornerRadius="0" 
+									   fill="{bgFill}" />
+		</degrafa:GeometryComposition>
+	</geometry>
+	
+</GraphicBorderSkin>

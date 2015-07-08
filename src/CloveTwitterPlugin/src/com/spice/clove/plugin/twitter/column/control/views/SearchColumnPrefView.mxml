@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pref:ColumnPreferences xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:pref="com.spice.clove.plugin.column.pref.*" 
+						xmlns:filters="com.spice.clove.views.filters.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.twitter.column.control.TwitterSearchBasedColumnController;
+			
+			import mx.controls.Alert;
+			import mx.core.Container;
+			
+			
+			[Bindable] 
+			private var _controller:TwitterSearchBasedColumnController;
+			
+			
+			[Disposable(onDispose="disposeController")]
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				_controller = TwitterSearchBasedColumnController(value);
+				
+			}
+			
+			
+			public function dispose():void
+			{
+				this.data = undefined;
+			}
+			
+			
+			private function setSearch():void
+			{
+				_controller.search = searchTermTxt.text
+			}
+			
+		]]>
+	</mx:Script>
+	<pref:formItems>
+		<mx:FormItem label="Search:">
+			<mx:TextInput id="searchTermTxt" change="setSearch();" text="{_controller.search}"/>
+		</mx:FormItem>
+	</pref:formItems>
+</pref:ColumnPreferences>

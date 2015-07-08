@@ -1,0 +1,37 @@
+package com.cloveHello.plugin.column.render
+{
+	import com.spice.clove.plugin.column.render.ICloveColumnItemRenderer;
+	
+	public class HelloColumnItemRenderer implements ICloveColumnItemRenderer
+	{
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+        
+        /**
+		 */
+		 
+		public function HelloColumnItemRenderer()
+		{
+		}
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Public Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		public function getVO(data:Object):String
+		{
+			return "test";
+		}
+		
+		
+
+	}
+}

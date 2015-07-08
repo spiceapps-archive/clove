@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Form>
+		<mx:FormItem label="Name:">
+			<mx:TextInput id="userName" text="{data.settings.userName}" change="{data.settings.userName = userName.text}" />
+		</mx:FormItem>
+		<mx:FormItem>
+			<mx:Button label="Test Hello" click="{data.testHello();}" />
+		</mx:FormItem>
+	</mx:Form>
+</mx:Canvas>

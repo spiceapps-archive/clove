@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox verticalAlign="middle" 
+		 xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 width="100%" 
+		 height="17" clipContent="false"
+		 horizontalGap="1" paddingRight="5"
+		 xmlns:util="com.spice.clove.util.*" 
+		 xmlns:icon="com.spice.clove.plugin.core.root2.column.view.dock.icon.*" 
+		 creationComplete="{init();}"
+		 styleName="columnSidbarName" 
+		 xmlns:storage="com.spice.utils.storage.*" 
+		 xmlns:mxml="com.spice.utils.mxml.*" 
+		 xmlns:geometry="com.degrafa.geometry.*"
+		 implements="com.spice.recycle.IDisposable" 
+		 xmlns:degrafa="com.degrafa.*" 
+		 xmlns:paint="com.degrafa.paint.*" xmlns:column="com.spice.clove.view.column.*" xmlns:icon1="com.spice.clove.plugin.core.root.desktop.views.column.dock.icon.*" xmlns:observer="com.spice.vanilla.flash.observer.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.plugin.column.GroupColumn;
+			import com.spice.utils.MouseUtil;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			
+			private static const ICON_SIZE:int = 15;
+			
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			
+			
+			
+			public function select(event:MouseEvent):void
+			{
+				data.setSelected(true);
+			}
+			
+			
+			private function init():void
+			{
+				MouseUtil.clickHandler(this,null,select)
+				
+				
+				
+			}
+			
+			public function dispose():void
+			{
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<!--create the bindings for the column data so that we don't have to worry about listeners -->
+	
+	
+	
+	<mx:Canvas width="7" height="7" id="canvas1" alpha="{int(!(data.target is GroupColumn))}" visible="{columnColorBind.data.getData() != null}">
+		<degrafa:Surface id="columnColorCircle" verticalCenter="-1" horizontalCenter="0">
+			<degrafa:fills>
+				<paint:SolidFill color="{columnColorBind.data.getData()}" id="columnBG"/>
+			</degrafa:fills>
+			<degrafa:GeometryGroup>
+				<geometry:Circle fill="{columnBG}" radius="3" />
+			</degrafa:GeometryGroup>
+		</degrafa:Surface>
+		
+		
+	</mx:Canvas>
+	
+	<icon1:ColumnTitle color="{0x545454}" data="{data.target}" width="100%" />
+	
+	
+	<column:ColumnActivityView column="{data.target}" scaleX=".8" scaleY=".8" />
+	
+	<mx:Canvas width="10" height="10"  visible="{numUnreadBind.data.getData() != 0}" includeInLayout="{numUnreadBind.data.getData() != 0}">
+		<degrafa:Surface  verticalCenter="-1" horizontalCenter="0">
+			<degrafa:fills>
+				<paint:GradientFillBase  id="numUnreadBG" angle="90">
+					<paint:GradientStop color="#67a0ff" /> 
+					<paint:GradientStop color="#005ffc" /> 
+				</paint:GradientFillBase>
+			</degrafa:fills>
+			<degrafa:GeometryGroup>
+				<geometry:Circle fill="{numUnreadBG}" radius="5" />
+			</degrafa:GeometryGroup>
+		</degrafa:Surface>
+		
+		
+	</mx:Canvas>
+	
+	<mx:Label text="{numUnreadBind.data.getData()}" includeInLayout="{_model.applicationSettings.mainUISettings.autoScroll}" visible="{numUnreadBind.data.getData() > 0}" alpha="{_model.applicationSettings.mainUISettings.autoScroll ? 1 : 0}" />
+	
+	
+	<!-- the column color circle-->
+	
+	
+	<!--<mx:Box styleName="simpleBackground" verticalAlign="middle" horizontalAlign="center" right="2"  bottom="2" id="box1" visible="{controller.target.numUnread > 0}" includeInLayout="{controller.target.numUnread > 0}"  paddingLeft="2" paddingRight="2" paddingTop="2" paddingBottom="2">
+	<mx:Text text="{controller.target.numUnread}" color="#FFFFFF" width="{NaN}" minWidth="30"/>
+	</mx:Box>-->
+	
+	<observer:SettingObserver id="columnColorBind" target="{data.target.metadata.getNewSetting(BasicSettingType.NUMBER,ColumnMetaData.COLUMN_COLOR)}" />
+	<observer:SettingObserver id="numUnreadBind" target="{data.target.metadata.getNewSetting(BasicSettingType.NUMBER,ColumnMetaData.NUM_SUM_UNREAD)}" />
+	
+	
+</mx:HBox>

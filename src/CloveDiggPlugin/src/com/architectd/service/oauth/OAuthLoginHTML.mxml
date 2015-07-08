@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			
+			
+			[Bindable] 
+			public var loginRequest:URLRequest;
+			
+			private function changeLocation():void
+			{
+//				
+			}
+		]]>
+	</mx:Script>
+	<mx:HTML id="loginWindow"
+			 location="{loginRequest.url}"
+			 locationChange="changeLocation();" />
+
+	<mx:Form horizontalCenter="0" bottom="0" backgroundColor="#000000" alpha=".8" color="#FFFFFF" fontSize="12">
+		<mx:FormItem label="Enter the PIN you see:">
+			<mx:HBox>	
+				<mx:TextInput color="#000000" id="pinTxt" enter="finish();" />
+				<mx:Button label="Done" alpha="{pinTxt.text.length > 0 ? 1 : 0}" includeInLayout="{pinTxt.text.length > 0}" click="this.finish();" />
+			</mx:HBox>
+		</mx:FormItem>
+	</mx:Form>
+</mx:Canvas>

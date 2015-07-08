@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<controls:SuperText xmlns:mx="http://www.adobe.com/2006/mxml" 
+					width="100%" 
+					styleName="columnRowText"
+					htmlText="{cloveData.getMessage()}" 
+					xmlns:controls="com.spice.clove.plugin.flex.views.controls.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.core.text.command.ITextCommandReplacer;
+			
+			[Bindable] 
+			public var cloveData:ICloveData;
+			
+			
+//			override public function set textManager(value:ITextCommandReplacer) : void
+//			{
+//				super.textManager = value;
+//				
+//				if(this.cloveData)
+//					this.htmlText = cloveData.message;
+//			}
+			
+		]]>
+	</mx:Script>
+		
+</controls:SuperText>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<item value="0" key="com.adobe.flexbuilder.editors.common.last.server.type"/>
+	<item value="false" key="com.adobe.flexbuilder.editors.common.last.apptype"/>
+	<item value="true" key="com.adobe.flexbuilder.editors.common.use.default.location"/>
+	<section name="ExportWizard">
+		<section name="ExportSigningPage">
+			<item value="/Users/craigcondon/Developer/Jobs/Spice/clove/certs/Clove.p12" key="lastCertificate"/>
+			<list key="certificates">
+				<item value="/Users/craigcondon/Developer/Jobs/Spice/clove/certs/Clove.p12"/>
+			</list>
+		</section>
+	</section>
+</section>

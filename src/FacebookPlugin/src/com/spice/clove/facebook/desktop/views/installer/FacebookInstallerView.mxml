@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   xmlns:html="com.facebook.views.html.*" creationComplete="init();">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.adobe.serialization.json.JSON;
+			import com.facebook.air.SessionData;
+			import com.facebook.events.FacebookEvent;
+			import com.spice.clove.facebook.impl.FacebookPlugin;
+			
+			
+			[Bindable] public var installer:FacebookInstaller;
+			
+			private function init():void
+			{
+				loginHelper.connect(FacebookPlugin.API_KEY);
+				loginHelper.addEventListener(FacebookEvent.LOGIN_SUCCESS,onLoginSuccess);
+			}
+			
+			private function onLoginSuccess(event:FacebookEvent):void
+			{
+				
+				
+				var sessionPattern:RegExp = /\{.+?\}/;
+				var sessionJson:String = sessionPattern.exec(unescape(loginHelper.sessionParams))[0];
+				var sessionObj:Object = JSON.decode(sessionJson);
+				
+				var sessionData:SessionData = new SessionData();
+				sessionData.session_key = sessionObj.session_key;
+				sessionData.secret 	    = sessionObj.secret;
+				sessionData.expires	    = sessionObj.expires;
+				sessionData.uid 		= sessionObj.uid;
+				
+				installer.setSession(sessionData);
+				
+			}
+		]]>
+	</mx:Script>
+	<html:FacebookHTMLLoginHelperView id="loginHelper" />
+</mx:Canvas>

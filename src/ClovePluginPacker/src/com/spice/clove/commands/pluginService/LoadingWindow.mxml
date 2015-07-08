@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.utils.PopUpUtil;
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			
+			public static function open():LoadingWindow
+			{
+				var window:LoadingWindow = PopUpManager.createPopUp(Application.application as DisplayObject,LoadingWindow,true) as LoadingWindow;
+				PopUpUtil.alwaysCenter(window);
+				return window;
+			}
+			
+			public function close():void
+			{
+				PopUpManager.removePopUp(this);
+			}
+		]]>
+	</mx:Script>
+</mx:TitleWindow>

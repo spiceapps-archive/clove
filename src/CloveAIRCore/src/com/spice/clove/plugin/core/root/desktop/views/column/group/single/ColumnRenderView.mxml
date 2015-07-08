@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>   
+<single:ColoredSingleColumnView xmlns:mx="http://www.adobe.com/2006/mxml" 
+								xmlns:single="com.spice.clove.plugin.core.root.desktop.views.column.group.single.*" 
+								xmlns:ac="com.adobe.ac.*" 
+								xmlns:column="com.spice.clove.plugin.core.root.impl.views.column.*"
+								xmlns:column1="com.spice.clove.view.column.*" 
+								xmlns:sub="com.spice.clove.plugin.core.root.impl.views.column.sub.*" 
+								xmlns:icon="com.spice.clove.plugin.core.root.desktop.views.column.dock.icon.*" 
+								xmlns:observer="com.spice.vanilla.flash.observer.*"
+								fontSize="{_model.applicationSettings.mainUISettings.fontSize}" 
+								fontFamily="{_model.applicationSettings.mainUISettings.fontFamily}" 
+								width="100%"
+								height="100%">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.commandEvents.CloveEvent;
+			import com.spice.clove.events.CloveColumnEvent;
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.column.CloveColumn;
+			import com.spice.clove.plugin.column.ClovePluginColumn;
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.plugin.core.root.desktop.views.column.group.single.*;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			import mx.binding.utils.ChangeWatcher;
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			private var _newColumn:Boolean;
+			
+			
+			private var _curTarget:CloveColumn;
+			
+			
+			//FALSE in single column mode
+			[Bindable] 
+			public var showPrefs:Boolean = true;
+			
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Getters / Setters
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			
+			private var _resizeSleep:int;
+			private var _errorView:ColumnErrorView;
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			private var _errorMessage:String;
+			private var _titleComplete:Boolean;
+			
+			
+			/*
+			*/
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				
+				//delay the resize so we don't chug on the processor
+				flash.utils.clearTimeout(_resizeSleep);
+				_resizeSleep = flash.utils.setTimeout(onResizeSleep,200); 
+				
+			}
+			
+			
+			/**
+			 */
+			
+			override public function set controller(value:SingleColumnViewController):void
+			{
+				if(this.controller && this.controller.target)
+				{
+					this.controller.target.removeEventListener(CloveColumnEvent.DISPLAY_ERROR_MESSAGE,onDisplayErrorMessage);
+				}
+				
+				super.controller = value;
+				
+				this.showError(false);
+				this.onNewTarget();
+				
+			}
+			
+			
+			/**
+			 */
+			
+			override protected function init():void
+			{
+				super.init();
+				
+				ChangeWatcher.watch(this,["controller","target"],onNewTarget);
+			}
+			
+			/**
+			 */
+			
+			private function onNewTarget(event:* = null):void
+			{
+				if(_curTarget)
+				{
+					_curTarget.removeEventListener(CloveColumnEvent.DISPLAY_ERROR_MESSAGE,onDisplayErrorMessage);
+				}
+				
+				if(controller && controller.target)
+				{
+					_curTarget = controller.target;
+					if(_curTarget.currentErrorMessage)
+					{  
+						_errorMessage = _curTarget.currentErrorMessage;
+						this.showError(true);
+					}  
+					controller.target.addEventListener(CloveColumnEvent.DISPLAY_ERROR_MESSAGE,onDisplayErrorMessage,false,0,true);
+					
+				}
+			}
+			/*
+			*/
+			
+			private function setEditMode():void
+			{
+				this._titleComplete = true;
+				
+				
+			}
+			
+			/*
+			*/
+			
+			private function onResizeSleep():void
+			{
+				if(this.renderHelper)
+					this.renderHelper.width = this.width - 20;   
+			}
+			
+			/*
+			*/
+			
+			private function goToPrefs():void
+			{
+				if(this._newColumn && this.controller.target.children.length == 0)
+					this.controller.currentViewState = SingleColumnViewController.PREFERENCE_VIEW;
+			}
+			
+			/*
+			*/
+			
+			private function onEditMode():void
+			{
+				this._newColumn = true;
+				
+				if(this._titleComplete)
+				{
+					this.setEditMode();
+				}
+			}
+			
+			public function dispose():void
+			{
+				
+			}
+			
+			private function removeColumn():void
+			{
+				new CloveEvent(CloveEvent.REMOVE_COLUMN,this.controller.target).dispatch();
+			}
+			
+			
+			private function onDisplayErrorMessage(event:CloveColumnEvent):void
+			{
+				_errorMessage = event.data;
+				this.showError(true);
+			}
+			
+			private function showError(value:Boolean = true):void
+			{
+				
+				if(!value)
+				{
+					if(this._curTarget)
+						this._curTarget.currentErrorMessage = null;//selected
+					if(this._errorView)
+					{
+						if(this._errorView.parent)
+						{
+							this._errorView.errorMessage = "";
+							this._pool.addObject(this._errorView.parent.removeChild(this._errorView));
+							
+						}
+						
+						this._errorView = null;
+					}
+					return;
+				}
+				else
+				if(!this._errorView)
+				{
+					this._errorView = _pool.getObject(ColumnErrorView);
+					
+					this._errorView.addEventListener(MouseEvent.MOUSE_MOVE,onErrorMouseMove,false,0,true);
+					columnOverlay.addChild(this._errorView);
+					
+				}
+				
+				
+				this._errorView.errorMessage = _errorMessage;
+				
+			}
+			
+			
+			/**
+			 */
+			
+			private function onErrorMouseMove(event:MouseEvent):void
+			{
+				event.currentTarget.removeEventListener(event.type,onErrorMouseMove);
+				
+				flash.utils.setTimeout(this.showError,1000,false);
+			}
+			
+			private const ICON_PADDING:int = 5;
+			private const ROW_PADDING:int  = 10;
+			private const ICON_SIZE:int    = 50;
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+	<ac:ObserveValue source="{this.controller.editMode}"
+					 value="{true}" 
+					 handler="{onEditMode}" />
+	
+	<observer:SettingObserver id="columnIconBind"
+							  target="{this.controller.target.metadata.getNewSetting(BasicSettingType.BYTE_ARRAY,ColumnMetaData.COLUMN_ICON)}" />
+	
+	<mx:Canvas
+		id="columnOverlay"
+		width="100%"
+		height="100%" 
+		horizontalScrollPolicy="off" 
+		verticalScrollPolicy="off" styleName="columnContent">
+		
+		
+		<mx:HBox id="columnControls"
+				 verticalAlign="middle"
+				 width="100%" 
+				 paddingRight="4"
+				 paddingTop="6" 
+				 paddingLeft="0" 
+				 horizontalGap="5" 
+				 x="10"> 
+			
+			<mx:Image source="{columnIconBind.data.getData()}" 
+					  width="16" 
+					  height="16"
+					  visible="{columnIconBind.data.getData() != null}" />
+			
+			<mx:HBox horizontalGap="5" 
+					 verticalAlign="middle">
+				<icon:ColumnTitle  id="columnTitle"
+								   select="this.controller.breadCrumb.selectedIndex = 0" 
+								   creationComplete="{setEditMode();}" 
+								   titleChange="goToPrefs();" 
+								   data="{this.controller.target}"
+								   color="#000000" 
+								   fontWeight="bold" />
+				
+				
+			</mx:HBox>
+			
+			<sub:BreadcrumbHolder controller="{this.controller.breadCrumb}" 
+								  width="100%" />
+			
+			<column1:ColumnActivityView  column="{ClovePluginColumn(this.controller.target)}" />
+			
+			<mx:Button styleName="columnPrefs"
+					   buttonMode="true" 
+					   includeInLayout="{showPrefs}" 
+					   visible="{showPrefs}" 
+					   click="{this.controller.currentViewState = SingleColumnViewController.PREFERENCE_VIEW}" />
+			
+		</mx:HBox>
+		
+		<column:ColumnRenderHelperView id="renderHelper" 
+									   column="{controller.breadCrumb.targetColumn ? controller.breadCrumb.targetColumn : controller.target}" 
+									   top="34" 
+									   bottom="5" 
+									   x="10" />
+		
+	</mx:Canvas>
+	
+	
+</single:ColoredSingleColumnView>

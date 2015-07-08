@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   width="420" 
+		   xmlns:window="com.spice.clove.view.window.*" 
+		   xmlns:binding="com.spice.binding.*" keyDown="onKeyDown(event);" creationComplete="{controller.title = 'What services would you like to use?' }" backgroundColor="#FFFFFF">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.recycle.factory.RecyclingFactory;
+			
+			
+			[Bindable]
+			public var controller:ServiceInstallationController;
+			
+			private function onKeyDown(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.ENTER)
+					return;
+				
+				controller.installationStep = ServiceInstallationController.INSTALL_PLUGINS_VIEW;
+			}
+		]]>
+	</mx:Script>
+	<!--<mx:Canvas width="100%">
+		<mx:Text text="What services would you like to use in Clove?" fontWeight="bold" fontSize="12" horizontalCenter="0" />
+	</mx:Canvas>-->
+	
+	
+	<mx:VBox id="availablePlugins" paddingLeft="18" paddingTop="12" paddingBottom="12" verticalGap="21" />
+	
+	
+	<binding:DataBoundController target="{availablePlugins}" 
+								 dataProvider="{controller.manager.availableVisiblePlugins}" 
+								 itemRenderer="{new RecyclingFactory(AvailableServiceView)}" />
+	
+	<window:WindowFooter>
+		<mx:Spacer width  = "100%" />
+		
+		<!--<mx:Button label  = "Skip" 	
+				   height = "22" click="{controller.complete()}"/>-->
+		
+		<mx:Button label  = "Continue" 
+				   height = "22" 
+				   click  = "{controller.installationStep = ServiceInstallationController.INSTALL_PLUGINS_VIEW}" />
+	</window:WindowFooter>
+</mx:VBox>

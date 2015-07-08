@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   backgroundColor="#EAEAEA" 
+		   title="{plugin.getSelectSceneLabel()}" 
+		   close="_window = null;" 
+		   resizable="false"
+		   showGripper="false"
+		   width="420"
+		   height="260"
+		   showTitleBar="false" 
+		   showStatusBar="false" 
+		   paddingLeft="0" 
+		   paddingBottom="0" 
+		   paddingRight="0" 
+		   paddingTop="0"
+		   creationComplete="init();">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.brand.impl.BrandPlugin;
+			import com.spice.clove.brand.impl.data.BrandSceneData;
+			import com.spice.clove.sceneSync.core.service.data.SceneData;
+			
+			import flash.utils.setTimeout;
+			
+			[Bindable] 
+			public var plugin:BrandPlugin;
+			
+			private static var _window:DesktopSubscriptionsView;
+			
+			public static function open():DesktopSubscriptionsView
+			{
+				if(!_window)
+				{
+					_window = new DesktopSubscriptionsView();
+				}
+				_window.open();
+				return _window;
+			}
+			
+			
+			override public function open(active:Boolean = true):void
+			{
+				super.open(active);
+				
+				this.visible = true;
+				this.orderToFront();
+				flash.utils.setTimeout(setMax,1000);
+				
+			}
+			
+			private function setMax():void
+			{
+				this.minWidth = this.maxWidth = 420;
+				this.maxHeight = this.minHeight = 260;
+			}
+			
+			
+			private function init():void
+			{
+				teamSelector.addEventListener('subscribe',onSubscribe);
+			}
+			
+			private function onSubscribe(event:DataEvent):void
+			{
+				
+				for each(var scene:BrandSceneData in this.plugin.availableSubscriptions.source)
+				{
+					if(scene.scene.id.toString() == event.data)
+					{
+						if(scene.subscribed)
+							this.plugin.subscribeToScene(scene.scene);
+						else
+							this.plugin.unsubscribeFromScene(scene.scene);
+						break;
+					}
+				}
+			}
+			
+			
+			private function subscribe():void
+			{
+				
+				this.close();	
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="100%" 
+			 height="100%"  
+			 paddingLeft="15" 
+			 paddingTop="15" 
+			 paddingRight="15"
+			 paddingBottom="15">
+		
+		<mx:Label text="{this.plugin.getSelectSceneMessage()}" 
+				  fontWeight="bold" />
+		
+		<mx:TileList rowCount="8" 
+					 columnCount="2"
+					 backgroundAlpha="0"
+					 dataProvider="{this.plugin.availableSubscriptions}"
+					 borderStyle="none"
+					 width="100%" 
+					 height="100%"
+					 id="teamSelector"
+					 paddingBottom="0"
+					 paddingTop="0"
+					 selectable="false">
+			<mx:itemRenderer>
+				<mx:Component>
+					<mx:HBox verticalAlign="middle">
+						<mx:CheckBox id="subCheckbox" 
+									 selected="{data.subscribed}" 
+									 click="{data.subscribed = subCheckbox.selected; dispatchEvent(new DataEvent('subscribe',true,false,data.scene.id))}" />
+						<!--<mx:Image source="{data.icon}" />-->
+						<mx:Label text="{data.scene.name}" />
+					</mx:HBox>
+				</mx:Component>
+			</mx:itemRenderer>
+		</mx:TileList>
+		
+	</mx:VBox>
+	<mx:HBox width="100%" id="footer" styleName="footerBackground" verticalScrollPolicy="off" horizontalScrollPolicy="off" verticalAlign="middle" horizontalGap="7" height="34" paddingRight="18" paddingLeft="10">
+		
+		<mx:Spacer width="100%" />
+		<!-- temporarily disabled -->
+		
+		
+		<mx:Button  click="this.subscribe();" label="Continue" />
+	</mx:HBox>
+</mx:Window>

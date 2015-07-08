@@ -1,0 +1,4 @@
+<config>
+	<gateway>http://architectd.com/projects/clove/service/library/amfphp/gateway.php</gateway>
+	<bundle_upload>http://architectd.com/projects/clove/builder/service/library/upload/upload_air_assets.php</bundle_upload>
+</config>

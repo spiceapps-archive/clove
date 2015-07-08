@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<row:ColumnRowBody xmlns:mx="http://www.adobe.com/2006/mxml" 
+				   xmlns:row="com.spice.clove.plugin.flex.views.column.row.*" 
+				   width="100%" 
+				   xmlns:controls="com.spice.clove.plugin.flex.views.controls.*" 
+				   xmlns:row1="com.spice.clove.rss.flex.views.column.row.*">
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.clove.root.core.calls.CallRootPluginType;
+			import com.spice.clove.rss.impl.content.control.render.RSSFeedDataRenderer;
+			import com.spice.clove.rss.impl.views.assets.RSSAssets;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			import com.spice.vanilla.impl.settings.basic.StringSetting;
+			  
+			[Bindable] 
+			private var _expanded:Boolean = true;
+			
+			
+			private var _feedSet:Boolean;
+			
+			
+			
+			private function readMore():void
+			{
+				
+				
+				
+				var link:String = StringSetting(data.getSettingTable().getNewSetting(BasicSettingType.STRING,'link')).getData();
+				
+				
+				ProxyCallUtils.quickCall(CallRootPluginType.OPEN_INTERNAL_HTML_WINDOW,RSSFeedDataRenderer(ICloveData(this.data).getItemRenderer()).getPlugin().getPluginMediator(),link);
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HBox id="contentHolder" width="100%" height="100%" verticalAlign="top"  
+			 paddingLeft="7"
+			 paddingTop="5"
+			 paddingRight="5"  clipContent="false">
+		
+		<mx:Image source="{RSSAssets.RSS_16_ICON}" />
+		<row:ColumnRowTitle cloveData="{this.cloveData}" width="100%" />
+		<row:ColumnRowDateLabel cloveData="{this.cloveData}" />
+		<mx:Image source="{RSSAssets.SCROLL}" buttonMode="true" click="{readMore();}" />
+	</mx:HBox>
+	  
+	
+	<row1:FXRSSHtmlView id="htmlView"
+						top="30" 
+						left="30" 
+						minHeight="50" 
+						right="8" 
+						bottom="{attachmentsView.height+27}" 
+						text="{this.cloveData.getMessage()}" />
+	
+	<controls:ResizeableLabel bottom="{attachmentsView.height+5}"
+							  x="30"
+							  text="Read More..."
+							  color="#3399FF"
+							  buttonMode="true" 
+							  click="readMore();"
+							  width="100%" />
+	
+	<row:ColumnRowAttachmentsView id="attachmentsView" cloveData="{this.cloveData}"  
+								  paddingLeft="30"
+								  paddingBottom="6" bottom="0"
+								  width="100%" 
+								  styleName="attSeperator" />
+</row:ColumnRowBody>

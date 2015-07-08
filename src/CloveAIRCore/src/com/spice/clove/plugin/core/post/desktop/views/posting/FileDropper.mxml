@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   styleName="dropFilePostButton" 
+		    buttonMode="true" click="browseFiles();">
+		   
+<mx:Metadata>
+	[Event(name="commit",type="flash.events.Event")]
+</mx:Metadata>
+<mx:Script>
+	<![CDATA[
+		
+		
+		
+		[Bindable] 
+		private var _files:Array;
+		
+		
+		public function get files():Array
+		{
+			return _files;
+		}
+		
+		private function commit():void
+		{
+			this.dispatchEvent(new Event("commit"));
+			
+			
+		}
+		
+		private function browseFiles():void
+		{
+			
+			
+			var file:File = new File();
+			
+			file.addEventListener(FileListEvent.SELECT_MULTIPLE,onFileSelect);
+			file.browseForOpenMultiple("Select Files",[new FileFilter("Browse for files","*.*")]);
+			
+			
+		}
+		
+		/*
+		 */
+		
+		private function onFileSelect(event:FileListEvent):void
+		{
+			addFiles(event.files);
+		}
+		
+		/*
+		 */
+		
+		private function addFiles(list:Array):void
+		{
+			/* var attachments:Array = [];
+			
+			for each(var file:File in list)
+			{
+				attachments.push(new Attachment(file));
+			}
+			
+			_files = attachments;
+			
+			this.commit(); */
+		}
+	]]>
+</mx:Script>
+</mx:Button>

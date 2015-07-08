@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" xmlns:row="com.spice.clove.views.column.row.*" creationComplete="init();" xmlns:binding="com.spice.binding.*">
+	<mx:Script>
+		<![CDATA[
+			import com.facebook.data.photos.PhotoData;
+			import com.facebook.data.stream.StreamStoryData;
+			import com.spice.clove.plugin.column.render.RenderedColumnData;
+			
+			[Bindable] 
+			public var renderedData:RenderedColumnData;
+			
+			
+			private function init():void
+			{
+				
+				var d:StreamStoryData;
+				var e:PhotoData;
+				
+				
+				
+				
+				
+//				var d:StreamStoryData = StreamStoryData(renderedData.vo);
+				
+//				
+				
+				//d.attachment.
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	<row:ColumnRowIcon renderedData="{this.renderedData}" />
+	
+	<mx:VBox width="100%">
+		<mx:HBox width="100%">
+			<row:ColumnRowTitle renderedData="{this.renderedData}" />
+			<row:ColumnRowDateLabel renderedData="{this.renderedData}" />
+		</mx:HBox>
+		
+		<mx:Text width="100%" text="{this.renderedData.vo.attachment.media[0].alt}" />
+		
+	</mx:VBox>
+	
+</mx:HBox>

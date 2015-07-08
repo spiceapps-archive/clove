@@ -1,0 +1,1 @@
+registers a postable to that can send data to the service

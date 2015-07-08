@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 width="16" 
+		 height="16"
+		 visible="false" 
+		 includeInLayout="false"
+		 xmlns:binding="com.spice.binding.*" 
+		 implements="com.spice.recycle.IDisposable">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.binding.DataBoundController;
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			import com.spice.clove.plugin.core.views.menu.IMenuOptionButtonViewController;
+			import com.spice.clove.plugin.flex.views.FlexCloveDataTargetView;
+			import com.spice.recycle.IDisposable;
+			import com.spice.recycle.factory.RecyclingFactory;
+			
+			private var _options:Vector.<IMenuOptionButtonViewController>;
+			
+			
+			
+			private var _data:ICloveData;
+			
+			
+			private var _dbc:DataBoundController;
+			
+			
+			public function get options():*
+			{
+				return _options;
+			}
+			
+			
+			/**
+			 */
+			
+			public function set options(value:*):void
+			{
+				if(_dbc)
+				{
+					_dbc.dataProvider = undefined;
+				}
+				
+				_options = value;
+			}
+			
+			
+			public function get cloveData():ICloveData
+			{
+				return _data;
+			}
+			
+			public function set cloveData(value:ICloveData):void
+			{
+				_data = value;
+			}
+			
+			public function showOptions():void
+			{
+				this.visible = true;
+				this.includeInLayout = true;
+				if(!_dbc)
+				{
+					_dbc = new DataBoundController(this,new RecyclingFactory(FlexCloveDataTargetView),true);
+					_dbc.dataSetter = setOptionData;
+				}
+				
+				_dbc.dataProvider = this._options;
+				
+				
+			}
+			
+			public function hideOptions():void
+			{
+				this.visible = false;
+				this.includeInLayout = false;
+				
+				if(_dbc)
+				{
+					_dbc.dataProvider = undefined;
+				}
+				
+				/* this._options = undefined;
+				this._pool.addObject(this._driver); */
+				
+			}
+			
+			
+			public function dispose():void
+			{
+				
+				/* if(this._driver)
+					this._driver.dispose();
+				
+				this._options = undefined; */
+			}
+			
+			
+			private function setOptionData(value:FlexCloveDataTargetView,data:IMenuOptionButtonViewController):void
+			{
+				data.setContentView(_data,value);
+			}
+		]]>
+	</mx:Script>
+	
+	
+	
+</mx:HBox>

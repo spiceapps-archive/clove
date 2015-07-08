@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Image xmlns:mx="http://www.adobe.com/2006/mxml" implements="com.spice.clove.plugin.flash.views.IControllableView">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.flash.views.IControllableView;
+			import com.spice.vanilla.core.proxy.IProxyOwner;
+			
+			
+			private var _controller:IProxyOwner;
+			
+			public function getController():IProxyOwner
+			{
+				return _controller;	
+			}
+			
+			public function setController(value:IProxyOwner):void
+			{
+				_controller = value;
+			}
+
+		]]>
+	</mx:Script>
+	
+	
+</mx:Image>

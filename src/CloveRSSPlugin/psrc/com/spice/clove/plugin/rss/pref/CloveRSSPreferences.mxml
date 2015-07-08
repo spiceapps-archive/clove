@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" paddingLeft="10" paddingTop="10" implements="com.spice.clove.plugin.prefs.IClovePluginPreferences">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.rss.CloveRSSPlugin;
+			import com.spice.clove.plugin.prefs.IClovePluginPreferences;
+			import mx.collections.ArrayList;
+		
+			[Bindable] 
+			private var _plugins:ArrayList;
+			
+			
+			[Bindable] 
+			private var _targetPlugin:CloveRSSPlugin;
+			
+			
+			public function get plugins():ArrayList
+			{
+				return _plugins;
+			}
+			
+			public function set plugins(value:ArrayList):void
+			{
+				_plugins = value;
+				
+				if(value.length == 0)
+					return;
+				
+				this._targetPlugin = CloveRSSPlugin(_plugins.getItemAt(0).plugin);
+				
+			}
+		]]>
+	</mx:Script>
+	<mx:CheckBox label="auto expand feeds" selected="{_targetPlugin.settings.autoExpandFeeds}" click="{_targetPlugin.settings.autoExpandFeeds = !_targetPlugin.settings.autoExpandFeeds}" />
+	<!--<mx:Button click="" label="import OPML file" />-->
+</mx:VBox>

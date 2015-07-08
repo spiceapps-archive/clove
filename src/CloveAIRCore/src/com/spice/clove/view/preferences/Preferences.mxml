@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window	 xmlns:mx="http://www.adobe.com/2006/mxml" 
+			 title="{TranslateUtil.translate('Preferences').text}" 
+			 minHeight="140"
+			 maxWidth="590" 
+			 minWidth="590"
+			 resizable="false"
+			 showGripper="false" 
+			 showStatusBar="false"
+			 xmlns:views="com.spice.clove.view.preferences.views.*" 
+			 creationComplete="init();" 
+			 horizontalScrollPolicy="off" 
+			 verticalScrollPolicy="off"
+			 styleName="preferenceWindow" 
+			 verticalGap="0" 
+			 close="closeWindow();" 
+			 xmlns:filters="flash.filters.*"
+			 layout="vertical" xmlns:controls="com.spice.clove.view.controls.*" xmlns:preferences="com.spice.clove.view.preferences.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			
+			import com.spice.binding.*;
+			import com.spice.clove.commandEvents.CloveEvent;
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.utils.lang.ApplicationTranslator;
+			import com.spice.utils.lang.TextTranslator;
+			import com.spice.utils.lang.TranslateUtil;
+			
+			import flash.utils.setTimeout;
+			
+			import mx.core.Container;
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			[Bindable]
+			private var _modelLocator:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			[Bindable] 
+			private var _showingAll:Boolean = true;
+			
+			
+			private function init():void
+			{
+				
+			}
+			
+			private function toggleShowAll():void
+			{
+				_showingAll = !_showingAll;
+			}
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Public Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			private static var _window:Preferences;
+			
+			/*
+			*/
+			
+			public static function open(selectedView:String = null):void
+			{
+				if(_window)
+				{
+					_window.nativeWindow.orderToFront();
+					return;
+				}
+				_window = new Preferences();
+				_window.open();
+				flash.utils.setTimeout(_window.selectView,500,selectedView);
+				
+				
+			}
+			
+			
+			private function selectView(selectedView:String):void
+			{
+				if(selectedView)
+				{
+					switch(selectedView)
+					{
+						case "Scene Sync":
+							_window.preferenceView.selectedIndex = 6;
+							
+							if(_window._showingAll)
+							{
+								_window.toggleShowAll();
+							}
+							break;
+					}
+				}
+			}
+			
+			/*
+			*/
+			
+			private function closeWindow():void
+			{
+				_window = null;
+				
+			}
+			
+			private function resizeWindow():void
+			{
+				var h:Number = this._showingAll ? this.minHeight : prefContainer.height + 22;
+				
+				if(!this.nativeWindow.closed)
+					Tweener.addTween(this.nativeWindow,{height:h,time:.5,transition:"easeInOutCubic"});
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Dissolve id="fadeOut"	
+				 alphaFrom="1" 	
+				 alphaTo="0" />
+	
+	<mx:Dissolve id="fadeIn"
+				 alphaFrom="0" 
+				 alphaTo="1" />
+	
+	<mx:VBox width="590" id="prefContainer" verticalGap="0">
+		
+		
+		
+		<mx:HBox width="100%" 
+				 verticalAlign="middle" 
+				 styleName="barPreferenceBG" id="topControlBar" 
+				 height="31" paddingRight="15" paddingLeft="15">
+			
+			
+			<controls:ShadowedLabel text="{this._showingAll ? 'Preferences' : this.preferenceView.selectedChild.label}" fontSize="12" fontWeight="bold" />
+			
+			
+			<mx:Spacer width="100%" />
+			
+			<mx:Button styleName="showAllPreferenceButton" 
+					   click="{toggleShowAll();}" />
+		</mx:HBox>
+		
+		
+		
+		<preferences:PreferenceControlBar id="dpcontroller" 
+										  visible="{this._showingAll}" includeInLayout="{_showingAll}"	
+										  selectedIndex="{toggleShowAll();}" />
+		
+		
+		<mx:ViewStack id="preferenceView" 
+					  width="100%" 
+					  visible="{!_showingAll}"
+					  includeInLayout="{!_showingAll}"
+					  creationComplete="{ dpcontroller.viewStack = preferenceView }" 
+					  resizeToContent="true" 
+					  resize="flash.utils.setTimeout(resizeWindow,100);">
+			
+			
+			<views:GeneralPrefView label="General" name="General" 
+								   iconStyleName="generalViewPreferenceButton" />
+			
+			<views:PluginsPrefView label="Plugins" name="Plugins"
+								   iconStyleName="pluginsViewPreferenceButton" enabled="false"	 />
+			
+			
+			<views:AccountsPrefView label="Accounts" 
+									iconStyleName="accountsViewPreferenceButton" />
+			
+			<views:ShortcutsPrefView label="Shortcuts" 
+									 iconStyleName="shortcutsViewPreferenceButton" enabled="false"	 />
+			
+			<views:HUDPrefView  label="HUD" 
+								iconStyleName="HUDViewPreferenceButton" enabled="false"	 />
+			
+			
+			
+			<views:BetaSettingsPrefView label="Beta AIRSettings" 
+										iconStyleName="betaSettingsViewPreferenceButton" enabled="false"	 />
+			
+			<views:SyncPrefView   label="Scene Sync" name="Scene Sync"
+								  iconStyleName="syncViewPreferenceButton" />
+			
+			<views:UpdatePrefView label="Update" 
+								  iconStyleName="updateViewPreferenceButton" />
+		</mx:ViewStack>
+		
+		
+	</mx:VBox>
+	
+	
+</mx:Window>

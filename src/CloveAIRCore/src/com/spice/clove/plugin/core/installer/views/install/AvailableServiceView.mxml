@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   verticalAlign="middle"
+		   horizontalGap="10" xmlns:proxy="com.spice.vanilla.mx.proxy.*" 
+		   click="selectPlugin.selected = true">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.calls.CallClovePluginFactoryType;
+			import com.spice.clove.plugin.install.IAvailableService;
+			
+			import mx.controls.Alert;
+			
+			[Bindable] 
+			private var _availablePlugin:IAvailableService;
+			
+			
+			override public function set data(value:Object) : void
+			{
+				super.data = value;
+				
+				this._availablePlugin = IAvailableService(value);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:CheckBox id="selectPlugin"
+				 selected="{_availablePlugin.selected}" 
+				 change="{_availablePlugin.selected = selectPlugin.selected}"
+				 click="event.stopPropagation();" />
+	
+	<mx:Image source="{iconBind.responseData}" />
+	
+	<mx:Label text="{this._availablePlugin.name}"
+			  fontWeight="bold" />
+	
+	
+	<proxy:MXProxyCall id="iconBind"
+					   proxy="{this._availablePlugin.factory.getProxy()}"
+					   property="{CallClovePluginFactoryType.GET_ICON_32}" 
+					   autoCall="true"
+					   bind="true"  />
+	
+</mx:HBox>

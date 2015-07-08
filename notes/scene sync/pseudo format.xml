@@ -1,0 +1,36 @@
+<Scene name="Fantasy Football">
+	
+	<!-- header for the HTML page -->
+	<header src="http://someurl.com/header.html" /> 
+	
+	<!-- actions invoked by last changes. These will be ignored on initialize. These will ALSO serve for analytics -->
+	<actions >
+		
+		<!-- plugin would ACTUALLY be the registered certificate UID stored on the server. Something like plugin="ac1d53ed6b432-1" -->
+		<removeColumn> 
+			<column plugin="Twitter" search="Football" />
+		</removeColumn> 
+		<addColumn>
+			<column name="Football"> <!-- group -->
+				<column name="Bret Favre">
+					<column name="Twitter Search:Bret Favre" search="Bret Favre" />
+				</column>
+			</column>
+		</addColumn>
+		
+		<!-- this would give a prompt to remove the plugin. We MIGHT not need this. We can use this for analytics though -->
+		<removePlugin id="Facebook" />
+		
+	</actions>
+	
+	<!-- called once when the scene is registered by the username -->
+	<init plugin="ID of plugin this sync belongs to">
+		<columns>
+			<column name="Baseball">
+				<!--...-->
+			</column>
+		</columns>
+	</init>
+	
+	
+</Scene>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display:AutoResizingWindow title="Submit a Bug"
+							xmlns:mx="http://www.adobe.com/2006/mxml" 
+							xmlns:display="com.spice.air.display.*" 
+							close="{_opened = false}" 
+							xmlns:window="com.spice.clove.view.window.*" 
+							creationComplete="init();">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.sceneSync.impl.service.CloveService;
+			import com.spice.clove.plugin.core.sceneSync.impl.service.call.bugs.BugReportCall;
+			import com.spice.clove.plugin.core.sceneSync.impl.service.events.CloveServiceEvent;
+			import com.spice.aloe.AloeBugTracker;
+			import com.spice.clove.models.CloveAIRModelLocator;
+			import com.spice.events.QueueManagerEvent;
+			import com.spice.remoting.amfphp.cue.ServiceCue;
+			import com.spice.utils.queue.QueueManager;
+			import com.spice.utils.queue.cue.EventCue;
+			import com.spice.utils.storage.TempSettings;
+			
+			import flash.filesystem.File;
+			import flash.filesystem.FileMode;
+			import flash.filesystem.FileStream;
+			
+			import mx.controls.Alert;
+			import mx.rpc.events.FaultEvent;
+			import mx.rpc.events.ResultEvent;
+			import mx.utils.Base64Encoder;
+			
+			import nochump.util.zip.ZipEntry;
+			import nochump.util.zip.ZipFile;
+			import nochump.util.zip.ZipOutput;
+			
+			
+			private static var _opened:Boolean;
+			
+			
+			[Bindable] 
+			private var _model:CloveAIRModelLocator = CloveAIRModelLocator.getInstance();
+			
+			[Bindable] 
+			private var _report:BugReportCall;
+			
+			[Bindable] 
+			private var _queue:QueueManager;
+			
+			
+			public static function openWindow():void
+			{
+				var window:SubmitBugWindow = new SubmitBugWindow();
+				window.open();
+				
+				_opened = true;
+			}
+			
+			
+			private function init():void
+			{
+				this.centerWindow();
+			}
+			
+			private var _zip:ZipOutput;
+			
+			private function submit():void
+			{
+				if(_zip || _report)
+					return;
+				
+				
+				if(includeDiagnostics.selected)
+				{
+					_zip = new ZipOutput();
+					
+					
+					var fe = new File(_model.applicationSettings.fullStoragePath);
+					
+					_queue = new QueueManager();
+					_queue.addEventListener(QueueManagerEvent.QUEUE_COMPLETE,onZipReady);
+					
+					zipAll(_queue,fe,_zip);
+				
+				}
+				
+				else
+				{
+					this.onZipReady();
+				}
+				
+				
+				
+			}
+			
+			private function onZipReady(event:QueueManagerEvent = null):void
+			{
+				var tmp:File = null;
+				if(event)
+				{
+					
+					_zip.finish();
+					
+					event.currentTarget.removeEventListener(event.type,onZipReady);
+					
+					var b64:Base64Encoder = new Base64Encoder();
+					b64.encode(Math.random()+"zip");
+					
+					
+					var name:String = b64.drain();
+					
+					tmp = new File(File.applicationStorageDirectory.nativePath+"/"+name+".zip");
+					
+					var fw:FileStream = new FileStream();
+					fw.open(tmp, FileMode.WRITE);
+					fw.writeBytes(_zip.byteArray);
+					fw.close();
+					
+					
+				}
+				
+				
+				
+				
+				
+				var service:CloveService = new CloveService();
+				_report = service.reportBug("Bug",message.text,prioritySelector.selectedItem.name,email.text,tmp);
+				_report.addEventListener(ProgressEvent.PROGRESS,onProgress,false,0,true);
+				_report.addEventListener(CloveServiceEvent.RESULT,onResult);
+				
+				
+				if(tmp)
+					tmp.deleteFile();
+				
+			}
+			
+			
+			
+			private function zipAll(queue:QueueManager,file:File,zip:ZipOutput,dir=""):void
+			{
+				var fileName:String = dir+"/"+file.name;
+				
+				if(file.isDirectory)
+				{
+					var files:Array = file.getDirectoryListing();
+					
+					for each(var dFile:File in files)
+					{
+						zipAll(queue,dFile,zip,fileName);
+					}
+				}
+				else
+				{
+					
+					queue.addCue(new EventCue(file,initFileLoad,[file],[Event.COMPLETE],onFileLoad,[fileName,file,zip]));
+					
+					
+				}
+			}
+			
+			private function initFileLoad(file:File):void
+			{
+				file.load();
+			}
+			
+			private function onFileLoad(fileName:String,file:File,zip:ZipOutput):void
+			{
+				var ze:ZipEntry = new ZipEntry(fileName);
+				zip.putNextEntry(ze);
+				zip.write(file.data);
+				zip.closeEntry();
+			}
+			
+			
+			private function onResult(event:CloveServiceEvent):void
+			{
+				_zip = null;
+				this._report = null;
+				if(!event.success)
+				{
+					Alert.show("Unable to upload bug:"+event.message);
+					return;
+				}
+				
+				this.close();
+				
+				Alert.show(event.message);
+			}
+			
+			private function onProgress(event:ProgressEvent):void
+			{
+				
+				this.uploadProgress.setProgress(event.bytesLoaded / event.bytesTotal*100,100);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:VBox width="500" height="400">
+		<mx:Label visible="{_queue != null}" includeInLayout="{_queue != null}" text="Zipping files: {_queue.stackLength}" />
+		
+		<mx:Form width="100%" height="100%">
+			<mx:FormItem label="Priority:" width="100%">
+				<mx:ComboBox labelField="name" id="prioritySelector">
+					<mx:dataProvider>
+						<mx:ArrayCollection>
+							<mx:Object name="Low" code="0"/>
+							<mx:Object name="Medium" code="1"/>
+							<mx:Object name="High" code="2"/>
+							<mx:Object name="Critical" code="3"/>
+							
+						</mx:ArrayCollection>
+					</mx:dataProvider>
+				</mx:ComboBox>
+			</mx:FormItem>
+			<mx:FormItem label="" width="100%">
+				<mx:CheckBox id="includeDiagnostics" label="Include Settings (This will help use fix the problem)" selected="true" />
+			</mx:FormItem>
+			<mx:FormItem label="Email:" width="100%">
+				<mx:TextInput id="email" text="(Optional)" width="100%" />
+			</mx:FormItem>
+			<mx:FormItem label="Message:" width="100%" height="100%">
+				<mx:TextArea id="message" width="100%" height="100%" />
+			</mx:FormItem>
+		</mx:Form>
+		
+		<window:WindowFooter width="100%">
+			<mx:ProgressBar id="uploadProgress" maximum="100" minimum="0" mode="{'manual'}" label="" visible="{this._report != null}" includeInLayout="{this._report != null}" />
+			<mx:Spacer width="100%" />
+			<mx:Button height="22" label="Submit" click="submit();" />
+		</window:WindowFooter>
+		
+	</mx:VBox>
+	
+</display:AutoResizingWindow>

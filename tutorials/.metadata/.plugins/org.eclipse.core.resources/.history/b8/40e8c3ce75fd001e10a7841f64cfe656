@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties version="1">
+  <includeClasses>
+    <classEntry path="com.cloveHello.plugin.column.controller.HelloColumnController"/>
+    <classEntry path="com.cloveHello.plugin.column.views.row.HelloColumnRowView"/>
+    <classEntry path="com.cloveHello.plugin.column.render.HelloColumnItemRenderer"/>
+    <classEntry path="com.cloveHello.plugin.column.views.row.HelloColumnRowBodyView"/>
+    <classEntry path="com.cloveHello.plugin.installer.CloveHelloPluginInstaller"/>
+    <classEntry path="com.cloveHello.plugin.CloveHelloPluginSettings"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

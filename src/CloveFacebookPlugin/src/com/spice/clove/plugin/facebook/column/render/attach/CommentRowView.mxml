@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" xmlns:column="com.spice.clove.views.column.*" xmlns:render="com.spice.clove.plugin.column.render.*">
+	<mx:Script>
+		<![CDATA[
+			import com.facebook.data.stream.PostCommentData;
+			import com.spice.clove.plugin.facebook.data.FriendInfo;
+			import com.spice.clove.plugin.facebook.model.FacebookModelLocator;
+			
+			[Bindable] 
+			private var _pc:PostCommentData;
+			
+			[Bindable] 
+			private var _friendInfo:FriendInfo;
+			
+			[Bindable] 
+			public var showSep:Boolean = true;
+			
+			[Bindable] 
+			private var _dp:String;
+			
+			[Bindable] 
+			private var _model:FacebookModelLocator = FacebookModelLocator.getInstance();
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				_pc = PostCommentData(value);
+				
+				
+				rcd.setDatePosted(_pc.time);
+				
+				
+				_friendInfo = _model.friendModel.getFriendInfo(_pc.fromid);
+				
+			}
+		]]>
+	</mx:Script>
+	
+	<render:RenderedColumnData id="rcd" message="{_pc.text}" title="{_friendInfo.name}" icon="{_friendInfo.pic_square}" />
+	
+	<column:TitleMessageIconView renderedData="{rcd}" width="100%" iconSize="35" />
+	
+	<mx:Canvas width="100%" height="2" styleName="attSeperator" visible="{showSep}" />
+</mx:VBox>

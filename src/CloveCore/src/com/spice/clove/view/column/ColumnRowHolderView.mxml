@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Container xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   xmlns:display="com.spice.display.*" 
+		   width="100%" 
+		   clipContent="false"
+		   implements="com.spice.clove.plugin.core.views.ICloveViewTarget"
+		   styleName="columnRow">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.content.data.CloveAppData;
+			import com.spice.display.controls.list.FlexUIResize;
+			
+			import mx.containers.Canvas;
+			import mx.core.IDataRenderer;
+			import mx.core.UIComponent;
+
+			
+			private var _currentView:DisplayObject;
+			private var _measuredHeight:Number = 50;
+			
+			protected var _rcd:CloveAppData;			
+			
+			public function getView():DisplayObject
+			{
+				return _currentView;
+			}
+			
+			
+			public function removeView():DisplayObject
+			{
+				if(!this._currentView || this._currentView.parent != this)
+					return null;
+				
+				
+				
+				
+				return this.removeChild(this._currentView);
+			}
+			
+			public function setView(value:DisplayObject):DisplayObject
+			{
+				this._currentView = value;
+				
+				return this.addChildAt(_currentView,0);
+				
+			}
+			
+			
+			/* public function get data():Object
+			{
+				return this._rcd;
+			} */
+			
+			
+			
+			override public function set data(value:Object) : void
+			{
+				if(_rcd == value)
+					return;
+				
+				
+				
+				if(!value)
+				{
+					
+					if(this._currentView)
+					IDataRenderer(this._currentView).data = null;
+//					this.removeView();
+//					this._currentView = null;
+					_rcd = null;
+					return;
+				}  
+				
+				
+				_rcd = CloveAppData(value);
+				
+				
+				if(!_rcd.getItemRenderer())
+					return;
+				
+				CloveAppData(_rcd).getItemRenderer().setContentView(_rcd,this);	
+				                                    
+				
+			}
+			
+			
+			/**
+			 */
+			
+			override protected function measure():void
+			{
+				super.measure();
+				
+				//minHeight
+				var mH:Number      = 0;
+				
+				//current Child
+				var cH:UIComponent;
+				
+				var c:Canvas;
+				var n:int = this.numChildren;
+				
+				for(var i:int = 0; i < n; i++)
+				{
+					cH = UIComponent(this.getChildAt(i));
+
+					mH = Math.max(cH.measuredHeight,mH);
+				}
+				
+				
+				this._measuredHeight = Math.max(mH,this.minHeight);
+			}
+			
+			/**
+			 */
+			
+			override public function get measuredHeight():Number
+			{
+				return this._measuredHeight;
+			}
+			/**
+			 */
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				
+				var n:uint = this.numChildren;
+				
+				
+				//percent Height
+				var pW:Number 	   = 0;
+				
+				//percent Width
+//				var pH:Number 	   = 0;
+				
+//				var h:Number       = 0;
+				
+				//current Child
+				var cH:UIComponent;
+				
+				var c:Canvas;
+				
+				for(var i:int = 0; i < n; i++)
+				{
+					cH = UIComponent(this.getChildAt(i));
+					
+					pW = cH.percentWidth;
+//					pH = cH.percentHeight;
+//					h = cH.height;
+					
+					
+					cH.setActualSize(((pW/100)*width),cH.measuredHeight);
+					
+					
+				}
+				
+				
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	<!--<observers:MXProxyBinding proxy="{this._rcd.getProxy()}" 
+							  notificationsOfInterest="{[CallCloveDataType.UPDATE_CLOVE_DATA]}"
+							  notification="{setAsyncView();}" 
+							  id="updateCloveDataCall" />-->
+	
+</mx:Container>

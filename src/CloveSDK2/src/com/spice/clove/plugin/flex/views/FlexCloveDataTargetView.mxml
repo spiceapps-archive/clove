@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   implements="com.spice.clove.plugin.core.views.ICloveViewTarget">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.views.ICloveViewTarget;
+			
+			import mx.core.IDataRenderer;
+			
+			
+			private var _view:DisplayObject
+			
+			
+			public function getView():DisplayObject
+			{
+				return _view;
+			}
+			
+			public function setView(value:DisplayObject):DisplayObject
+			{
+				if(_view)
+				{
+					this.removeView();
+				}
+				
+				_view = value;
+				
+				return this.addChildAt(_view,0);
+			}
+			
+			public function removeView():DisplayObject
+			{
+				if(!_view)
+					return null;
+				
+				if(_view is IDataRenderer)
+				{
+					IDataRenderer(_view).data = null;
+				}
+				
+				_view = null;
+				
+				return this.removeChildAt(0);
+				
+			}
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				if(this._view)
+				IDataRenderer(this._view).data = value;
+			}
+			
+		]]>
+	</mx:Script>
+</mx:Canvas>

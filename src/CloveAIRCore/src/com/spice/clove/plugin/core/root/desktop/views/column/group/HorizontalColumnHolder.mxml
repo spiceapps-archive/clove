@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   mouseDown="startBoxDrag(event);" mouseUp="stopColDrag();"
+		   height="100%" 
+		   width="{columnSize}"
+		   xmlns:group1="com.spice.clove.plugin.core.root.desktop.views.column.group.*">
+	
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.root.desktop.views.column.group.single.SingleColumn;
+			import com.spice.clove.plugin.core.root.desktop.views.column.group.single.SingleColumnViewController;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			import com.spice.vanilla.impl.settings.basic.NumberSetting;
+			
+			import mx.controls.scrollClasses.ScrollThumb;
+			
+			
+			public static const MIN_COL_WIDTH:Number = 300;
+			public static const MAX_COL_WIDTH:Number = 600;
+			
+			
+			
+			private var _colSize:Number = 350;
+			
+			
+			
+			[Bindable("columnSizeChange")]
+			public function get columnSize():Number
+			{
+				if(!this.controller || !this.controller.target)
+					return _colSize;
+				  
+				
+				if(isNaN(NumberSetting(this.controller.target.metadata.getNewSetting(BasicSettingType.NUMBER,"columnSize")).getData()))
+				{
+					columnSize = _colSize;
+				}
+				
+				return NumberSetting(this.controller.target.metadata.getNewSetting(BasicSettingType.NUMBER,"columnSize")).getData();
+			}
+			
+			public function set columnSize(value:Number):void
+			{
+				this._colSize = value;
+			
+				if(!this.controller  || !this.controller.target)
+					return;
+				
+				value = Math.max(MIN_COL_WIDTH,value);
+				value = Math.min(MAX_COL_WIDTH,value);
+				
+				
+				NumberSetting(this.controller.target.metadata.getNewSetting(BasicSettingType.NUMBER,"columnSize")).setData(value);
+				
+				
+				this.dispatchEvent(new Event("columnSizeChange"));
+			}
+			
+			[Disposable(onDispose="onDisposeColumn")]
+			[Bindable] 
+			public var controller:SingleColumnViewController;
+			
+			private var _currentView:SingleColumn;
+			
+			private var _pool:ObjectPoolManager = ObjectPoolManager.getInstance();
+			
+			
+			
+			/*
+			*/
+			[Disposable(onDispose="onDisposeColumn")]
+			override public function set data(value:Object):void
+			{
+				
+				
+				
+				
+				
+				this.controller = SingleColumnViewController(value);
+				
+				
+				
+				
+				if(!value)
+				{
+					this.addCurrentViewToPool();
+					return;
+				}
+				
+				
+				
+				if(!(this._currentView is this.controller.viewClass))
+				{
+					this.setNewView();
+					
+				}
+				
+				
+				if(_currentView)
+					_currentView.controller = this.controller;
+				
+				if(this.controller && this.controller.target && !this.controller.target.metadata.hasSetting("columnSize"))
+				{
+					this.columnSize = this._colSize;
+				}
+				
+				this.dispatchEvent(new Event("columnSizeChange"));
+			}
+			
+			
+			/*
+			*/
+			
+			private function setNewView():void
+			{
+				
+				addCurrentViewToPool();
+				
+				_currentView  = this._pool.getObject(this.controller.viewClass);
+				
+				
+				addChildAt(_currentView,0);
+			}
+			
+			
+			/*
+			when resizing the drag line, we set the min width to the x position
+			*/
+			
+			private function onResizing():void
+			{
+				
+				this.columnSize = this.mouseX;	
+				
+			}
+			
+			/*
+			*/
+			
+			private function dragComplete():void
+			{
+				
+				this.columnSize = this.width;//this.minWidth;
+				
+			}
+			
+			
+			/*
+			*/
+			
+			private function startBoxDrag(event:MouseEvent):void
+			{
+				
+				var isInBounds:Boolean = this.mouseY < 40; //only allow header drags
+				
+				if(event.target != resizer && 
+					!(event.target is ScrollThumb) &&
+					isInBounds)
+				{
+					this.root.removeEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
+					this.root.addEventListener(MouseEvent.MOUSE_MOVE,onMouseMove,false,0,true);
+				}
+			}
+			
+			public function onDisposeColumn():void
+			{
+				
+			}
+			
+			/*
+			*/
+			
+			private function stopColDrag():void
+			{
+				this.root.removeEventListener(MouseEvent.MOUSE_MOVE,onMouseMove);
+			}
+			
+			/*
+			*/
+			
+			private function onMouseMove(event:MouseEvent):void
+			{
+				event.currentTarget.removeEventListener(event.type,onMouseMove);
+				dispatchEvent(new MouseEvent("startBoxDrag",true));
+			}
+			
+			public function dispose():void
+			{
+				addCurrentViewToPool();
+				
+				
+				
+				this.controller = undefined;
+			}
+			
+			private function addCurrentViewToPool():void
+			{
+				if(_currentView)
+				{
+					_currentView.controller = undefined;
+					
+					_pool.addObject(_currentView.parent.removeChild(_currentView));
+					
+					_currentView = undefined;
+				}
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+	
+	
+	<group1:DragLine id="resizer" 
+					 height="100%" 
+					 right="0"
+					 dragging="onResizing();"
+					 resizeComplete="dragComplete();" />
+</mx:Canvas>

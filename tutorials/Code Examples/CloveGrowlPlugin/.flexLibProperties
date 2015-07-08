@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="true" version="3">
+  <includeClasses>
+    <classEntry path="com.spice.clove.plugin.growl.impl.CloveGrowlPlugin"/>
+    <classEntry path="com.spice.clove.plugin.growl.impl.CloveGrowlPluginFactory"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

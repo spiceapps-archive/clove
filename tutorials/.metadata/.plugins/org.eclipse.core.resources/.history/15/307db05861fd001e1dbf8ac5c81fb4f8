@@ -1,0 +1,48 @@
+package com.cloveHello.plugin.service.cue
+{
+	import com.spice.utils.queue.cue.StateCue;
+	
+	public class CallDataCue extends StateCue
+	{
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Variables
+        //
+        //--------------------------------------------------------------------------
+
+		private var _startIndex:int;
+		private var _length:Number;
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+        
+        /**
+		 */
+		 
+		public function CallDataCue(start:int,length:int = 100)
+		{
+			_startIndex = start;
+			_length     = length;
+		}
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Public Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		override public function init():void
+		{
+			super.init();
+			
+			
+		}
+
+	}
+}

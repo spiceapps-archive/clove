@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"  click="{this.dispatchEvent(new Event('removeCrumb',true))}" verticalAlign="middle" xmlns:controls="com.spice.clove.view.controls.*" xmlns:icon="com.spice.clove.plugin.core.root.column.view.dock.icon.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import flash.utils.setTimeout;
+			import com.spice.clove.plugin.column.ClovePluginColumn;
+			
+			[Bindable] 
+			public var column:ClovePluginColumn;
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				this.column = ClovePluginColumn(value);
+			}
+			
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas height="10" width="9" id="arrow" styleName="breadcrumbArrow"  />
+	
+	<controls:ShadowedLabel text="{column.title}" />
+	
+	
+</mx:HBox>

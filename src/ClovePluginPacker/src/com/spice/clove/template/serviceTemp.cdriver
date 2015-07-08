@@ -1,0 +1,7 @@
+<Bridge>
+	<local:rsl source="{pluginDirectory}/[SWF]" />
+	<classDefinition source="[PLUGIN_CLASS_PACKAGE]" />
+	<clove:plugin usePlugin="{new [PLUGIN_CLASS](clove.settings)}" />
+</Bridge>
+	
+			

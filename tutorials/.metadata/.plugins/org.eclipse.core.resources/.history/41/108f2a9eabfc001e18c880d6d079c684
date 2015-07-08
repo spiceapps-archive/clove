@@ -1,0 +1,10 @@
+package com.cloveHello.plugin
+{
+	public class CloveHelloPluginFactory
+	{
+		public function CloveHelloPluginFactory()
+		{
+		}
+
+	}
+}

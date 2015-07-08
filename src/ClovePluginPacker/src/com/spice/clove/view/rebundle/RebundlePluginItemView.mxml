@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" verticalAlign="middle">
+	<mx:Script>
+		<![CDATA[
+			import mx.binding.utils.ChangeWatcher;
+			import com.spice.clove.vo.PluginVO;
+			
+			[Bindable] 
+			public var plugin:PluginVO;
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				this.plugin = PluginVO(value);
+				
+			}
+			
+			public function set progressVal(value:Number):void
+			{
+				
+				progress.setProgress(this.plugin.uploadProgess,100);
+			}
+			
+			public function get progressVal():Number
+			{
+				return plugin.uploadProgess;
+			}
+		]]>
+	</mx:Script>
+	<mx:Binding source="plugin.uploadProgess" destination="progressVal" />
+	<mx:Label text="{plugin.name}" />
+	<mx:ProgressBar id="progress" mode="manual" width="100%" visible="{this.plugin.uploadProgess > 0}" includeInLayout="{this.plugin.uploadProgess > 0}" />
+</mx:HBox>

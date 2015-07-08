@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- [ExcludeClass] -->
+<views:PreferenceView xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="85" xmlns:views="com.spice.clove.view.preferences.views.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.model.CloveModelLocator;
+			
+			[Bindable] 
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+		]]>
+	</mx:Script>
+	<mx:Label horizontalCenter="0" verticalCenter="0" fontWeight="bold" text="These settings are not available in this beta." />
+</views:PreferenceView>

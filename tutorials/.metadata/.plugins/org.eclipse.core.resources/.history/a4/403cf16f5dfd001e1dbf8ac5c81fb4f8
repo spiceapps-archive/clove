@@ -1,0 +1,10 @@
+package com.cloveHello.plugin.service.cue
+{
+	public class CallDataCue
+	{
+		public function CallDataCue()
+		{
+		}
+
+	}
+}

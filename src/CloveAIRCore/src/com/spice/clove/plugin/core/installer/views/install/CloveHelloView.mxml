@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox verticalGap="0" 
+		 xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 keyDown="onKeyDown(event);"
+		 xmlns:window="com.spice.clove.view.window.*" 
+		 xmlns:proxy="com.spice.vanilla.mx.proxy.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.core.calls.CallAppCommandType;
+			
+			[Bindable] 
+			public var controller:ServiceInstallationController;
+			
+			
+			
+			private function onKeyDown(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.ENTER)
+					return;
+				
+				controller.selectPlugins();
+			}
+			
+			
+			private function toggleShowWelcomeScreen():void
+			{
+				controller.plugin.getPluginSettings().getShowHelloScreenOnStartup().setData(showHelloCheckbox.selected);
+			}
+			
+			private function next():void
+			{
+				if(controller.showOnlyHello)
+				{
+					controller.complete();
+				}
+				else
+				{
+					controller.selectPlugins()
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<mx:HTML width="640" height="400" location="{getHtmlCall.responseData}" horizontalScrollPolicy="off" verticalScrollPolicy="off" />
+	
+	
+	
+	<proxy:MXProxyCall proxy="{this.controller.plugin.getPluginMediator()}" id="getHtmlCall" property="{CallAppCommandType.GET_SPLASH_PAGE_HTML_URL}" autoCall="true" />
+	
+	<window:WindowFooter>
+		<!--<mx:Button label="Watch Screencast" height="22" click="{flash.net.navigateToURL(new URLRequest(_model.urlModel.demosUrl));}" />-->
+		<mx:CheckBox id="showHelloCheckbox" 
+					 label="Show welcome screen on startup" 
+					 click="toggleShowWelcomeScreen();" 
+					 selected="{controller.plugin.getPluginSettings().getShowHelloScreenOnStartup().getData()}" />
+		
+		<mx:Spacer width="100%"/>
+		<mx:Button label="{controller.showOnlyHello ? 'Finish' : 'Continue'}" 
+				   height="22" 
+				   click="{next();}" />
+	</window:WindowFooter>
+</mx:VBox>

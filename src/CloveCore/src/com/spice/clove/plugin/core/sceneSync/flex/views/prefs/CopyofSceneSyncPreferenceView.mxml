@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" minWidth="550" minHeight="400" xmlns:proxy="com.spice.vanilla.mx.proxy.*" xmlns:binding="com.spice.binding.*" xmlns:views="com.spice.clove.plugin.flex.views.*" xmlns:observer="com.spice.vanilla.flash.observer.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.sceneSync.impl.SceneSyncPlugin;
+			import com.spice.clove.plugin.core.views.render.ICloveDataViewController;
+			import com.spice.clove.plugin.flex.views.FlexCloveDataTargetView;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncPluginType;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncablePluginType;
+			import com.spice.clove.sceneSync.core.service.data.SceneSubscriptionData;
+			import com.spice.recycle.factory.RecyclingFactory;
+			
+			import flash.utils.clearInterval;
+			import flash.utils.setTimeout;
+			
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.events.CloseEvent;
+			
+			
+			[Bindable] 
+			public var plugin:SceneSyncPlugin;
+			
+			[Bindable] 
+			public var subs:ArrayCollection = new ArrayCollection();
+			
+			
+			protected function getSubscriptionsCall_responseDataChangeHandler(event):void
+			{
+				subs.source = getSubscriptionsCall.responseData;
+				
+				var sc:SceneSubscriptionData;
+				
+				
+				if(!data)
+					return;
+				
+				
+				this.subscriptions.selectedIndex = 0;
+				
+			}
+			
+			/**
+			 */
+			
+			private function selectSubscription():void
+			{
+				var item:SceneSubscriptionData = SceneSubscriptionData(this.subscriptions.selectedItem);
+				
+				this.setFilterViews();
+			}
+			
+			/**
+			 */
+			
+			private function setFilterViews():void
+			{
+				if(!this.subscriptions || !this.subscriptions.selectedItem)
+					return;
+				
+				var views:Array = getFilterViewsCall.responseData;
+				filterViewBinder.dataProvider = views;
+				
+				var i:int;
+				
+				for each(var view:ICloveDataViewController in views)
+				{
+					
+					view.setContentView(this.subscriptions.selectedItem.scene,FlexCloveDataTargetView(this.subscriptionFilterView.getChildAt(i++)));
+				}
+			}
+			
+			/**
+			 */
+			
+			private function deleteScene():void
+			{
+				if(this.plugin.getSceneSyncAccount())
+				Alert.show("Are you sure you want to delete this scene?","Delete Scene",Alert.YES | Alert.CANCEL,null,onConfirm);
+				
+			}
+			
+			/**
+			 */
+			
+			private function onConfirm(event:CloseEvent):void
+			{
+				if(event.detail == Alert.YES)
+				{
+					this.plugin.getSceneSyncAccount().deleteCurrentScene();
+				}
+			}
+			
+			/**
+			 */
+			
+			private var _renameTimeout:int;
+			
+			/**
+			 */
+			
+			private function rename():void
+			{
+				flash.utils.clearInterval(_renameTimeout);
+				_renameTimeout = flash.utils.setTimeout(commitRename,500);
+			}
+			
+			/**
+			 */
+			
+			private function commitRename():void
+			{
+				this.plugin.getSceneSyncAccount().getService().renameCurrentScene(renamer.text);
+			}
+			
+			
+		]]>
+	</mx:Script>
+	<mx:VBox width="100%" height="100%" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="40">
+		<mx:HBox width="100%" visible="{this.plugin.getSceneSyncAccount() != null}">
+			<mx:Label text="Current Scene:" />
+			<mx:TextInput text="{currentSceneWatcher.data.name}" id="renamer" change="rename();" />
+			<mx:Spacer width="100%" />
+			<mx:Button label="Delete Scene" click="{deleteScene();}" />
+		</mx:HBox>
+		<mx:HBox width="100%" height="100%">
+			<mx:VBox verticalGap="0" width="100%" height="100%">
+				<mx:Label text="Subscriptions" />
+				<mx:List id="subscriptions" width="100%" height="100%" dataProvider="{this.subs}" itemClick="selectSubscription();" labelField="displayName" />
+				<!--<mx:HBox horizontalGap="0">
+				<mx:Button label="+" />
+				<mx:Button label="-" />
+				</mx:HBox>-->
+			</mx:VBox>
+			<mx:VBox width="100%" height="100%">
+				<mx:Label text="What interests you?" />
+				
+				<mx:VBox id="subscriptionFilterView" width="100%" height="100%" />
+			</mx:VBox>
+		</mx:HBox>
+		
+	</mx:VBox>
+	<binding:DataBoundController id="filterViewBinder" target="{subscriptionFilterView}">
+		<binding:itemRenderer>
+			<mx:Component>
+				<views:FlexCloveDataTargetView width="100%" height="100%" />
+			</mx:Component>
+		</binding:itemRenderer>
+	</binding:DataBoundController>
+	
+	
+	<observer:SettingObserver target="{plugin.getSceneSyncAccount().getCurrentScene()}" id="currentSceneWatcher" />
+	
+	<proxy:MXBatchProxyCall id="getFilterViewsCall" 
+							proxy="{plugin.getPluginMediator()}" 
+							property="{CallSceneSyncablePluginType.SCENE_SYNC_GET_FILTER_VIEW_CONTROLLER}"
+							responseDataChange="setFilterViews();"
+							autoCall="true" />
+	
+	<proxy:MXProxyCall id="getSubscriptionsCall" 
+					   proxy="{plugin.getProxy()}" 
+					   property="{CallSceneSyncPluginType.SCENE_SYNC_GET_SUBSCRIBED_SCENES}"
+					   responseDataChange="getSubscriptionsCall_responseDataChangeHandler(event);"
+					   autoCall="true"
+					   bind="true" />
+	
+	
+</mx:Canvas>

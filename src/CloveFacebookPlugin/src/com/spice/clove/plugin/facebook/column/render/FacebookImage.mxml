@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas  xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.spice.controls.*" backgroundColor="#000000" backgroundAlpha=".1" xmlns:util="com.spice.clove.util.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.facebook.data.photos.PhotoData;
+			import mx.controls.Alert;
+			import com.facebook.Facebook;
+			import com.spice.clove.plugin.column.option.ColumnDataOptionIcon;
+			
+			[Bindable] public var photoData:PhotoData;
+			
+			
+			[Bindable]
+			private var _currentURL:String;
+			
+			private function toggleSize():void
+			{
+				//store the URL separately since the source can be cached, and return a byteArray instead
+				if(_currentURL == photoData.src_big)
+				{
+					ph.source = _currentURL = photoData.src_small;
+				}
+				else
+				{
+					ph.source = _currentURL = photoData.src_big;
+				}
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:ProgressBar id="test" source="{ph}" verticalCenter="0" horizontalCenter="0" label="" width="50" />
+	
+	<util:BetterImage id="ph" click="toggleSize();" source="{_currentURL = photoData.src_small}" buttonMode="true" />
+	
+</mx:Canvas>

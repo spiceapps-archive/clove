@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml"
+		 xmlns:proxy="com.spice.vanilla.mx.proxy.*" 
+		 xmlns:controls="com.spice.clove.plugin.flex.views.controls.*" 
+		 horizontalGap="6" buttonMode="true" verticalAlign="top" click="visibleRowAttachmentClick();" width="100%" xmlns:display="com.spice.display.*" xmlns:views="com.spice.clove.plugin.flex.views.*">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.calls.CallCloveDataAttachmentType;
+			import com.spice.vanilla.impl.proxy.ProxyCall;
+			
+			import mx.core.IDataRenderer;
+			
+			//			[Bindable] 
+			//			private var _att:IVisibleCloveDataAttachment;
+			
+			[Bindable] 
+			private var _visible:Boolean;
+			
+			
+			override public function set data(value:Object):void
+			{
+				/*if(this.inlineView && this.inlineView.getView())
+				{
+					IDataRenderer(this.inlineView.getView()).data = null;
+				}*/
+				
+				//remove the inline views if the data is null
+				/*if(!value && this.inlineView)
+				{
+					this.inlineView.data = null;
+				}*/
+				
+				super.data = value; 
+				
+				
+				
+			}
+			
+			private function visibleRowAttachmentClick():void
+			{
+				new ProxyCall(CallCloveDataAttachmentType.VISIBLE_ATTACHMENT_CLICK,this.data.getProxy()).dispatch().dispose();
+				
+				_visible = !_visible;
+				
+				if(_visible)
+				{
+					setInlineViewCall.dispatch();
+				}
+				else
+				if(this.inlineView.getView())
+				{
+					removeInlineViewCall.dispatch();
+				}
+				
+			}
+			
+			private function onGetAutoExpanded():void	
+			{
+				this._visible = autoExpandedCall.responseData;
+				
+				
+				if(!this._visible)
+				{
+					
+					removeInlineViewCall.dispatch();
+				}
+				else
+				{
+					flash.utils.setTimeout(setInlineViewCall.dispatch,1);
+				}
+			}
+		]]>
+	</mx:Script>
+	
+	
+	<mx:Image source="{getIconCall.responseData}" />
+	
+	
+	<mx:VBox width="100%" verticalGap="6">  
+		<controls:ResizeableLabel text="{getLabelCall.responseData}" styleName="columnRowAttachmentLink" buttonMode="true" width="100%" />
+		<mx:HBox width="100%" paddingLeft="4">
+			
+		<views:FlexCloveDataTargetView id="inlineView" width="100%" visible="{_visible}" includeInLayout="{_visible}" click="event.stopPropagation()" />
+			
+		</mx:HBox>
+	</mx:VBox>
+	<proxy:MXProxyCall proxy="{data.getProxy()}" 
+					   id="getIconCall"
+					   property="{CallCloveDataAttachmentType.GET_ATTACHMENT_ICON}" 
+					   autoCall="true" 
+					   bind="true" />
+	
+	<proxy:MXProxyCall proxy="{data.getProxy()}" 
+					   id="autoExpandedCall"
+					   property="{CallCloveDataAttachmentType.AUTO_EXPANDED}" 
+					   autoCall="true" 
+					   bind="true" responseDataChange="{onGetAutoExpanded();}" />
+	
+	<proxy:MXProxyCall proxy="{data.getProxy()}" 
+					   id="getLabelCall"
+					   property="{CallCloveDataAttachmentType.GET_ATTACHMENT_LABEL}" 
+					   autoCall="true" 
+					   bind="true" />
+	
+	<proxy:MXProxyCall proxy="{data.getProxy()}" 
+					   id="setInlineViewCall"
+					   property="{CallCloveDataAttachmentType.SET_INLINE_VIEW}" callData="{inlineView}"  />
+	
+	
+	<proxy:MXProxyCall proxy="{data.getProxy()}" 
+					   id="removeInlineViewCall"
+					   property="{CallCloveDataAttachmentType.REMOVE_INLINE_VIEW}" callData="{inlineView}"  />
+	
+	
+	
+	
+</mx:HBox>	  
+

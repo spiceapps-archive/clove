@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" minHeight="30" doubleClick="select()" doubleClickEnabled="true">
+	<mx:Script>
+		<![CDATA[
+			import mx.managers.PopUpManager;
+			
+			
+			public function select():void
+			{
+				var pop:RSSPopup = new RSSPopup();
+				pop.html = data.data.body;
+				
+				pop.open();
+				
+				//var r:RenderedData;
+				//data.column.trashData(data);
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Text x="10" y="10" width="100%" text="{data.data.title}" fontWeight="bold"/>
+	
+</mx:HBox>

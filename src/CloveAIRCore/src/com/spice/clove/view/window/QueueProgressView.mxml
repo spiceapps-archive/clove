@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" verticalAlign="middle" width="100%"  xmlns:display="com.spice.display.*">
+<mx:Script>
+	<![CDATA[
+		import com.spice.clove.model.CloveModelLocator;
+		
+        
+        //--------------------------------------------------------------------------
+   	    //
+        //  Private Variables
+        //
+        //--------------------------------------------------------------------------
+
+		[Bindable] 
+		private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+		
+        //--------------------------------------------------------------------------
+   	    //
+        //  Public Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /*
+		 */
+		
+		override public function set data(value:Object):void
+		{
+			super.data = value;
+			
+		}
+		
+		
+	]]>
+</mx:Script>
+
+<!--<mx:Button label="cancel" click="{manager.queueManager}" />-->
+</mx:HBox>

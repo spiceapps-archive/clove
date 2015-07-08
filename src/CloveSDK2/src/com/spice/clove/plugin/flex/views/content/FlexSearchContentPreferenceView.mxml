@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content:FlexContentPreferenceView xmlns:mx="http://www.adobe.com/2006/mxml"
+								   xmlns:binding="com.spice.concrete.utils.settings.binding.*" 
+								   xmlns:content="com.spice.clove.plugin.flex.views.content.*"
+								   xmlns:proxy="com.spice.vanilla.flex.proxy.*" 
+								   xmlns:proxy1="com.spice.vanilla.mx.proxy.*">
+	<mx:Script>  
+		<![CDATA[
+			import com.spice.clove.plugin.core.calls.CallCloveContentPreferenceControlType;
+			import com.spice.clove.plugin.core.calls.CallCloveSearchControllerType;
+			import com.spice.clove.plugin.core.calls.CallCloveSearchPreferenceViewController;
+			import com.spice.clove.plugin.core.calls.CallFilterListViewControllerType;
+			import com.spice.clove.plugin.core.content.control.ICloveContentController;
+			import com.spice.clove.plugin.impl.views.content.filter.IFilterViewController;
+			import com.spice.clove.plugin.impl.views.content.filter.IFilterableData;
+			import com.spice.utils.SpriteUtil;
+			import com.spice.vanilla.core.observer.INotification;
+			import com.spice.vanilla.flash.observer.CallbackObserver;
+			
+			
+			
+			[Bindable] 
+			private var _target:ICloveContentController;
+			
+			
+			[Bindable] 
+			private var _viewController:FlexContentSearchPreferenceViewController;
+			
+			private var _filterView:IFilterViewController;
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				  
+				this._viewController = FlexContentSearchPreferenceViewController(value);
+//				this._target = ICloveContentController(value);
+				
+			}
+			
+			
+			private function textInputChange():void
+			{
+				setSearchTermCall.dispatch();
+				  
+				
+				var viewController:IFilterViewController = getFilterListViewCall.responseData;
+				
+				if(!viewController)
+					return;
+				
+				var pos:Point = SpriteUtil.absolutePosition(term);
+				pos.y += term.height;
+				
+				viewController.open(new Rectangle(pos.x,pos.y,term.width));
+				
+				
+				viewController.setFilter(term.text);
+				
+			}
+			
+			
+			/**
+			 */
+			
+			private function textInputEnter():void
+			{
+				var viewController:IFilterViewController = getFilterListViewCall.responseData;
+				
+				if(!viewController)
+					return;
+				
+				viewController.close();
+				
+				
+				var filtered:Array = viewController.getFilteredList();
+				
+				for each(var filter:IFilterableData in filtered)
+				{
+					if(filter.getName().toLowerCase() == term.toString().toLocaleLowerCase())
+						return;
+					
+				}
+				
+				viewController.useItemAt(0);
+				
+			}
+			
+			/**
+			 */
+			
+			private function onKeyDown(event:KeyboardEvent):void
+			{
+				if(event.keyCode != Keyboard.DOWN)
+					return;
+				  
+				var viewController:IFilterViewController = getFilterListViewCall.responseData;
+				
+				if(!viewController)
+					return;
+				     
+				viewController.setFocus();
+			}
+			
+			
+			private var _obs:CallbackObserver;
+			
+			/**
+			 */
+			
+			private function setFilterViewController():void
+			{
+				if(!_obs)
+				{
+					_obs = new CallbackObserver(CallFilterListViewControllerType.FILTERED_ITEM_SELECTED,onFilterItemSelected);
+				}
+				
+				if(this._filterView)
+				{
+					this._filterView.getProxy().unbindObserver(_obs);
+				}
+				_filterView = this.getFilterListViewCall.responseData;
+				       
+				
+				if(_filterView)
+				this._filterView.getProxy().bindObserver(_obs);
+			}
+			
+			/**
+			 */
+			
+			private function onFilterItemSelected(event:INotification):void
+			{
+				this.setFilteredData(IFilterableData(event.getData()));
+			}
+			
+			
+			/**
+			 */
+			
+			private function setFilteredData(value:IFilterableData):void
+			{
+				term.text = value.getName();
+				setSearchTermCall.dispatch();
+			}
+		]]>
+	</mx:Script>
+	
+	<content:children>
+		
+		<mx:FormItem label="Search:" width="100%">
+			<mx:TextInput id="term" 
+						  change="{this.textInputChange();}" 
+						  text="{getSearchTermCall.responseData}" 
+						  addedToStage="term.setFocus(); term.setSelection(0,term.length);" enter="textInputEnter();" mouseDown="textInputChange();" keyDown="onKeyDown(event);"
+						  width="100%" /> 
+		</mx:FormItem>
+		
+	</content:children>
+	
+	
+	<proxy1:MXProxyCall id="getTarget" 
+						property="{CallCloveContentPreferenceControlType.GET_TARGET}" 
+						autoCall="true" 
+						bind="true"
+						proxy="{_viewController.getProxy()}" />
+	
+	<!-- gets the search term -->
+	<proxy1:MXProxyCall id="getSearchTermCall"
+					   proxy="{this.getTarget.responseData.getProxy()}" 
+					   property="{CallCloveSearchControllerType.GET_SEARCH_TERM}" 
+					   autoCall="true" 
+					   bind="true" />
+	
+	
+	
+	<proxy1:MXProxyCall id="getFilterListViewCall"
+						proxy="{this._viewController.getProxy()}" 
+						property="{CallCloveSearchPreferenceViewController.GET_FILTER_VIEW_CONTROLLER}" autoCall="true" responseDataChange="setFilterViewController();" />
+	
+	
+	
+	<!-- sets the search term -->
+	<proxy1:MXProxyCall id="setSearchTermCall"
+					   proxy="{this.getTarget.responseData.getProxy()}" 
+					   property="{CallCloveSearchControllerType.SET_SEARCH_TERM}" 
+					   callData="{term.text}" />
+	
+</content:FlexContentPreferenceView>

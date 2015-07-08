@@ -1,0 +1,69 @@
+package com.cloveHello.plugin.column.controller
+{
+	import com.cloveHello.plugin.CloveHelloPlugin;
+	import com.cloveHello.plugin.column.render.HelloColumnItemRenderer;
+	import com.spice.clove.events.CloveColumnEvent;
+	import com.spice.clove.plugin.column.control.ColumnController;
+	import com.spice.clove.plugin.column.render.RenderedColumnData;
+	
+	public class HelloColumnController extends ColumnController
+	{
+		
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+        
+        /**
+		 */
+		 
+		public function HelloColumnController()
+		{
+			super(new HelloColumnItemRenderer());
+		}
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Getters / Setters
+        //
+        //--------------------------------------------------------------------------
+
+		
+		/**
+		 */
+		
+		public function get plugin():CloveHelloPlugin
+		{
+			return CloveHelloPlugin(this.pluginController.plugin);
+		}
+		
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Protected Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		override protected function onColumnStartLoad(event:CloveColumnEvent):void
+		{
+			this.loadOlderContent(null);
+		}
+        /**
+		 */
+		 
+		override protected function loadOlderContent(data:RenderedColumnData):void
+		{
+			
+			new CLoveH
+			
+			trace("LOAD");
+		}
+		
+		
+
+	}
+}

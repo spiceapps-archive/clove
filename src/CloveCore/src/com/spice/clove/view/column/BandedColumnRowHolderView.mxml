@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<column:ColumnRowHolderView xmlns:mx="http://www.adobe.com/2006/mxml" 
+							xmlns:column="com.spice.clove.view.column.*" 
+							xmlns:degrafa="com.degrafa.*"
+							xmlns:geometry="com.degrafa.geometry.*"
+							xmlns:segment="com.degrafa.geometry.segment.*"
+							xmlns:paint="com.degrafa.paint.*"
+							xmlns:storage="com.spice.utils.storage.*" 
+							xmlns:observer="com.spice.vanilla.flash.observer.*" 
+							creationComplete="setTarget();">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.vanilla.core.settings.ISetting;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			import mx.utils.ColorUtil;
+			
+			private var _target:ISetting;
+			
+			
+			private function setFilters():void
+			{
+				
+				 
+				band.filters = [new GlowFilter(ColorUtil.adjustBrightness(columnColorBind.data.getData(),-100),1,2,2,2,1,true)];
+			}
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				if(!value)
+				{
+					this._target = null;
+					
+				}
+				else
+				{
+					this._target = this._rcd.getColumn().parent.metadata.getNewSetting(BasicSettingType.NUMBER,ColumnMetaData.COLUMN_COLOR);
+				}
+				
+				this.setTarget();
+				
+			}
+			
+			
+			private function setTarget():void
+			{
+				if(this.columnColorBind)
+				{
+					this.columnColorBind.target = this._target;
+				}
+			}
+		]]>
+	</mx:Script>
+	
+		<degrafa:Surface id="band" y="{this.height-30}" alpha=".8" width="30" height="30" includeInLayout="false">
+			
+			<degrafa:GeometryGroup>
+				<geometry:Polygon>
+					<geometry:points>
+						<mx:Array>
+							<segment:MoveTo x="0" y="0" />
+							<segment:LineTo x="30" y="30" />
+							<segment:LineTo x="15" y="30" />
+							<segment:LineTo x="0" y="15" />
+						</mx:Array>
+					</geometry:points>
+					<geometry:fill>
+						<paint:SolidFill color="{columnColorBind.data.getData()}" />
+					</geometry:fill>
+				</geometry:Polygon>
+			</degrafa:GeometryGroup>
+			
+			
+		</degrafa:Surface>
+		
+		<observer:SettingObserver id="columnColorBind" change="{setFilters();}" />
+		
+</column:ColumnRowHolderView>
+

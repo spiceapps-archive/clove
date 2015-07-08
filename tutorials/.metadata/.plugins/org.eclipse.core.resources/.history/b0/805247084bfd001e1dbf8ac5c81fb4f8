@@ -1,0 +1,18 @@
+package com.cloveHello.plugin
+{
+	public class CloveHelloPluginSettings
+	{
+		[Bindable] 
+		[Setting]
+		public var displayName:String = "Craig";
+		
+		[Bindable] 
+		[Setting]
+		public var userName:String = "Clove";
+		
+		[Bindable] 
+		[Setting]
+		public var installed:Boolean;
+		
+	}
+}

@@ -1,0 +1,10 @@
+package com.cloveHello.plugin.vo
+{
+	public class MessageVO
+	{
+		public function MessageVO()
+		{
+		}
+
+	}
+}

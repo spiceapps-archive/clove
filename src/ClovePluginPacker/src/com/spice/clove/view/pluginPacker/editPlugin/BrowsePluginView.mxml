@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" height="100%" paddingLeft="10" paddingBottom="10" paddingRight="10" paddingTop="10">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.utils.SWCExtractor;
+			import com.spice.clove.plugin.compiled.CompiledPlugin;
+			import com.spice.clove.commandEvents.PackerEvent;
+			
+			[Bindable] 
+			public var plugin:CompiledPlugin;
+			private var _ref:FileReference;
+			
+			private function browse():void
+			{
+				_ref= new FileReference();
+				_ref.addEventListener(Event.SELECT,onFileSelect);
+				_ref.addEventListener(Event.COMPLETE,onFileLoad);
+				_ref.browse([new FileFilter("SWC File","*.swc")]);
+				
+			}
+			
+			private function onFileSelect(event:Event):void
+			{
+				event.currentTarget.removeEventListener(event.type,onFileSelect);
+				
+				_ref.load();
+			}
+			
+			private function onFileLoad(event:Event):void
+			{
+				event.currentTarget.removeEventListener(event.type,onFileLoad);
+				
+				
+				
+				new SWCExtractor().extract(_ref.data,plugin);
+				
+			}
+			
+		]]>
+	</mx:Script>
+	<mx:Form width="400"  height="100%">
+		<mx:FormItem label="Driver:">
+			<mx:Button label="Browse" click="browse();" />
+		</mx:FormItem>
+		<mx:FormItem visible="{plugin.assets.length > 0}" includeInLayout="{plugin.assets.length > 0}" label="Plugin Factory Class:" width="100%">
+			<mx:TextInput width="100%" id="factoryClass" text="{plugin.factoryClass}" change="{plugin.factoryClass = factoryClass.text}"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	
+</mx:VBox>

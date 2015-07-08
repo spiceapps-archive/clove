@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Label xmlns:mx="http://www.adobe.com/2006/mxml" fontWeight="bold" creationComplete="init();" >
+	<mx:Script>
+		<![CDATA[
+		
+			
+		
+			private var _shadowColor:int = -1;
+			private var _shadowDistance:int = 1;
+			
+			
+			private function init():void
+			{
+				if(_shadowColor == -1) shadowColor=0xFFFFFF;
+			}
+			
+			public function get shadowColor():int
+			{
+				return _shadowColor;
+			}
+			
+			public function set shadowColor(value:int):void
+			{
+				_shadowColor = value;
+				setFilter();
+				
+			}
+			
+			public function get shadowDinstance():int
+			{
+				return _shadowDistance;
+			}
+			
+			public function set shadowDistance(value:int):void
+			{
+				_shadowDistance = value;
+				setFilter();
+				
+			}
+			
+			
+			private function setFilter():void
+			{
+				this.filters = [new DropShadowFilter(1,90,_shadowColor,.5,_shadowDistance,_shadowDistance)];
+				
+			}
+		]]>
+	</mx:Script>
+</mx:Label>

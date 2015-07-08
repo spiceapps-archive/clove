@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 xmlns:compose="com.spice.clove.view.compose.*" 
+		 width="100%" 
+		 height="100%"
+		 creationComplete="init();" 
+		 xmlns:controls="com.spice.clove.view.controls.*" 
+		 xmlns:ac="com.adobe.ac.*" 
+		 backgroundColor="#FFFFFF" 
+		 xmlns:display="com.spice.display.*" 
+		 xmlns:binding="com.spice.binding.*"
+		 nativeDragEnter="onFileEnter(event);" 
+		 nativeDragDrop="onFileDrop(event);"
+		 nativeDragExit="onDragExit(event);" 
+		 xmlns:posting="com.spice.clove.plugin.posting.*" 
+		 xmlns:posting1="com.spice.clove.plugin.core.post.desktop.views.posting.*"
+		 xmlns:responders="com.spice.clove.plugin.core.root.desktop.proxy.responders.*" 
+		 xmlns:proxy="com.spice.vanilla.mx.proxy.*" 
+		 xmlns:posting2="com.spice.clove.plugin.core.post.impl.posting.*"
+		 xmlns:proxy1="com.spice.vanilla.impl.proxy.*">
+<mx:Script>
+	<![CDATA[
+		import caurina.transitions.Tweener;
+		import caurina.transitions.properties.FilterShortcuts;
+		
+		import com.spice.clove.plugin.core.post.impl.models.PostPluginModelLocator;
+		import com.spice.clove.plugin.core.post.impl.outgoing.CloveMessage;
+		import com.spice.clove.plugin.core.views.render.ICloveDataViewController;
+		import com.spice.clove.plugin.flex.views.FlexCloveDataTargetView;
+		import com.spice.clove.post.core.outgoing.IClovePostable;
+		import com.spice.recycle.factory.RecyclingFactory;
+		
+		import flash.utils.setTimeout;
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Variables
+        //
+        //--------------------------------------------------------------------------
+
+		[Bindable]
+		public var _model:PostPluginModelLocator = PostPluginModelLocator.getInstance();
+		
+		
+		
+		
+		[Bindable] 
+		private var _clipText:String;
+		
+		
+        
+        //--------------------------------------------------------------------------
+   	    //
+        //  Getters / Setters
+        //
+        //--------------------------------------------------------------------------
+
+		
+		
+		
+		/**
+		 */
+		
+		public function getMessage():CloveMessage
+		{
+			return this.messageHandler.getMessage();
+		}
+		
+		
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /*
+		 */
+		private function init():void
+		{
+		}
+		
+		/*
+		 */
+		
+		private function send():void
+		{
+			
+			
+			
+			this.messageHandler.send(this.messageHandler.getMessage());
+		}
+		
+		/*
+		 */
+		
+		private function focus():void
+		{
+			if(messageInput)
+			{
+				messageInput.focus();
+			}
+		}
+		
+		
+		/*
+		 */
+		
+		private function showAvailableServices():void
+		{
+			
+		 	
+			var nm:NativeMenu = new NativeMenu();
+		
+			for each(var item:IClovePostable in this.messageHandler.availablePlugins)
+			{
+				var nmi:NativeMenuItem = new NativeMenuItem(item.getName());
+				nmi.data = item;
+				nmi.addEventListener(Event.SELECT,onPostableSelect,false,0,true);
+				nm.addItem(nmi);
+			}
+			
+			
+			nm.display(this.stage,this.stage.mouseX,this.stage.mouseY); 
+		}
+		
+		/*
+		 */
+		
+		private function onPostableSelect(event:Event):void
+		{
+			 var postable:IClovePostable = event.target.data;
+			
+			
+			
+			this.messageHandler.addPostable(postable); 
+			
+		}
+		
+		[Bindable] private var _files:Array;
+		
+		
+		
+		private function onFileEnter(event:NativeDragEvent):void
+		{
+			NativeDragManager.acceptDragDrop(this);
+			
+			FilterShortcuts.init();
+			
+			//start the glow tween so the user knows they can drop a file onto the message composer
+			Tweener.addTween(this.messageArea,{_Glow_color:0x0099FF,_Glow_blurX:5,_Glow_blurY:5,_Glow_inner:true,time:.5});
+		}
+		
+		private function onFileDrop(event:NativeDragEvent):void
+		{
+			/* NativeDragManager.dropAction = NativeDragActions.COPY;
+			var files:Array =  event.clipboard.getData(ClipboardFormats.FILE_LIST_FORMAT) as Array;
+			
+			
+			var atts:Array = [];
+			
+			//add the selected file as an attachment
+			for each(var file:File in files)
+			{
+				
+				this._message.attachments.addItem(new Attachment(file));
+			}
+			
+//			this.messageHandler.attachFiles(atts);
+			
+			
+			//on drop, remove the tween
+			this.onDragExit(event); */
+		}
+		
+		/*
+		 */
+		
+		private function onDragExit(event:NativeDragEvent):void
+		{
+			
+			Tweener.addTween(this.messageArea,{_Glow_color:0x0099FF,_Glow_blurX:0,_Glow_blurY:0,_Glow_inner:true,time:.5});
+		}
+		
+		
+		
+		/*
+		 */
+		
+		private function startMove(event:MouseEvent):void
+		{
+			if(event.target != footer)
+				return;
+				
+			this.stage.nativeWindow.startMove()
+		}
+		
+		private function close():void
+		{
+			this.messageHandler.getMessage().setText("");
+			this.stage.nativeWindow.close();
+		}
+		
+		private function setMenuHandler(view:FlexCloveDataTargetView,value:ICloveDataViewController):void
+		{
+			value.setContentView(this.messageHandler.getMessage(),view);
+		}
+		
+		
+	]]>
+</mx:Script>
+	
+	
+	<posting2:MessageHandler id="messageHandler" progress="loadingOverlay.visible = true;" complete="close();" />
+	
+	
+	
+	<mx:VBox width="100%" height="100%" verticalGap="0" verticalAlign="middle">
+		
+		<mx:HBox width="100%" styleName="toPostBG" verticalAlign="middle" paddingRight="10" height="31" paddingLeft="10">	
+			<mx:Label text="TO:" styleName="toFieldText" />
+			
+			<posting1:ToServiceFieldView width="100%" dataProvider="{this.messageHandler.postables}" />
+			
+			<mx:Button styleName="addServicePostButton" 
+					  buttonMode="true"
+					   visible="{this.messageHandler.availablePlugins.length > 0}" 
+					   includeInLayout="{this.messageHandler.availablePlugins.length > 0}" 
+					   click="showAvailableServices();" />
+		</mx:HBox>
+		
+		<mx:HBox width="100%" 
+				 styleName="attachBarBG" 
+				 height="31"
+				 visible="{this.messageHandler.getMessage().attachments.length > 0}" 
+				 includeInLayout="{this.messageHandler.getMessage().attachments.length > 0}"
+				 verticalAlign="middle" 
+				 paddingLeft="10"
+				 horizontalGap="2" 
+				 paddingRight="10">
+			<mx:Image source="@Embed('AttachIcon.png')" width="13" height="15" />
+			<mx:Label text=":" styleName="toFieldText" />
+			<mx:Spacer width="5" />
+			<posting1:ToServiceFieldView id="attachmentsView" width="100%" dataProvider="{this.messageHandler.getMessage().attachments}" itemRenderer="{new RecyclingFactory(AttachmentView)}"  />
+			
+		</mx:HBox>
+		
+		
+		
+		
+		
+		
+		<mx:Canvas id="messageArea" width="100%" height="100%" backgroundColor="#FFFFFF">
+			<mx:HBox width="100%" height="100%" paddingLeft="10" paddingRight="10" paddingTop="10" paddingBottom="10">
+				
+				<!--<compose:FileDropper id="fileDropper" commit="attachFiles();" />-->
+				
+				<controls:PostTextArea styleName="postTextArea" 
+									   selectionBeginIndex="{this.messageHandler.getMessage().cursor}"
+									   selectionEndIndex="{this.messageHandler.getMessage().cursor}" 
+									   htmlText="{this.messageHandler.getMessage().text}"
+									   change="{this.messageHandler.getMessage().setText(messageInput.htmlText);}" 
+									   creationComplete="{messageInput.focus()}" 
+									   id="messageInput"
+									   width="100%" 
+									   height="100%" /> 
+				
+			</mx:HBox>
+		</mx:Canvas>
+	
+		
+	
+		<mx:HBox width="100%" id="footer" styleName="footerBackground" verticalScrollPolicy="off" horizontalScrollPolicy="off" mouseDown="{startMove(event);}" verticalAlign="middle" horizontalGap="7" height="34" paddingRight="18" paddingLeft="10">
+			<mx:Box styleName="wordCountPostBG" paddingLeft="4" paddingRight="4" paddingTop="2" paddingBottom="2" verticalAlign="middle" horizontalAlign="center">
+				<mx:Label text="{messageInput.text.length}" />
+			</mx:Box>
+			<mx:Spacer width="100%" />
+			<!-- temporarily disabled -->
+			
+			<mx:HBox verticalAlign="middle" id="postOptions" minHeight="16" minWidth="16" />
+			
+			<mx:Button  click="send();" styleName="postButton" />
+		</mx:HBox>
+	</mx:VBox>
+	
+	
+	
+	<binding:DataBoundController target="{postOptions}" dataProvider="{_model.menuOptionViewControllers}" itemRenderer="{new ClassFactory(FlexCloveDataTargetView)}" dataSetter="{setMenuHandler}" />
+	
+	<mx:Canvas id="loadingOverlay" visible="false" width="100%" height="100%" backgroundColor="#000000" backgroundAlpha=".5">
+		<mx:Label verticalCenter="0" horizontalCenter="0" text="Posting..." fontSize="20" color="#FFFFFF" />
+	</mx:Canvas>
+	
+	
+</mx:Canvas>

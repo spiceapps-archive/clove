@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   implements="com.spice.recycle.IDisposable"
+		   xmlns:row="com.spice.clove.plugin.flex.views.column.row.*">
+	
+	<mx:Metadata>
+		[Event(name="iconSelect")]
+		[Event(name="link",type="flash.events.TextEvent")]
+	</mx:Metadata>
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.ICloveData;
+			
+			private var _cloveData:ICloveData;
+			
+			
+			
+			[Bindable] 
+			public var iconSize:int = 50;
+			
+			[Bindable] 
+			public var paddingRight:Number = 0;
+			
+			[Bindable] 
+			public var paddingLeft:Number = 0;
+			
+			
+			[Bindable] 
+			private var _dateAdded:String;
+			
+//			[Disposable]
+//			[Bindable] 
+//			public var textManager:ITextCommandReplacer;
+			
+			
+			[Bindable] 
+			private var _showIcon:Boolean;
+			
+			[Disposable]
+			[Bindable(event="renderedDataChange")]
+			public function get cloveData():ICloveData
+			{
+				return this._cloveData;
+			}
+			
+			public function set cloveData(value:ICloveData):void
+			{
+				_cloveData = value;
+				
+				this.dispatchEvent(new Event("renderedDataChange"));
+			}
+			
+			[Disposable]
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				this.cloveData = ICloveData(value);
+			}
+			
+			
+			
+			public function dispose():void
+			{
+				this.cloveData = undefined;
+				
+				this.data              = undefined;
+				this._dateAdded 	   = undefined;
+//				this.textManager	   = undefined;
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<row:ColumnRowIcon x="{this.paddingLeft}"
+					   data="{this.cloveData}"
+					   id="iconHolder" 
+					   iconSize="{this.iconSize}" />
+	
+	
+	<mx:VBox width="100%" 
+			 verticalGap="0" 
+			 paddingRight="{paddingRight}" 
+			 x="{this.iconSize + 4 + iconHolder.x}">
+		
+		<mx:HBox width="100%" 
+				 verticalAlign="middle" 
+				 horizontalGap="4">
+			
+			<row:ColumnRowTitle cloveData="{this.cloveData}" />
+			
+			
+			<row:ColumnRowDateLabel data="{this.cloveData}" />
+			<!--
+			<row:ColumnRowOptions id="prefs" 
+								  cloveData="{this.cloveData}" />-->
+		
+			
+		</mx:HBox>
+		
+		<!--<row:ColumnRowMessage renderedData="{this.renderedData}" 
+							  textManager="{textManager}" 
+							  link="this.dispatchEvent(new TextEvent(TextEvent.LINK,true,false,event.text));" width="100%"/>-->
+		
+		<!--<row:ColumnRowMessage cloveData="{this.cloveData}" 
+							  textManager="{textManager}" 
+							  link="this.dispatchEvent(new TextEvent(TextEvent.LINK,true,false,event.text));" width="100%"/>-->
+		
+	</mx:VBox>
+	
+</mx:Canvas>

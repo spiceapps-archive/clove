@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:single="com.spice.clove.plugin.core.column.views.single.*" width="100%" height="100%">
+	
+	<mx:Label text="This is an online demonstration of Clove to show the flexibility of the core architecture." fontSize="30" />
+	
+	
+	<mx:Script>
+		<![CDATA[
+		
+			[Bindable] 
+			public var controller:RootColumnViewController;
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				this.controller = RootColumnViewController(value);
+			}
+		]]>
+	</mx:Script>
+	
+	<single:SingleColumnView controller="{this.controller}" width="100%" height="100%" />
+</mx:VBox>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   minWidth="240" 
+		   minHeight="170" 
+		   maxWidth="645"
+		   width="645"
+		   height="190"
+		   maxHeight="230"
+		   xmlns:compose="com.spice.clove.view.compose.*" 
+		   showStatusBar="false" close="onClose();" creationComplete="init();" xmlns:posting="com.spice.clove.plugin.core.post.desktop.views.posting.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.models.CloveAIRModelLocator;
+			import com.spice.recycle.pool.ObjectPoolManager;
+			
+			
+			private var _composer:MessageComposer;
+			
+			private var _isOpen:Boolean;
+			
+			override public function open(openWindowActive:Boolean=true):void
+			{
+				
+				if(_isOpen)
+				{
+					this.orderToFront();
+					return;
+				}
+				_isOpen = true;
+				
+				super.open();
+				
+				
+			}
+			
+			
+			
+			private function init():void
+			{
+				this.addChild(this.getComposer());
+			}
+			
+			private function onClose():void
+			{
+				ObjectPoolManager.getInstance().addObject(this.removeChild(this._composer));
+				this._isOpen = false;
+			}
+			
+			
+			public function getComposer():MessageComposer
+			{
+				if(!_composer)
+				{
+					this._composer = ObjectPoolManager.getInstance().getObject(MessageComposer);
+					this._composer.percentHeight = 100;
+					this._composer.percentWidth = 100;
+				}
+				
+				return _composer;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	
+</mx:Window>

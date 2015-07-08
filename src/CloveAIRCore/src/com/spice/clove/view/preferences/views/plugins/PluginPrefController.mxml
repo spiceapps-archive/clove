@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 xmlns:binding="com.spice.binding.*"
+		 creationComplete="init();"
+		 paddingTop="8" xmlns:binding1="com.spice.patterns.proxy.binding.*" 
+		 xmlns:proxy="com.spice.vanilla.mx.proxy.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.control.ClovePluginMediator;
+			import com.spice.clove.plugin.core.calls.CallClovePluginControllerType;
+			import com.spice.clove.plugin.load.IInstalledPluginFactoryInfo;
+			import com.spice.clove.plugin.prefs.IClovePluginPreferences;
+			import com.spice.display.BindableView;
+			import com.spice.recycle.factory.RecyclingFactory;
+			import com.spice.utils.DescribeTypeUtil;
+			import com.spice.vanilla.core.plugin.factory.IPluginFactory;
+			
+			import mx.events.CollectionEvent;
+			import mx.events.CollectionEventKind;
+			
+			[Bindable] public var pluginPrefView:BindableView;
+			
+			[Bindable] 
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			
+			[Bindable] 
+			private var _currentPrefs:IClovePluginPreferences;
+			
+			[Bindable] 
+			private var _currentFactory:IPluginFactory;
+			
+			[Bindable] 
+			private var _currentAvailablePlugin:IInstalledPluginFactoryInfo;
+			
+			
+			
+			[Bindable] 
+			private var _pluginFactoryClass:String;
+			
+			
+			private function init():void
+			{
+				this.addEventListener('selectRow',onRowSelect);
+				
+				
+				this.setFirstPrefs();
+				
+			}
+			
+			private function onRowSelect(event:Event):void
+			{
+				
+				
+				
+				var info:IInstalledPluginFactoryInfo = this._currentAvailablePlugin = event.target.data;
+				
+				/* if(!info.loadedPluginFactory.metadata.getSetting("preferenceViewClass"))
+				{
+				return;
+				}
+				
+				this._currentFactory = info.loadedPluginFactory; */
+				
+				this.setPreferenceView();
+				
+				
+			}
+			
+			
+			private function onPluginListChange(event:* = null):void
+			{
+				
+				
+				if(!_currentPrefs || !_currentFactory)
+				{
+					return;
+				} 
+				
+				_pluginFactoryClass = DescribeTypeUtil.getClassPath(this._currentFactory);
+				
+			}
+			
+			/*
+			*/
+			
+			private function onPluginFactoryChange(event:CollectionEvent):void
+			{
+				//if the current prefs have been removed, then set the items to the beginning
+				if(event is CollectionEvent)
+				{
+					if(event.kind == CollectionEventKind.REMOVE)
+					{
+						if(event.items[0].loadedPluginFactory == this._currentFactory)
+						{
+							this.setFirstPrefs();
+						}
+					}
+				}
+			}
+			
+			
+			/*
+			*/
+			
+			private function setFirstPrefs():void
+			{
+				
+				var plugs:Array = _model.applicationSettings.pluginManager.availablePlugins.source;
+				
+				//it's unlikely there will be no plugins, but this is a necessary precaution
+				if(plugs.length == 0)
+					return;
+				
+				this._currentFactory = plugs[0].loadedPluginFactory;
+				
+				flash.utils.setTimeout(this.setPreferenceView,1);
+			}
+			
+			
+			/*
+			*/
+			
+			private function setPreferenceView():void
+			{
+				
+				/* if(!_currentFactory.metadata.getSetting("preferenceViewClass"))
+				{
+				this.pluginPrefView.view = null;
+				return;
+				}
+				
+				
+				
+				this._currentPrefs = this._model.objectPool.getObject(this._currentFactory.metadata.getSetting("preferenceViewClass"));
+				
+				this.pluginPrefView.view = UIComponent(this._currentPrefs);
+				
+				this.onPluginListChange(); */
+			}
+		]]>
+	</mx:Script>
+	
+	<proxy:MXProxyCall  id="controllersByPlugin"
+						proxy="{ClovePluginMediator.getInstance()}" 
+						property="{CallClovePluginControllerType.GET_PLUGIN_CONTROLLER_BY_PLUGIN_FACTORY_CLASS}" 
+						callData="{this._pluginFactoryClass}" 
+						responseDataChange="{_currentPrefs.plugins = controllersByPlugin.responseData}" 
+						autoCall="true" 
+						bind="true" />
+	
+	<binding:DataBoundController dataProvider="{_model.applicationSettings.pluginManager.loadedPlugins}" 
+								 collectionChange="onPluginListChange();" />
+	
+	<binding:DataBoundController target="{this}"
+								 itemRenderer="{new RecyclingFactory(PluginPrefRowView)}" 
+								 dataProvider="{_model.applicationSettings.pluginManager.availablePlugins}" 
+								 collectionChange="onPluginFactoryChange(event);" />
+	
+</mx:VBox>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" horizontalScrollPolicy="off" verticalScrollPolicy="off" width="100%" creationComplete="init();">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.content.data.meta.ICloveMetadata;
+			
+			import flash.html.HTMLLoader;
+			
+			
+			private var _embedHTML:String;
+			
+			
+			private var _data:ICloveMetadata;
+			
+			
+			
+			override public function get data():Object
+			{
+				return this._data;
+			}
+			
+			override public function set data(value:Object):void
+			{
+				this._data = ICloveMetadata(value);
+				
+				
+				this._embedHTML = '';
+				
+				if(_data)
+				this._embedHTML = this._data.getData();
+				
+				if(video)
+				{
+					video.htmlLoader.placeLoadStringContentInApplicationSandbox = true;
+					video.htmlText = this._embedHTML;
+				}
+			}
+			
+			private function init():void
+			{  
+				/* video.loaderContext = new LoaderContext(true);
+				video.loaderContext.allowLoadBytesCodeExecution = true;
+				video.loaderContext.allowCodeImport = true; */
+				video.htmlLoader.authenticate = false;
+				video.htmlLoader.placeLoadStringContentInApplicationSandbox = true;
+				
+				
+				if(this._embedHTML)
+				{
+					video.htmlText = this._embedHTML;
+				}
+			}
+			
+			/**
+			 */
+			
+			private function onPlayerLoaded():void
+			{
+				var loader:HTMLLoader;
+				//loader.
+				
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:HTML id="video" />
+	
+</mx:Canvas>

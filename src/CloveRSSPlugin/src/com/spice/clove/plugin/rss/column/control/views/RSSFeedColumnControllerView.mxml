@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pref:ColumnPreferences xmlns:mx="http://www.adobe.com/2006/mxml" implements="com.spice.recycle.IDisposable" xmlns:pref="com.spice.clove.plugin.column.pref.*">
+	
+	<mx:Script>
+		<![CDATA[
+			
+			import com.spice.clove.plugin.rss.column.control.RSSFeedColumnController;
+			
+			[Bindable] 
+			private var _controller:RSSFeedColumnController;
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				this._controller = RSSFeedColumnController(value);
+			}
+			
+			public function dispose():void
+			{
+				
+			}
+		]]>
+	</mx:Script>
+	<pref:formItems>
+		<mx:FormItem label="Feed URL:" width="100%">	
+			<mx:TextInput id="feedTxt" width="100%" text="{this._controller.feed}" change="this._controller.feed = feedTxt.text" />
+		</mx:FormItem>
+	</pref:formItems>
+	
+</pref:ColumnPreferences>

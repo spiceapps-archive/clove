@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<views:FlexCloveDataTargetView xmlns:mx="http://www.adobe.com/2006/mxml"
+							   xmlns:views="com.spice.clove.plugin.flex.views.*"
+							   width="100%" 
+							   xmlns:proxy="com.spice.vanilla.mx.proxy.*"
+							   xmlns:binding="com.spice.binding.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.sceneSync.impl.models.SceneSyncPluginModelLocator;
+			import com.spice.clove.plugin.core.views.render.ICloveDataViewController;
+			import com.spice.clove.sceneSync.core.calls.CallSceneSyncablePluginType;
+			
+			 
+			private var _model:SceneSyncPluginModelLocator = SceneSyncPluginModelLocator.getInstance();
+			
+			
+			private var _filter:String;
+			
+			private function setFilterViews():void
+			{
+				var views:Array = getFilterViewsCall.responseData;
+				filterViewBinder.dataProvider = views;
+				
+				var i:int = 0;
+				
+				for each(var view:ICloveDataViewController in views)
+				{
+					view.setContentView(-1,FlexCloveDataTargetView(this.subscriptionFilterView.getChildAt(i++)));
+				}
+			}
+			
+			
+			[Bindable("filterChange")]
+			public function get filter():String
+			{
+				return this._filter;
+			}
+			
+			/**
+			 */
+			
+			public function set filter(value:String):void
+			{
+				if(value == _filter)
+					return;
+				
+				
+				this._filter = value;
+				
+				this.dispatchEvent(new Event("filterChange"));
+			}
+			
+			
+			private function init():void
+			{
+				getFilterViewsCall.dispatch();	
+			}
+			
+		]]>
+	</mx:Script>
+	
+	
+	<mx:VBox id="subscriptionFilterView" width="100%" paddingLeft="20" paddingRight="8" paddingTop="8" paddingBottom="8" creationComplete="init();" />
+	
+	
+	<binding:DataBoundController id="filterViewBinder" target="{subscriptionFilterView}">
+		<binding:itemRenderer>
+			<mx:Component>
+				<views:FlexCloveDataTargetView width="100%" />
+			</mx:Component>
+		</binding:itemRenderer>
+	</binding:DataBoundController>
+	
+	
+	<proxy:MXProxyCall id="setFilterCall" 
+					   callData="{filter}" 
+					   property="{CallSceneSyncablePluginType.SCENE_SYNC_SET_FILTER_STR}" />
+	
+	<proxy:MXBatchProxyCall id="getFilterViewsCall" 
+							proxy="{_model.plugin.getPluginMediator()}" 
+							property="{CallSceneSyncablePluginType.SCENE_SYNC_GET_FILTER_VIEW_CONTROLLER}" 
+							responseDataChange="{setFilterViews();}" autoCall="false"/>
+	
+</views:FlexCloveDataTargetView>

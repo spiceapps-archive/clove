@@ -1,0 +1,57 @@
+if (typeof tokens == 'undefined') tokens = new Object();
+if (!tokens.favorites) tokens.favorites = new Object();
+if (!tokens.useritemviews) tokens.useritemviews = new Object();
+if (!tokens.report) tokens.report = new Object();
+if (!tokens.digg) tokens.digg = new Object();
+if (!tokens.itemgame) tokens.itemgame = new Object();
+if (!tokens.itemviews) tokens.itemviews = new Object();
+if (!tokens.StoredAction) tokens.StoredAction = new Object();
+if (!tokens.ads) tokens.ads = new Object();
+if (!tokens.settings) tokens.settings = new Object();
+if (!tokens.search) tokens.search = new Object();
+ 
+tokens.favorites.fave = "b4501927c1aa604858d7972c5527895c";
+ 
+tokens.useritemviews.store = "69b5a3d2d414b8721eb1135b09eb93d3";
+ 
+tokens.report.store = "685cf8e954353fa42e1bc0846ff200b0";
+ 
+tokens.digg.perform = "a2673cc468d14ca861f744cd40a85a8f";
+ 
+tokens.itemgame.check = "c1d7ba0bf88aa7b094c0de84ea0f060d";
+ 
+tokens.itemviews.views = "133b19a8c3f08785bab1e36b75c181da";
+ 
+tokens.StoredAction.store = "d670dbeb50bb93fc3475719e0b8f3951";
+ 
+tokens.StoredAction.setReturnPage = "c00dc669e3c571ee3a54f861121245ee";
+ 
+tokens.ads.digg = "195706b4c08e35946dfa4a224f43c3ad";
+ 
+tokens.ads.bury = "02ccdb7eb82785b17ea6749bb712f274";
+ 
+tokens.ads.click = "bf2a2da9b099eac6b4728086c532cba4";
+ 
+tokens.ads.impression = "d6418ae84f751ba279e66d591844df49";
+ 
+tokens.settings.setpermaframe = "cfecd8976fc74e45ad95f9f6f1664933";
+ 
+tokens.ads.load = "7325d2573620345df6093d0e5a10de1a";
+ 
+tokens.search.loadDecorators = "26e1731799bd84662364b2875c744546";
+
+$(document).ready(function() {
+    $('#user-announcement').html('<a href="#" onclick="dismiss(\'announce\', \'top\', \'199\');" class="announce-dismiss">Remove</a><p style="background: transparent url(/img/dialogg/admin_jackson.jpg) no-repeat scroll 0px 50%; padding-left: 60px; "><strong><a href="http://digg.com/dialogg/Peter_Jackson_1">Check out the Digg Dialogg with Peter Jackson</a></strong><br /> We interviewed Academy Award-winning director Peter Jackson for our latest Digg Dialogg. <a href="http://digg.com/dialogg/Peter_Jackson_1"> Watch the full Digg Dialogg now!</a>');
+    $('#user-announcement').attr('id', 'announce');
+});
+$.cookie('lou', 'global', {path: '/', expires: 365});
+
+D.permaframe = new Object; D.permaframe.enabled = true;
+var ad_hdr = 'http://ad.doubleclick.net/adj/dgg.misc/misc_ms_hdr;gdr=m;li=y;scat=misc;ptype=ms;pos=hdr;sz=728x90,900x90,900x60;tile=1;ord=1260390898.5331';
+var ad_lwrinl = 'http://ad.doubleclick.net/adj/dgg.misc/misc_ms_lwrinl;gdr=m;li=y;scat=misc;ptype=ms;pos=lwrinl;sz=728x91,900x90;tile=2;ord=1260390898.5331';
+var ad_uprrail1 = 'http://ad.doubleclick.net/adj/dgg.misc/misc_ms_uprrail1;gdr=m;li=y;scat=misc;ptype=ms;pos=uprrail1;sz=300x250,300x600;tile=3;ord=1260390898.5331';
+var ad_midrail = 'http://ad.doubleclick.net/adj/dgg.misc/misc_ms_midrail;gdr=m;li=y;scat=misc;ptype=ms;pos=midrail;sz=300x250,300x600;tile=4;ord=1260390898.5331';
+var ad_lwrrail = 'http://ad.doubleclick.net/adj/dgg.misc/misc_ms_lwrrail;gdr=m;li=y;scat=misc;ptype=ms;pos=lwrrail;sz=300x250,160x600;tile=5;ord=1260390898.5331';
+var ad_miscrail = 'http://ad.doubleclick.net/adj/dgg.misc/misc_ms_miscrail;gdr=m;li=y;scat=misc;ptype=ms;pos=miscrail;sz=1x1;tile=6;ord=1260390898.5331';
+
+D.isMobileBrowser = false;

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"  verticalScrollPolicy="off" horizontalScrollPolicy="off" width="100%" height="50" backgroundColor="#333333" xmlns:proxy="com.spice.vanilla.mx.proxy.*" xmlns:observer="com.spice.vanilla.flash.observer.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.core.sceneSync.impl.models.SceneSyncPluginModelLocator;
+			
+			
+			private var _model:SceneSyncPluginModelLocator = SceneSyncPluginModelLocator.getInstance();
+			
+			[Bindable] 
+			public var editorVisible:Boolean;
+			
+			private var _i:int;
+			
+			//temporary easter egg
+			private function clicks():void
+			{
+				editorVisible = false;
+				
+				if(_i++ > 5)
+				{
+					editorVisible = true;
+					_i = 0;
+				}
+			}
+		]]>
+	</mx:Script>
+	<mx:HTML width="100%" height="100%" location="{bannerObserver.data.getData()}" verticalScrollPolicy="off" horizontalScrollPolicy="off" />
+	<mx:TextInput id="headerSwitcher" visible="{editorVisible}" click="event.stopPropagation()" text="{bannerObserver.data.getData()}" enter="{_model.plugin.getBanner().setData(headerSwitcher.text)}"  verticalCenter="0" right="15" />
+	
+	
+	<observer:SettingObserver target="{_model.plugin.getBanner()}" id="bannerObserver" />
+	
+	<mx:Canvas width="5" height="5" right="0" bottom="0" click="{clicks();}" backgroundColor="#000000" backgroundAlpha="0" />
+</mx:Canvas>

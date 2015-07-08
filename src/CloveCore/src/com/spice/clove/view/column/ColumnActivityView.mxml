@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<util1:CueProgressView loadState="{column.loadState}" 
+					  xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:util="com.spice.concrete.clove.plugin.platform.flex.views.util.*" xmlns:util1="com.spice.clove.plugin.flex.views.util.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.ClovePluginColumn;
+			
+			[Bindable] 
+			public var column:ClovePluginColumn;
+		]]>
+	</mx:Script>
+	
+</util1:CueProgressView>

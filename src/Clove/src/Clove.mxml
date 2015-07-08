@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" 
+						minWidth="500" 
+						minHeight="600"
+						paddingLeft="0" 
+						layout="absolute"
+						close="{this.exit()}" 
+						showStatusBar="false" 
+						windowComplete="applicationInit();"
+						clipContent="false" 
+						windowMove="saveWindowSize();"  
+						windowResize="saveWindowSize();" 
+						xmlns:controls="com.spice.clove.controls.*" 
+						xmlns:local="*"  title="{AirUtils.getApplicationName()}"
+						xmlns:display="com.spice.display.*">
+	
+	
+	
+	
+	
+	<mx:Style source="com/spice/clove/skins/mac/style.css" />
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.air.invoke.BrowserInvokationManager;
+			import com.spice.air.utils.AirUtils;
+			import com.spice.clove.core.storage.MainUISettings;
+			import com.spice.clove.plugin.control.ClovePluginMediator;
+			import com.spice.vanilla.flash.utils.ProxyCallUtils;
+			
+			import mx.binding.utils.ChangeWatcher;
+			import mx.containers.Canvas;
+			import mx.controls.Alert;
+			
+			
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			/**
+			 */
+			
+			private function applicationInit():void
+			{
+				
+				
+				this.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR,onUncaughtErrors);
+				
+				flash.utils.setTimeout(init2,100);
+				
+				
+				var i:int;
+				
+			}
+			
+			
+			/**
+			 */
+			
+			private function init2():void
+			{
+				this.nativeWindow.visible = false;
+				this.bootstrap.init();
+				
+				this.init();
+				
+			}
+			/*
+			*/
+			private function init():void
+			{
+				this.setWindowSize();
+				
+			}
+			
+			/**
+			 */
+			
+			private function onUncaughtErrors(event:UncaughtErrorEvent):void
+			{
+				
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				//Note on uncaught errors: Stack tracing is turned OFF in production mode
+				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				
+				if(event.error is Error)
+				{
+					//log any uncaught errors and dispatch them to the server
+					Logger.logUncaughtError(event.error);
+				}
+				else
+				if(event.error is ErrorEvent)
+				{
+					ErrorEvent(event.error);
+				}
+			} 
+			
+			
+			/*
+			*/
+			
+			private function setWindowSize():void
+			{
+				
+				
+				
+				var uiSettings:MainUISettings =  mapper.model.applicationSettings.mainUISettings;
+				
+				ChangeWatcher.watch(mapper.model.applicationSettings.core,"groupExpanded",onSingleColumnMode);
+				
+				onSingleColumnMode(null);
+				
+				if(isNaN(uiSettings.appWidth) || uiSettings.appWidth == 0)
+				{
+					
+					
+					this.nativeWindow.x = 0;
+					this.nativeWindow.y = 0;
+					this.nativeWindow.maximize();
+					
+					
+					uiSettings.appX = this.nativeWindow.x;
+					uiSettings.appY = this.nativeWindow.y;
+					
+				}
+				else
+				{
+					this.nativeWindow.width 		    = uiSettings.appWidth;
+					this.nativeWindow.height		    = uiSettings.appHeight;
+					this.nativeWindow.x = uiSettings.appX;
+					this.nativeWindow.y = uiSettings.appY;
+				}
+				
+				
+				
+			}
+			
+			private function onSingleColumnMode(event:*):void
+			{
+				if(!mapper.model.applicationSettings.core.groupExpanded)
+				{
+					this.maxWidth = 950;
+				}
+				else
+				{
+					this.maxWidth = Capabilities.screenResolutionX*2;  
+				}
+			}
+			
+			
+			/**
+			 */
+			
+			
+			override public function close():void
+			{
+				NativeApplication.nativeApplication.dispatchEvent(new Event(Event.CLOSING));
+				super.close();
+			}
+			
+			override public function exit():void
+			{
+				NativeApplication.nativeApplication.dispatchEvent(new Event(Event.CLOSING));
+				NativeApplication.nativeApplication.dispatchEvent(new Event(Event.EXITING));//,onApplicationExiting);
+				super.exit();
+			}
+			
+			private var _saveWindowSizeInt:int;
+			
+			private function saveWindowSize():void
+			{
+				flash.utils.clearTimeout(_saveWindowSizeInt);
+				
+				_saveWindowSizeInt = flash.utils.setTimeout(onSaveWindowSizeTimeout,500);
+			}
+			
+			
+			
+			
+			private function onSaveWindowSizeTimeout():void
+			{
+				if(!mapper.isComplete())
+					return;  
+				
+				
+				//windows 7 makes windows width = 0 and height = 0 on minimize
+				if(this.nativeWindow.width < 100 || this.nativeWindow.height < 100)
+					return;
+				
+				var uiSettings:MainUISettings =  mapper.model.applicationSettings.mainUISettings;
+				
+				uiSettings.appWidth  = this.nativeWindow.width;
+				uiSettings.appHeight = this.nativeWindow.height;
+				
+				uiSettings.appX      = this.nativeWindow.x;
+				uiSettings.appY   	 = this.nativeWindow.y; 
+			}
+			
+			private function onClosing():void
+			{
+				this.addChild(new ClosingOverlay());
+			}
+			
+			
+			private function setApplicationView():void
+			{
+				this.addChild(this.mapper.applicationView);
+			}
+			
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+	<controls:CloveAIRController />
+	
+	<local:CloveDesktopProxyMapper id="mapper" 
+								   applicationViewChange="{setApplicationView();}" />
+	
+	<local:CloveBootstrap id="bootstrap" 
+						  complete="{this.nativeWindow.visible = true;}"
+						  closing="{onClosing();}"  />
+	
+	
+	
+</mx:WindowedApplication>

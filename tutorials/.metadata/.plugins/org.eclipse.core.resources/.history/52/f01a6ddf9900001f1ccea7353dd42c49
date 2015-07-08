@@ -1,0 +1,10 @@
+package com.spice.cloveHello
+{
+	public class CloveHelloPlugin
+	{
+		public function CloveHelloPlugin()
+		{
+		}
+
+	}
+}

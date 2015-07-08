@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:UIComponent xmlns:mx="http://www.adobe.com/2006/mxml" visible="true" minHeight="30" creationComplete="init();">
+	<mx:Script>
+		<![CDATA[
+			import flash.html.HTMLLoader;
+			import flash.utils.setTimeout;
+			
+			
+			private var _text:String;
+			private var _html:HTMLLoader;
+			private var _measuredWidth:Number;  
+			private var _ignoreLoad:Boolean;
+			
+			public function get text():String
+			{
+				return this._text;
+			}
+			
+			
+			public function set text(value:String):void
+			{
+				
+				value = value && value != "null" ? value : "";
+				
+				this._text = "<html><head><style> img{ max-width:100%; !important; border:0; } *{ font-size:"+(getStyle("fontSize") ? getStyle("fontSize") : 12)+"px; !important; } </style></head><body>"+ value			+"</body></html>";;
+				
+				/* if(this.initialized)
+				{
+					this.loadText();
+				} */
+			
+			}  
+			
+			
+			override protected function createChildren():void
+			{
+				super.createChildren();
+				
+				  
+				this._html = new HTMLLoader();
+				this._html.addEventListener(Event.COMPLETE,onHtmlLoaded);
+				this._html.paintsDefaultBackground = false;
+				addChild(this._html);
+				
+				this.loadText();
+				
+			}
+			
+			
+			override public function get measuredHeight():Number
+			{
+				return this._html ? this._html.contentHeight : this.minHeight;
+			}
+			
+			
+			override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+			{
+				super.updateDisplayList(unscaledWidth,unscaledHeight);
+				
+				
+				  
+				 if(this._html)  
+				{
+					this._html.width = unscaledWidth;
+				}  
+				
+				if(this._ignoreLoad)
+				{
+					this._ignoreLoad = false;
+					return;
+				}
+				  
+				flash.utils.setTimeout(this.loadText,1);
+			}
+			
+			
+			/**
+			 */
+			
+			private function loadText():void
+			{
+				if(this._html && this._text)
+				{
+					_html.height = 0;
+					_html.cancelLoad();
+					this._html.loadString(this._text);
+				}
+			}
+			
+			private function onHtmlLoaded(event:Event):void
+			{
+				this._html.width = this.width;
+				
+				flash.utils.setTimeout(setHeight,10);
+			}
+			
+			
+			private function setHeight():void
+			{
+				this._ignoreLoad = true;
+				this._html.height = Math.min(_html.contentHeight,500);
+				this.height = Math.min(_html.contentHeight,500);
+			}
+			
+			
+			private function init():void
+			{
+				
+			}
+			
+		]]>
+	</mx:Script>
+</mx:UIComponent>

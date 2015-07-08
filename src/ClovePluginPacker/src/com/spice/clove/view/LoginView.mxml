@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.model.PackerModelLocator;
+			import com.spice.clove.vo.UserVO;
+			import com.spice.clove.commandEvents.PackerEvent;
+			
+			[Bindable] 
+			private var _model:PackerModelLocator = PackerModelLocator.getInstance();
+			
+			private function login():void
+			{
+				new PackerEvent(PackerEvent.LOGIN_USER,new UserVO(username.text,password.text)).dispatch();
+			}
+			
+			private function signup():void
+			{
+				new PackerEvent(PackerEvent.SIGNUP_USER,new UserVO(username.text,password.text)).dispatch();
+			}
+		]]>
+	</mx:Script>
+	<mx:Panel verticalCenter="0" horizontalCenter="0">
+		
+		<mx:Form>
+			<mx:FormItem label="username:">
+				<mx:TextInput id="username" text="{_model.userModel.currentUser.username}" />
+			</mx:FormItem>
+			<mx:FormItem label="password:">
+				<mx:TextInput id="password" text="{_model.userModel.currentUser.password}"  displayAsPassword="true" />
+			</mx:FormItem>
+		</mx:Form>
+		<mx:ControlBar>
+			<mx:Spacer width="100%" />
+			<mx:Button label="login" click="login();" />
+			<mx:Button label="signup" click="signup();" />
+ 		</mx:ControlBar>
+	</mx:Panel>
+</mx:Canvas>

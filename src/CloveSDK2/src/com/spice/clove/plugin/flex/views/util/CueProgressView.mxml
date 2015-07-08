@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<display:BindableUIView xmlns:mx="http://www.adobe.com/2006/mxml"
+						creationComplete="init();" 
+						width="{this._loadStateIcon.width}" 
+						height="{this._loadStateIcon.height}"
+						view="{_loadStateIcon}" 
+						visible="{_loadStateIcon != null}"
+						includeInLayout="{_loadStateIcon != null}"
+						xmlns:display="com.spice.display.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.impl.icons.utility.UtilityIcons;
+			import com.spice.utils.queue.cue.CueStateType;
+			
+			import mx.binding.utils.ChangeWatcher;
+			
+			[Bindable] 
+			public var loadState:int;
+			
+			[Bindable] 
+			private var _loadStateIcon:*;
+			
+			
+			
+			private function init():void
+			{
+				
+				ChangeWatcher.watch(this,["loadState"],onLoadStateChange);
+				onLoadStateChange();
+				
+			}
+			
+			private function onLoadStateChange(event:* = null):void
+			{
+				var state:int = this.loadState;
+				
+				if(state == CueStateType.COMPLETE)
+				{
+					this._loadStateIcon = null;
+					
+				}
+				else
+				if(state == CueStateType.ERROR)
+				{
+					this._loadStateIcon = new UtilityIcons.ERROR_ICON;
+				}
+				else
+				if(state == CueStateType.LOADING)
+				{
+					this._loadStateIcon = new UtilityIcons.REFRESH_ICON;
+				}
+				
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+</display:BindableUIView>

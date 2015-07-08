@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml"
+			 paddingRight="10" 
+			 paddingLeft="10" 
+			 paddingTop="10" 
+			 paddingBottom="10" 
+			 horizontalAlign="center" 
+			 width="100%"  xmlns:binding="com.spice.binding.*"  styleName="columnPrefFeedBackground">
+			 
+	
+	<mx:Script>
+		<![CDATA[
+			
+			import com.spice.clove.view.column.ColumnViewController;
+			import com.spice.recycle.factory.RecyclingFactory;
+			
+			[Bindable] 
+			public var controller:ColumnViewController;
+			
+			
+			private function setColumnPrefRow(target:ColumnPreferenceRow,data:Object):void
+			{
+				target.data= data;
+				target.controller= controller;
+			}
+			
+		]]>
+	</mx:Script>
+		
+	
+	
+	<!-- add the disposables -->
+	<binding:DataBoundController id="columnController" 
+								 dataProvider="{this.controller.target.children}" 
+								 target="{this}"
+								 itemRenderer="{new RecyclingFactory(ColumnPreferenceRow)}" dataSetter="{this.setColumnPrefRow}" />
+	
+</mx:VBox>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" visible="false" layout="vertical" xmlns:c="com.flexblocks.imagecropper.*" showCloseButton="true" close="close();" title="Image Cropper">
+	<mx:Script>
+		<![CDATA[
+			import flash.filesystem.File;
+			
+			import mx.core.Application;
+			import mx.managers.PopUpManager;
+			
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Public Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			[Bindable]
+			private var _imageSource:BitmapData;
+			private var _file:File;
+			
+			private static const MAX_WIDTH:Number  = 600;
+			
+			private static const CROP_SIZE:Number = 32;
+			private static const MAX_HEIGHT:Number = 600;
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Public Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			public var croppedImage:BitmapData;
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Getters / Setters
+			//
+			//--------------------------------------------------------------------------
+			
+			/*
+			*/
+			
+			public function get imageSource():BitmapData
+			{
+				return _imageSource;
+				
+			}
+			
+			public function set imageSource(value:BitmapData):void
+			{
+				cropper.sourceImage = _imageSource = value;	
+				
+				var wratio:Number = MAX_WIDTH  / _imageSource.width;
+				var hratio:Number = MAX_HEIGHT / _imageSource.height;
+				
+				var ratio:Number = wratio < hratio ? wratio : hratio;
+				
+				cropper.width  = ratio < 1 ? _imageSource.width  * ratio : _imageSource.width;
+				cropper.height = ratio < 1 ? _imageSource.height * ratio : _imageSource.height;
+			}
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Public Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			/*
+			*/
+			
+			public static function prepareEditor():IconEditor
+			{
+				
+				var editor:IconEditor = PopUpManager.createPopUp(Application.application as DisplayObject,IconEditor) as IconEditor;
+				editor.prepare();
+				
+				
+				return editor;
+			}
+			
+			
+			
+			
+			/**
+			 */
+			
+			private function prepare():void
+			{
+				
+				_file = new File();
+				_file.addEventListener(Event.SELECT,onSelect);
+				_file.addEventListener(Event.COMPLETE,onLoad);
+				_file.browseForOpen("Icon",[new FileFilter("image","*.png;*.jpg;*.jpeg;*.gif;")]);
+			}
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			/**
+			 */
+			
+			private function onSelect(event:Event):void
+			{
+				_file.load();
+			}
+			
+			/**
+			 */
+			
+			private function onLoad(event:Event):void
+			{
+				event.currentTarget.removeEventListener(event.type,onLoad);
+				
+				this.visible = true;
+				
+				
+				var loader:Loader = new Loader();
+				loader.contentLoaderInfo.addEventListener(Event.COMPLETE,onBytes);
+				loader.loadBytes(_file.data);
+				
+				
+				
+				//				PopUpUtil.alwaysCenter(this);
+				
+			}
+			
+			/**
+			 */
+			
+			private function onBytes(event:Event):void
+			{
+				event.currentTarget.removeEventListener(event.type,onBytes);
+				
+				var bm:Bitmap =  Bitmap(LoaderInfo(event.target).content);
+				
+				
+				if(bm.width == CROP_SIZE || bm.height == CROP_SIZE)
+				{
+					setIcon(bm.bitmapData);
+					return;
+				}
+				
+				this.imageSource = bm.bitmapData;
+			}
+			/*
+			*/
+			
+			private function close():void
+			{
+				PopUpManager.removePopUp(this);
+				
+				//garbage collect
+				cropper.destroy();
+				cropper = undefined;
+				
+			}
+			
+			
+			
+			/*
+			*/
+			
+			private function imageReady():void
+			{
+				cropper.handleSize = 10;
+				cropper.constrainToAspectRatio = true;
+				
+				var cropSize:int = CROP_SIZE < _imageSource.width ? CROP_SIZE : _imageSource.width;
+				
+				
+				cropper.setCropRect(cropSize,cropSize,10,10);
+				
+			}
+			
+			/*
+			*/
+			
+			private function finish():void
+			{
+				
+				var bm:BitmapData = cropper.croppedBitmapData;
+				
+				
+				
+				this.setIcon(bm);
+				
+			}
+			
+			
+			
+			/**
+			 */
+			
+			private function setIcon(bm:BitmapData):void
+			{
+				var mat:Matrix = new Matrix();
+				
+				
+				
+				var cropSize:int = CROP_SIZE < bm.width ? CROP_SIZE : bm.width;
+				
+				var scale:Number = cropSize/bm.width;
+				
+				mat.scale(scale,scale);
+				
+				var nb:BitmapData = new BitmapData(cropSize,cropSize,true,0xFFFFFF);
+				nb.draw(bm,mat,null,null,null,true);
+				
+				
+				this.croppedImage = nb;
+				dispatchEvent(new Event(Event.COMPLETE));
+				this.close();
+			}
+		]]>
+	</mx:Script>
+	
+	<c:ImageCropper id="cropper" 
+					maskColor="#FFFFFF" 
+					sourceImageReady="imageReady();" 
+					handleColor="#000000" maskAlpha=".5"  />
+	
+	<mx:Button label="finish" click="finish()" />
+	
+</mx:TitleWindow>

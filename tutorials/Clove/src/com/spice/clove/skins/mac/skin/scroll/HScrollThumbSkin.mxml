@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin
+    xmlns:mx="http://www.adobe.com/2006/mxml"  
+    xmlns="http://www.degrafa.com/2007" 
+    >
+    
+    <mx:Script>
+        <![CDATA[
+        
+            import  assets.skins2.mac.MacSkinAssets;
+            
+            [Bindable]
+            private var awidth:Number=0;
+            
+            [Bindable]
+            private var aheight:Number=0;
+            
+            [Bindable] private var _cornerRadius:int = 4;
+
+            override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void{
+                
+                super.updateDisplayList(unscaledWidth, unscaledHeight);
+                awidth = unscaledWidth;
+            	aheight = unscaledHeight;
+            }
+            
+        	override public function get measuredWidth():Number
+			{
+				return 20;
+			}
+
+			override public function get measuredHeight():Number
+			{
+				return 15;
+			}
+        ]]>
+    </mx:Script>
+    
+    <fills>
+    	<BitmapFill source="{MacSkinAssets.SCROLL_VERTICAL}" id="scrollThumbColor" repeatX="stretch" repeatY="none" />
+    </fills>
+   
+    <geometry>
+        <GeometryComposition
+            state="thumbUpSkin">
+            <RoundedRectangle
+                id="thumbGeometry_upSkin"
+                cornerRadius="{_cornerRadius}"
+                fill="{scrollThumbColor}"
+                height="{aheight}"
+                width="{awidth}"
+                />
+        </GeometryComposition>
+        
+        <GeometryComposition
+            state="thumbOverSkin">
+           <RoundedRectangle
+                id="thumbGeometry_overSkin"
+                cornerRadius="{_cornerRadius}"
+                fill="{scrollThumbColor}"
+                height="{aheight}"
+                width="{awidth}"
+                />
+        </GeometryComposition>
+        
+        <GeometryComposition
+            state="thumbDownSkin">
+            <RoundedRectangle
+                id="thumbGeometry_downSkin"
+                cornerRadius="{_cornerRadius}"
+                fill="{scrollThumbColor}"
+           
+                height="{aheight}"
+                width="{awidth}"
+                />
+        </GeometryComposition>
+        
+        <GeometryComposition
+            state="thumbDisabledSkin"
+            >
+            <RoundedRectangle
+                id="thumbGeometry_disabledSkin"
+                cornerRadius="{_cornerRadius}"
+                fill="{scrollThumbColor}"
+                height="{aheight}"
+                width="{awidth}"
+                />
+        </GeometryComposition>
+        
+    </geometry>
+</GraphicBorderSkin>

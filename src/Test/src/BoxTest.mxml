@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" backgroundColor="0">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			
+			[Bindable] 
+			private var _data:TestOject;
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				
+				_data = TestOject(value);
+			}
+		]]>
+	</mx:Script>
+	<mx:Label text="{_data.dbid} - {_data.name}" verticalCenter="0" horizontalCenter="0" color="#FFFFFF" fontSize="20" />
+	
+	<mx:Canvas height="{_data.height}" />
+</mx:Canvas>

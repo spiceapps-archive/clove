@@ -1,0 +1,839 @@
+
+global
+{
+	color:#000000;
+	fontSize:12;
+}
+
+
+
+ComboBox
+{
+	color:#000000;
+}
+TextInput
+{
+	color:#000000;
+	
+}
+
+Alert
+{
+	backgroundColor:#E8E8E8;
+	color:#000000;
+	fontSize:12;
+}
+
+Button
+{
+	fontFamily:lucidaSans;
+	fontSize:12;
+	fontWeight:regular;
+	color:#000000;
+	skin:ClassReference("com.degrafa.skins.CSSButtonSkin");
+	buttonStyleNameUp:'buttonUp';
+	buttonStyleNameOver:'buttonUp';
+	buttonStyleNameDown:'buttonOver';
+	buttonStyleNameDisabled:'buttonOver';
+	buttonStyleNameSelectedUp:'buttonOver';
+	buttonStyleNameSelectedOver:'buttonOver';
+	buttonStyleNameSelectedDown:'buttonOver';
+	buttonStyleNameSelectedDisable:'buttonOver';
+}
+
+ComboBox
+{
+	up-skin: 				Embed("Mainbox/Dropdown-N.png", scaleGridTop="1", scaleGridBottom="21", scaleGridLeft="2", scaleGridRight="29");
+	over-skin: 				Embed("Mainbox/Dropdown-P.png", scaleGridTop="6", scaleGridBottom="21", scaleGridLeft="2", scaleGridRight="29");
+	down-skin: 				Embed("Mainbox/Dropdown-P.png", scaleGridTop="6", scaleGridBottom="21", scaleGridLeft="2", scaleGridRight="29");
+	disabled-skin: 			Embed("Mainbox/Dropdown-N.png", scaleGridTop="6", scaleGridBottom="21", scaleGridLeft="2", scaleGridRight="29");
+	font-family: 			lucidaSans;
+	font-weight:			bold;
+	drop-down-style-name:	comboBoxDropDown;
+	padding-left: 5;
+	disabled-color:			#999999;
+}
+
+.comboBoxDropDown
+{
+	
+	fontWeight:bold;
+	padding-left:5;
+/*	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Mainbox/DropdownMenu.png',scaleGridTop='3',scaleGridBottom='36',scaleGridLeft='5',scaleGridRight='43');
+	background-alpha:0;
+	background-repeat:stretch;
+	padding-bottom:30;*/
+}
+
+TextInput
+{
+	fontSize:12;
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Preferences/TextField.png',scaleGridTop='3',scaleGridBottom='18',scaleGridLeft='3',scaleGridRight='18');
+	background-repeat:stretch;
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+	color:#000000;
+}
+
+TextArea
+{
+	fontSize:12;
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Preferences/TextField.png',scaleGridTop='3',scaleGridBottom='18',scaleGridLeft='3',scaleGridRight='18');
+	background-repeat:stretch;
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+	color:#000000;
+}
+
+.buttonOver
+{
+	fontSize:12;
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Footer/Button-P.png',scaleGridTop='3',scaleGridBottom='18',scaleGridLeft='3',scaleGridRight='17');
+	background-repeat:stretch;
+	color:#000000;
+}
+
+.buttonUp
+{
+	fontSize:12;
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Footer/Button-N.png',scaleGridTop='3',scaleGridBottom='18',scaleGridLeft='3',scaleGridRight='17');
+	background-repeat:stretch;
+	color:#000000;
+}
+
+
+
+.removePluginButton
+{
+	upSkin:Embed(source='Preferences/MinusSmall.png');
+	overSkin:Embed(source='Preferences/MinusSmall.png');
+	downSkin:Embed(source='Preferences/MinusSmall.png');
+	selectedUpSkin:Embed(source='Preferences/MinusSmall.png');
+	selectedOverSkin:Embed(source='Preferences/MinusSmall.png');
+	selectedDownSkin:Embed(source='Preferences/MinusSmall.png');
+}
+	
+
+
+
+ColumnButton
+{
+	color:#000000;
+	fontSize:12;
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Footer/PrefButton.png',scaleGridTop='12',scaleGridBottom='13',scaleGridLeft='12',scaleGridRight='13');
+	background-repeat:stretch;
+	color:#000000;
+	height:'23px';
+}
+
+.miniColumnButton
+{
+	color:#000000;
+	fontSize:12;
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Footer/PrefButtonSmall.png',scaleGridTop='10',scaleGridBottom='11',scaleGridLeft='10',scaleGridRight='11');
+	background-repeat:stretch;
+	color:#000000;
+	height:'19px';
+}
+
+HScrollBar
+{
+	downArrowSkin: ClassReference(null);
+	thumbSkin: ClassReference("com.spice.clove.skins.mac.skin.scroll.ScrollThumbSkin");
+	trackSkin: ClassReference(null);
+	upArrowSkin: ClassReference(null);
+	scrollColor:#CCCCCC;
+}
+
+VScrollBar
+{
+	downArrowSkin: ClassReference(null);
+	thumbSkin: ClassReference("com.spice.clove.skins.mac.skin.scroll.ScrollThumbSkin");
+	trackSkin: ClassReference(null);
+	upArrowSkin: ClassReference(null);
+}
+
+@font-face
+{
+	src:					url("fonts/LucidaSans.ttf");
+	fontFamily: 			lucidaSans;
+	font-anti-alias-type: 	advanced;
+	font-weight: 			regular;
+}
+
+@font-face
+{
+	src:					url("fonts/Lucida Grande Bold.ttf");
+	fontFamily: 			lucidaSans;
+	font-anti-alias-type: 	advanced;
+	font-weight: 			bold;
+}
+
+.minusButton
+{
+	upSkin:Embed(source='Post/Minus.png');
+	overSkin:Embed(source='Post/Minus.png');
+	downSkin:Embed(source='Post/Minus.png');
+	selectedOverSkin:Embed(source='Post/Minus.png');
+	selectedDownSkin:Embed(source='Post/Minus.png');
+}
+
+	
+/**
+ * Main Area
+ */
+
+
+.headerShout
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Header/Stripes.png');    
+	background-repeat:repeat-x,repeat;
+	fontFamily:lucidaSans;
+	fontSize:12;
+	
+}
+ 
+.newColumnButtonBig
+{
+	upSkin:Embed(source='Mainbox/NewBig.png');
+	overSkin:Embed(source='Mainbox/NewBig.png');
+	downSkin:Embed(source='Mainbox/NewBig.png');
+	selectedUpSkin:Embed(source='Mainbox/NewBig.png');
+	selectedOverSkin:Embed(source='Mainbox/NewBig.png');
+	selectedDownSkin:Embed(source='Mainbox/NewBig.png');
+}
+
+/* WindowedApplication
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:'BG','BG_TAIL';    
+	asset-class:ClassReference("com.spice.clove.skins.mac.MacSkinAssets");
+	background-repeat:repeat-x,repeat;
+	fontFamily:lucidaSans;
+	fontSize:12;
+	
+} */
+
+WindowedApplication
+{
+	borderSkin:ClassReference("com.spice.clove.skins.mac.skin.ApplicationSkin");
+	fontFamily:lucidaSans;
+	fontSize:12;
+	
+}
+.newColumnButton
+{
+	upSkin:Embed(source='Mainbox/NewBig.png');
+	overSkin:Embed(source='Mainbox/NewBig.png');
+	downSkin:Embed(source='Mainbox/NewBig.png');
+	selectedUpSkin:Embed(source='Mainbox/NewBig.png');
+	selectedOverSkin:Embed(source='Mainbox/NewBig.png');
+	selectedDownSkin:Embed(source='Mainbox/NewBig.png');
+}
+
+
+
+/**
+ * Column
+ */
+
+.columnRow
+{
+	borderSkin:ClassReference("com.spice.clove.skins.mac.skin.column.ColumnRowSkin");
+}
+
+.breadcrumbArrow
+{
+	background-image:Embed(source='Mainbox/Heirarchy.png');
+	background-repeat:no-repeat;
+}
+
+.columnRowCommentGrad
+{
+	/* borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Mainbox/ReplyGrad.png');
+	background-repeat:repeat-x; */
+}
+	
+
+.addFeedButton
+{
+	skin:ClassReference("com.degrafa.skins.CSSButtonSkin");
+	buttonStyleNameUp:'addFeedButtonUp';
+	buttonStyleNameOver:'addFeedButtonUp';
+	buttonStyleNameDown:'addFeedButtonUp';
+	buttonStyleNameDisabled:'addFeedButtonUp';
+	buttonStyleNameSelectedUp:'addFeedButtonUp';
+	buttonStyleNameSelectedOver:'addFeedButtonUp';
+	buttonStyleNameSelectedDown:'addFeedButtonUp';
+	buttonStyleNameSelectedDisable:'addFeedButtonUp';
+}
+
+
+.colorPickerButton
+{
+	upSkin:Embed(source='Preferences/Icons/ColorSmall.png');
+	overSkin:Embed(source='Preferences/Icons/ColorSmall.png');
+	downSkin:Embed(source='Preferences/Icons/ColorSmall.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/ColorSmall.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/ColorSmall.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/ColorSmall.png');
+}
+
+.addFeedButtonUp
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Footer/AddFeed.png');
+	background-repeat:no-repeat;
+}
+
+.columnRowAttachmentLink
+{
+	color:#0D79D4;
+}
+
+.attSeperator
+{
+	
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Mainbox/Seperator.png',scaleGridTop='0',scaleGridBottom='2',scaleGridLeft='196',scaleGridRight='199');
+	background-repeat:no-repeat,stretch;
+	background-position:center;
+}
+
+.columnBackground
+{
+	borderSkin:ClassReference("com.spice.clove.skins.mac.skin.column.ColumnBackgroundSkin");
+	padding-left:3px;
+	padding-right:3px;
+	padding-top:3px;
+	padding-bottom:3px;
+}
+
+.columnPreferenceBackground
+{
+	borderSkin:ClassReference("com.spice.clove.skins.mac.skin.column.ColumnPreferenceBackgroundSkin");
+	cornerRadius:3;
+	color:#FFFFFF;
+}
+
+
+.seperator
+{
+	
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-image:Embed(source='Mainbox/Seperator-shad.png',scaleGridTop='0',scaleGridBottom='10',scaleGridLeft='196',scaleGridRight='199');
+	background-repeat:stretch,stretch,stretch;
+}
+	
+
+.columnContent
+{
+	borderSkin:ClassReference("com.spice.clove.skins.mac.skin.column.ColumnContentSkin");
+	background-color:'#E3E3E3';
+	cornerRadius:3;
+	padding-left:5px;
+	padding-right:5px;
+	padding-top:5px;
+}
+
+.columnPrefs
+{
+	upSkin:Embed(source='Mainbox/Icons/Gear.png');
+	overSkin:Embed(source='Mainbox/Icons/Gear.png');
+	downSkin:Embed(source='Mainbox/Icons/Gear.png');
+	selectedUpSkin:Embed(source='Mainbox/Icons/Gear.png');
+	selectedOverSkin:Embed(source='Mainbox/Icons/Gear.png');
+	selectedDownSkin:Embed(source='Mainbox/Icons/Gear.png');
+}
+
+	
+
+.columnTitle
+{
+	fontWeight:bold;
+	color:#000000;
+	fontSize:13;
+}
+	
+.columnRowTitle
+{
+	
+	color:#000000;
+	fontWeight:bold;
+}
+
+.columnRowText
+{
+	color:#000000;
+}
+
+.columnRowDate
+{
+	color:#666666;
+	fontSize:11;
+}
+
+/**
+ * column settings
+ */
+
+/* .columnSeperator
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-repeat:repeat;
+	background-image:Embed(source='Mainbox/SettingsSeperator.png');
+}
+
+.columnSettingsBG
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-repeat:no-repeat;
+	background-image:Embed(source='Mainbox/SettingsBG.png',scaleGridTop='81',scaleGridLeft='81',scaleGridRight='81',scaleGridBottom='81');
+} */
+
+/**
+ * Footer
+ */
+ 
+.footerBackground
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-repeat:repeat;
+	background-image:Embed(source='Footer/BG.png');
+	padding-top:7px;
+	padding-bottom:5px;
+	padding-left:15px;
+	padding-right:7px;
+}
+
+WindowFooter
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-repeat:repeat;
+	background-image:Embed(source='Footer/BG.png');
+	padding-top:7px;
+	padding-bottom:5px;
+	padding-left:15px;
+	padding-right:13px;
+}
+
+.plusFooterButton
+{
+	upSkin:Embed(source='Footer/Plus-N.png');
+	overSkin:Embed(source='Footer/Plus-N.png');
+	downSkin:Embed(source='Footer/Plus-P.png');
+	selectedUpSkin:Embed(source='Footer/Plus-N.png');
+	selectedOverSkin:Embed(source='Footer/Plus-N.png');
+	selectedDownSkin:Embed(source='Footer/Plus-P.png');
+}
+
+
+.skinlessButton
+{
+	upSkin:null;
+	overSkin:null;
+	downSkin:null;
+	selectedUpSkin:null;
+	selectedOverSkin:null;
+	selectedDownSkin:null;
+}
+.minusFooterButton
+{
+	upSkin:Embed(source='Footer/Minus-N.png');
+	overSkin:Embed(source='Footer/Minus-N.png');
+	downSkin:Embed(source='Footer/Minus-P.png');
+	selectedUpSkin:Embed(source='Footer/Minus-N.png');
+	selectedOverSkin:Embed(source='Footer/Minus-N.png');
+	selectedDownSkin:Embed(source='Footer/Minus-P.png');
+}
+
+.actionFooterButton
+{
+	upSkin:Embed(source='Footer/Action-N.png');
+	overSkin:Embed(source='Footer/Action-N.png');
+	downSkin:Embed(source='Footer/Action-P.png');
+	selectedUpSkin:Embed(source='Footer/Action-N.png');
+	selectedOverSkin:Embed(source='Footer/Action-N.png');
+	selectedDownSkin:Embed(source='Footer/Action-P.png');
+}
+
+.columnsFooterButton
+{
+	upSkin:Embed(source='Footer/Columns-N.png');
+	overSkin:Embed(source='Footer/Columns-N.png');
+	downSkin:Embed(source='Footer/Columns-P.png');
+	selectedUpSkin:Embed(source='Footer/ColumnsActive-N.png');
+	selectedOverSkin:Embed(source='Footer/ColumnsActive-N.png');
+	selectedDownSkin:Embed(source='Footer/ColumnsActive-P.png');
+}
+
+.refreshFooterButton
+{
+	upSkin:Embed(source='Footer/Refresh-N.png');
+	overSkin:Embed(source='Footer/Refresh-N.png');
+	downSkin:Embed(source='Footer/Refresh-P.png');
+	selectedUpSkin:Embed(source='Footer/Refresh-N.png');
+	selectedOverSkin:Embed(source='Footer/Refresh-N.png');
+	selectedDownSkin:Embed(source='Footer/Refresh-P.png');
+}
+
+.refreshAllFooterButton
+{
+	upSkin:Embed(source='Footer/RefreshAll-N.png');
+	overSkin:Embed(source='Footer/RefreshAll-N.png');
+	downSkin:Embed(source='Footer/RefreshAll-P.png');
+	selectedUpSkin:Embed(source='Footer/RefreshAll-N.png');
+	selectedOverSkin:Embed(source='Footer/RefreshAll-N.png');
+	selectedDownSkin:Embed(source='Footer/RefreshAll-P.png');
+}
+
+.postFooterButton
+{
+	upSkin:Embed(source='Footer/Post-N.png');
+	overSkin:Embed(source='Footer/Post-N.png');
+	downSkin:Embed(source='Footer/Post-P.png');
+	selectedUpSkin:Embed(source='Footer/Post-N.png');
+	selectedOverSkin:Embed(source='Footer/Post-N.png');
+	selectedDownSkin:Embed(source='Footer/Post-P.png');
+}
+
+.dragCornerFooterButton
+{
+	upSkin:Embed(source='Footer/DragCorner.png');
+	overSkin:Embed(source='Footer/DragCorner.png');
+	downSkin:Embed(source='Footer/DragCorner.png');
+	selectedUpSkin:Embed(source='Footer/DragCorner.png');
+	selectedOverSkin:Embed(source='Footer/DragCorner.png');
+	selectedDownSkin:Embed(source='Footer/DragCorner.png');
+}
+
+.dragMeFooterButton
+{
+	upSkin:Embed(source='Footer/DragMe.png');
+	overSkin:Embed(source='Footer/DragMe.png');
+	downSkin:Embed(source='Footer/DragMe.png');
+	selectedUpSkin:Embed(source='Footer/DragMe.png');
+	selectedOverSkin:Embed(source='Footer/DragMe.png');
+	selectedDownSkin:Embed(source='Footer/DragMe.png');
+}
+
+/**
+ * Side Bar
+ */
+
+
+ColumnPicker
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-color:'#D5DDE7';
+	border-color:'#666666';
+	border-width:'0px 1px 0px 0px';
+	fontWeight:bold;
+	fontFamily:lucidaSans;
+	fontSize:12;
+	color:#45597A;
+}
+
+
+
+.expandSidebarButton
+{
+	
+	upSkin:Embed(source='Sidebar/Expand.png');
+	overSkin:Embed(source='Sidebar/Expand.png');
+	downSkin:Embed(source='Sidebar/Expand.png');
+	selectedUpSkin:Embed(source='Sidebar/Expand.png');
+	selectedOverSkin:Embed(source='Sidebar/Expand.png');
+	selectedDownSkin:Embed(source='Sidebar/Expand.png');
+}
+
+.collapseSidebarButton
+{
+	
+	upSkin:Embed(source='Sidebar/Collapse.png');
+	overSkin:Embed(source='Sidebar/Collapse.png');
+	downSkin:Embed(source='Sidebar/Collapse.png');
+	selectedUpSkin:Embed(source='Sidebar/Collapse.png');
+	selectedOverSkin:Embed(source='Sidebar/Collapse.png');
+	selectedDownSkin:Embed(source='Sidebar/Collapse.png');
+}
+
+.selectedGroupSidebar
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");	
+	background-repeat:repeat;
+	background-image:Embed('Sidebar/SelectFull.png');
+}
+
+.columnSidbarName
+{
+	color:#424242;
+}
+
+
+/**
+ * Poster
+ */
+ 
+.addServicePostButton
+{
+	upSkin:Embed(source='Post/Plus.png');
+	overSkin:Embed(source='Post/Plus.png');
+	downSkin:Embed(source='Post/Plus.png');
+	selectedUpSkin:Embed(source='Post/Plus.png');
+	selectedOverSkin:Embed(source='Post/Plus.png');
+	selectedDownSkin:Embed(source='Post/Plus.png');
+}
+
+
+	
+.toPostBG
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");	
+	background-repeat:repeat;
+	background-image:Embed('Post/toBG.png');
+}
+
+.postButton
+{
+	upSkin:Embed(source='Post/Post-N.png');
+	overSkin:Embed(source='Post/Post-N.png');
+	downSkin:Embed(source='Post/Post-P.png');
+	selectedUpSkin:Embed(source='Post/Post-N.png');
+	selectedOverSkin:Embed(source='Post/Post-N.png');
+	selectedDownSkin:Embed(source='Post/Post-P.png');
+}
+
+
+.dropFilePostButton
+{
+	
+	upSkin:Embed(source='Post/AttachmentDrop.png');
+	overSkin:Embed(source='Post/AttachmentDrop.png');
+	downSkin:Embed(source='Post/AttachmentDrop.png');
+	selectedUpSkin:Embed(source='Post/AttachmentDrop.png');
+	selectedOverSkin:Embed(source='Post/AttachmentDrop.png');
+	selectedDownSkin:Embed(source='Post/AttachmentDrop.png');
+}
+	
+	
+.wordCountPostBG
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");	
+	background-repeat:no-repeat,stretch;
+	background-image:Embed('Post/Bubble.png',scaleGridTop='6',scaleGridLeft='6',scaleGridRight='14',scaleGridBottom='10');
+}
+	
+.postActionButton
+{
+	upSkin:Embed(source='Post/Action-N.png');
+	overSkin:Embed(source='Post/Action-N.png');
+	downSkin:Embed(source='Post/Action-P.png');
+	selectedUpSkin:Embed(source='Post/Action-N.png');
+	selectedOverSkin:Embed(source='Post/Action-N.png');
+	selectedDownSkin:Embed(source='Post/Action-P.png');
+}
+
+.toFieldText
+{
+	fontColor:#000000;
+	fontSize:12;
+	fontWeight:bold;
+}
+	
+.postTextArea
+{
+	borderSkin:ClassReference(null);
+	borderColor:#FFFFFF;
+	focusAlpha:0;
+	fontSize:12;
+}
+
+/**
+ * Preference
+ */
+
+.barPreferenceBG
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");	
+	background-repeat:repeat;
+	background-image:Embed('Preferences/BarBG.png');
+}
+
+.preferenceWindow
+{
+	backgroundColor:#E8E8E8;
+}
+
+.pluginsViewPreferenceList
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");
+	background-color:'#E0E0E0';
+	border-color:'#C3C3C3';
+	border-width:'0px 1px 0px 0px';
+	fontWeight:bold;
+	fontFamily:lucidaSans;
+	fontSize:12;
+	color:#45597A;
+}
+
+
+.minusSmallPreferenceButton
+{
+	upSkin:Embed(source='Preferences/MinusSmall.png');
+	overSkin:Embed(source='Preferences/MinusSmall.png');
+	downSkin:Embed(source='Preferences/MinusSmall.png');
+	selectedUpSkin:Embed(source='Preferences/MinusSmall.png');
+	selectedOverSkin:Embed(source='Preferences/MinusSmall.png');
+	selectedDownSkin:Embed(source='Preferences/MinusSmall.png');
+}
+
+.plusSmallPreferenceButton
+{
+	upSkin:Embed(source='Preferences/PlusSmall.png');
+	overSkin:Embed(source='Preferences/PlusSmall.png');
+	downSkin:Embed(source='Preferences/PlusSmall.png');
+	selectedUpSkin:Embed(source='Preferences/PlusSmall.png');
+	selectedOverSkin:Embed(source='Preferences/PlusSmall.png');
+	selectedDownSkin:Embed(source='Preferences/PlusSmall.png');
+}
+
+.showAllPreferenceButton
+{
+	upSkin:Embed(source='Preferences/ShowAll-N.png');
+	overSkin:Embed(source='Preferences/ShowAll-N.png');
+	downSkin:Embed(source='Preferences/ShowAll-P.png');
+	selectedUpSkin:Embed(source='Preferences/ShowAll-N.png');
+	selectedOverSkin:Embed(source='Preferences/ShowAll-N.png');
+	selectedDownSkin:Embed(source='Preferences/ShowAll-P.png');
+}
+
+.betaSettingsViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	overSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	downSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+}
+
+.textFieldPreferenceBG
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");	
+	background-repeat:repeat;
+	background-image:Embed('Preferences/TextField.png');
+}
+	
+.prefSelectPreferenceBG
+{
+	borderSkin:ClassReference("com.degrafa.skins.CSSSkin");	
+	background-repeat:repeat;
+	background-image:Embed('Preferences/PrefSelect.png');
+}
+
+
+	
+
+.appearanceViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/Appearance.png');
+	overSkin:Embed(source='Preferences/Icons/Appearance.png');
+	downSkin:Embed(source='Preferences/Icons/Appearance.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/Appearance.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/Appearance.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/Appearance.png');
+}
+
+.betaSettingsViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	overSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	downSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/BetaSettings.png');
+}
+
+.generalViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/General.png');
+	overSkin:Embed(source='Preferences/Icons/General.png');
+	downSkin:Embed(source='Preferences/Icons/General.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/General.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/General.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/General.png');
+}
+
+.HUDViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/HUD.png');
+	overSkin:Embed(source='Preferences/Icons/HUD.png');
+	downSkin:Embed(source='Preferences/Icons/HUD.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/HUD.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/HUD.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/HUD.png');
+}
+
+.pluginsViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/Plugins.png');
+	overSkin:Embed(source='Preferences/Icons/Plugins.png');
+	downSkin:Embed(source='Preferences/Icons/Plugins.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/Plugins.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/Plugins.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/Plugins.png');
+}
+
+.registrationViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/Registration.png');
+	overSkin:Embed(source='Preferences/Icons/Registration.png');
+	downSkin:Embed(source='Preferences/Icons/Registration.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/Registration.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/Registration.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/Registration.png');
+}
+
+.shortcutsViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/Shortcuts.png');
+	overSkin:Embed(source='Preferences/Icons/Shortcuts.png');
+	downSkin:Embed(source='Preferences/Icons/Shortcuts.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/Shortcuts.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/Shortcuts.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/Shortcuts.png');
+}
+
+.updateViewPreferenceButton
+{
+	upSkin:Embed(source='Preferences/Icons/Update.png');
+	overSkin:Embed(source='Preferences/Icons/Update.png');
+	downSkin:Embed(source='Preferences/Icons/Update.png');
+	selectedUpSkin:Embed(source='Preferences/Icons/Update.png');
+	selectedOverSkin:Embed(source='Preferences/Icons/Update.png');
+	selectedDownSkin:Embed(source='Preferences/Icons/Update.png');
+}
+
+
+	
+ 
+ 
+
+
+
+	
+

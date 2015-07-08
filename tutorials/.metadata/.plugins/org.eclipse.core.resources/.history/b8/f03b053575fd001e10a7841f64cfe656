@@ -1,0 +1,10 @@
+package com.cloveHello.plugin.postable
+{
+	public class HelloPostable
+	{
+		public function HelloPostable()
+		{
+		}
+
+	}
+}

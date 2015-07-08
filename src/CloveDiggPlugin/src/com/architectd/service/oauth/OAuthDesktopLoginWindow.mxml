@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Window xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   width="{loginWindow.width}" 
+		   height="{loginWindow.height}" 
+		   minWidth="400"
+		   minHeight="300"
+		   clipContent="false" xmlns:oauth="com.architectd.service.oauth.*" showStatusBar="false">
+	
+	<mx:Script>
+		<![CDATA[
+			import mx.controls.Alert;
+			import mx.events.ResizeEvent;
+			
+			[Bindable] 
+			public var loginRequest:URLRequest;
+			
+			
+		]]>
+	</mx:Script>
+	
+	<oauth:OAuthLoginHTML id="loginWindow" loginRequest="{loginRequest}" />
+	
+	
+</mx:Window>

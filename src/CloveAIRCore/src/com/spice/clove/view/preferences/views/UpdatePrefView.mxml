@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- [ExcludeClass] -->
+<views:PreferenceView xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="85" xmlns:views="com.spice.clove.view.preferences.views.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.commandEvents.CloveEvent;
+			import com.spice.clove.model.CloveModelLocator;
+			
+			[Bindable] 
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			private function checkNow():void
+			{
+				new CloveEvent(CloveEvent.CHECK_UPDATE).dispatch();
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox verticalCenter="0" paddingLeft="20">
+		<mx:CheckBox selected="{_model.applicationSettings.mainUISettings.checkForUpdatesOnStartup}" label="Check for updates at startup" change="{_model.applicationSettings.mainUISettings.checkForUpdatesOnStartup = !_model.applicationSettings.mainUISettings.checkForUpdatesOnStartup}" />
+		<mx:Button label="Check Now" />
+	</mx:HBox>
+</views:PreferenceView>

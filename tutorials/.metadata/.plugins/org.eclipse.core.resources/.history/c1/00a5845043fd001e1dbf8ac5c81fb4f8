@@ -1,0 +1,57 @@
+package com.cloveHello.plugin.installer
+{
+	import com.spice.clove.plugin.install.IServiceInstaller;
+	import com.spice.clove.plugin.install.ServiceInstaller;
+	
+	public class HelloCloveServiceInstaller extends ServiceInstaller implements IServiceInstaller
+	{
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+        
+        /**
+		 */
+		 
+		public function HelloCloveServiceInstaller()
+		{
+			
+			
+		}
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Getters / Setters
+        //
+        //--------------------------------------------------------------------------
+
+		
+		/**
+		 */
+		
+		public function get icon():Class
+		{
+			
+		}
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Public Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		public function check():void
+		{
+			//
+		}
+		
+		
+		
+		
+
+	}
+}

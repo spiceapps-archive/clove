@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+				layout="absolute"
+				minWidth="955"
+				minHeight="600" xmlns:local="*" xmlns:display="com.spice.display.*">
+	
+	<local:CloveWebProxyMapper complete="{new CloveBootstrap()}" 
+							   id="mapper" />
+	
+	<display:BindableView view="{mapper.applicationView}" 
+						  width="100%"
+						  height="100%" />
+</mx:Application>

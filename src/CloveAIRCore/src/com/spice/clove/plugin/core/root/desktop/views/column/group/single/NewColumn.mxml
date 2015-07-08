@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<single:ColoredSingleColumnView xmlns:mx="http://www.adobe.com/2006/mxml" 
+								xmlns:single="com.spice.clove.plugin.core.root.desktop.views.column.group.single.*" 
+								xmlns:column="com.spice.clove.plugin.core.root.impl.views.column.*" 
+								xmlns:controls="com.spice.clove.view.controls.*" 
+								height="100%">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.commandEvents.CloveEvent;
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.view.controls.colorPicker.SuperColorPicker;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			import com.spice.vanilla.impl.settings.basic.NumberSetting;
+			
+			import mx.controls.Button;
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			
+			
+			private var _colorPicker:SuperColorPicker;
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			
+			/*
+			*/
+			
+			private function saveSettings():void
+			{
+				this.controller.target.loadNewerContent();  
+				controller.currentViewState = SingleColumnViewController.DATA_COLUMN_VIEW;
+				
+				
+			}
+			
+			/*
+			*/
+			
+			private function showColorPicker():void
+			{
+				_colorPicker = SuperColorPicker.showColorPicker(colorPickerButton);
+				_colorPicker.addEventListener(Event.CHANGE,onColorChange); 
+			}
+			
+			/*
+			*/
+			
+			private function onColorChange(event:Event):void
+			{
+				NumberSetting(this.controller.target.metadata.getNewSetting(BasicSettingType.NUMBER,ColumnMetaData.COLUMN_COLOR)).setData(this._colorPicker.currentColor);
+			}
+			
+			/*
+			*/
+			
+			private function deleteColumn():void
+			{
+				new CloveEvent(CloveEvent.REMOVE_COLUMN,this.controller.target).dispatch()
+			}
+			
+			
+		]]>
+	</mx:Script>
+	
+	<mx:VBox styleName="columnPreferenceBackground" 
+			 paddingRight="10" 
+			 paddingLeft="10" 
+			 paddingTop="10" 
+			 paddingBottom="10" 
+			 horizontalAlign="center" 
+			 width="100%" 
+			 height="100%">
+		
+		
+		
+		
+		
+		
+		<mx:Canvas width="100%">
+			
+			<mx:Button id="colorPickerButton" 
+					   styleName="colorPickerButton" 
+					   buttonMode="true" 
+					   click="showColorPicker();" />
+			
+			<mx:Label text="Column Feed Settings"
+					  fontWeight="bold" horizontalCenter="0">
+				<mx:filters>  
+					<mx:DropShadowFilter distance="1" alpha=".5" angle="90" />
+				</mx:filters>
+			</mx:Label>
+			<mx:Button styleName="columnPrefs"
+					   buttonMode="true" 
+					   click="{this.saveSettings()}"
+					   right="0">
+				<mx:filters>
+					<mx:GlowFilter    color="#FFFFFF"
+										blurX="20" 
+										blurY="20"
+										strength="5" 
+										alpha="1" 
+										quality="7" />
+				</mx:filters>
+			</mx:Button>
+		</mx:Canvas>
+		
+		
+		
+		
+		
+		<mx:Canvas width="100%" 
+				   height="100%"
+				   horizontalScrollPolicy="off">
+			
+			<mx:VBox width="100%" 
+					 horizontalAlign="center">
+				<column:ColumnPreferenceView controller="{this.controller}" />
+				
+				<column:AddFeedButton controller="{this.controller}" 
+									  width="144" 
+									  height="23" 
+									  styleName="addFeedButton" 
+									  buttonMode="true" />
+			</mx:VBox>
+			
+		</mx:Canvas>
+		
+		<mx:HBox>	
+			<controls:ColumnButton label="Delete Column" height="23" click="{this.deleteColumn()}"/>
+			<controls:ColumnButton label="Save Settings" height="23" click="{this.saveSettings();}" />
+		</mx:HBox>
+		<mx:Spacer height="50" />
+	</mx:VBox>
+	
+	
+</single:ColoredSingleColumnView>

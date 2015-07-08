@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas height="100%" 
+		   xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   horizontalScrollPolicy="off"
+		   width="{_model.applicationSettings.mainUISettings.dockSize}"
+		   creationComplete="init();" 
+		   xmlns:group="com.spice.clove.plugin.core.root.desktop.views.column.group.*" 
+		   xmlns:binding="com.spice.binding.*" >
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.commandEvents.CloveEvent;
+			import com.spice.clove.model.CloveModelLocator;
+			import com.spice.clove.plugin.core.column.ICloveColumn;
+			import com.spice.clove.plugin.core.root.desktop.views.column.RootColumnViewController;
+			import com.spice.clove.plugin.core.root.impl.content.control.IViewableContentController;
+			import com.spice.clove.plugin.core.root.impl.models.CloveRootModelLocator;
+			import com.spice.clove.util.ColumnUtil;
+			import com.spice.events.DataBoundControllerEvent;
+			import com.spice.monkeyPatch.menu.MenuItem;
+			import com.spice.recycle.factory.RecyclingFactory;
+			
+			import mx.collections.ArrayCollection;
+			
+			
+			[Bindable] public var groupControllers:ArrayCollection;
+			
+			[Bindable] public var scrollBarsShowing:Boolean;
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Variables
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			
+			private var _model:CloveModelLocator = CloveModelLocator.getInstance();
+			
+			private var _optMenu:NativeMenu;
+			
+			
+			private static const EXPANDED:String = "expanded";
+			
+			
+			
+			
+			//--------------------------------------------------------------------------
+			//
+			//  Private Methods
+			//
+			//--------------------------------------------------------------------------
+			
+			
+			private var _hideUtilsInt:int;
+			private var _showing:Boolean;
+			private var _checkMouseInterval:int;
+			private var _mouseX:int = -1;
+			
+			
+			private function init():void
+			{
+				_optMenu = new NativeMenu();
+				
+				var sortByName:MenuItem = new MenuItem("Sort By Name");
+				sortByName.addEventListener(Event.SELECT,onSortByName);
+					
+				var delGroup:MenuItem = new MenuItem("Delete");
+				delGroup.addEventListener(Event.SELECT,removeCurrentGroup);
+				
+				_optMenu.addItem(sortByName);
+				_optMenu.addItem(new MenuItem("",true));
+				_optMenu.addItem(delGroup);
+			}
+			
+			/*
+			*/
+			
+			private function mouseIsOver():Boolean
+			{
+				return this.mouseX > 0 && this.mouseX < 30 || (_showing && this.mouseX < this.getExplicitOrMeasuredWidth())
+			}
+			
+			private function onDraggerDown():void
+			{
+				this.root.addEventListener(MouseEvent.MOUSE_UP,onRootMouseUp);
+				this.addEventListener(Event.ENTER_FRAME,onDragging);
+				
+			}
+			
+			private function onRootMouseUp(event:MouseEvent):void
+			{
+				event.currentTarget.removeEventListener(event.type,onRootMouseUp);
+				this.removeEventListener(Event.ENTER_FRAME,onDragging);
+			}
+			
+			/*
+			*/
+			
+			private function onDragging(event:Event):void
+			{
+				//finding the offset width from the mouse position will help make the resizing smoother, and elimiate any jitter
+				if(_mouseX == -1)
+				{
+					_mouseX = this.mouseX - _model.applicationSettings.mainUISettings.dockSize; //30
+				}
+				
+				
+				//set the postion based on the initial mouse position;
+				var diffPosition:Number = this.mouseX - _mouseX;
+				
+				_model.applicationSettings.mainUISettings.dockSize = diffPosition;
+			}
+			
+			/*
+			*/
+			
+			private function dragComplete():void
+			{
+				_mouseX = -1;
+			}
+			
+			
+			
+			
+			private function onNewColSelect(event:Event):void
+			{
+				new CloveEvent(CloveEvent.ADD_COLUMN).dispatch();
+			}
+			
+			private function onNewGroupSelect(event:Event):void
+			{
+				new CloveEvent(CloveEvent.ADD_GROUP).dispatch();
+			}
+			
+			private function removeCurrentGroup(event:Event):void
+			{
+				  
+				var r:RootColumnViewController = RootColumnViewController(CloveRootModelLocator.getInstance().rootContentController.viewController);//RootColumnController(_model.columnModel.rootController);
+				
+				var tg:ICloveColumn = r.currentTargetController.target;
+				
+				new CloveEvent(CloveEvent.REMOVE_COLUMN,tg).dispatch();
+				
+			}
+			
+			private function onSortByName(event:Event):void
+			{
+				ColumnUtil.sortColumnByName(CloveRootModelLocator.getInstance().rootPlugin.getRootColumn());
+			}
+			
+			
+			private function showOptions():void
+			{
+				this._optMenu.display(this.stage,this.stage.mouseX - optionsButton.mouseX,this.stage.mouseY - optionsButton.mouseY - optionsButton.height - 20);
+			}
+			
+			
+			private function setPicker(event:DataBoundControllerEvent):void
+			{
+				ColumnGroup(event.value).handler= this;
+			}
+			
+			
+			private function setScrollbarsShowing():void
+			{
+				this.scrollBarsShowing = groupHolder.height > this.height;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<binding:DataBoundController target="{groupHolder}" 
+								 dataProvider="{this.groupControllers}"
+								 itemRenderer="{new RecyclingFactory(ColumnGroup)}" 
+								 renderedData="{setPicker(event);}" />
+	
+	<mx:Canvas width="100%" 
+			   top="-1" 
+			   bottom="{footerBG.height}" 
+			   left="0" 
+			   right="1" 
+			   horizontalScrollPolicy="off">
+		<!-- VGAP=15-->  
+		<mx:VBox id="groupHolder" 
+				 width="100%"
+				 verticalGap="8" 
+				 bottom="34" 
+				 top="0" resize="{this.setScrollbarsShowing();}" />
+
+	</mx:Canvas>
+	
+	<mx:Canvas id="footerBG" 
+			   left="0" 
+			   right="1" 
+			   styleName="footerBackground" 
+			   bottom="0" 
+			   height="34" 
+			   clipContent="false">
+		
+		<mx:Button y="6" 
+				   visible="{_model.applicationSettings.mainUISettings.dockSize > 130}" 
+				   x="20"
+				   id="plusFooterButton" 
+				   buttonMode="true" 
+				   styleName="plusFooterButton" 
+				   mouseDown="{new CloveEvent(CloveEvent.ADD_GROUP).dispatch()}" />
+		
+		<mx:Button y="6" 
+				   visible="{_model.applicationSettings.mainUISettings.dockSize > 130}" 
+				   id="optionsButton"
+				   x="{plusFooterButton.x+plusFooterButton.width}"
+				   mouseDown="showOptions();"
+				   buttonMode="true" 
+				   styleName="actionFooterEndButton" />	
+		
+		<mx:Button buttonMode="true" 
+				   styleName="dragMeFooterButton" 
+				   mouseDown="onDraggerDown();"
+				   right="7"
+				   y="11" />
+	</mx:Canvas>
+	
+	
+	
+	<group:DragLine id="dragger" 
+					dragging="onDragging(event);" 
+					resizeComplete="dragComplete();" right="0" />
+	
+</mx:Canvas>
+
+
+

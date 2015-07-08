@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Box xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   height="100%" 
+		   width="100%" 
+		   xmlns:display="com.spice.display.*" 
+		   xmlns:storage="com.spice.utils.storage.*" 
+		   styleName="columnBackground" 
+		   xmlns:single="com.spice.clove.plugin.core.root.desktop.views.column.group.single.*" 
+		   xmlns:viewStackEffects="org.efflex.mx.viewStackEffects.*"
+		   horizontalScrollPolicy="off"
+		   creationComplete="init();"
+		   xmlns:mxml="com.spice.utils.mxml.*" xmlns:observer="com.spice.vanilla.flash.observer.*">
+		 
+		 
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.column.ColumnMetaData;
+			import com.spice.clove.plugin.column.crumb.CloveColumnCrumbController;
+			import com.spice.vanilla.impl.settings.basic.BasicSettingType;
+			
+			
+			private var _controller:SingleColumnViewController;
+			
+			
+			[Bindable(event="controllerChange")]
+			public function get controller():SingleColumnViewController	
+			{
+				return this._controller;
+			}
+			
+			
+			public function set controller(value:SingleColumnViewController):void
+			{
+				this._controller = value;	
+				  
+				
+				this.dispatchEvent(new Event("controllerChange"));
+			}
+			
+			
+			private function onBGChange():void
+			{
+				this.setStyle("backgroundColor",bgColorBind.data.getData());
+			}
+			
+			
+			
+			protected function init():void
+			{
+//			 	JanitorManager.watchForDispose(this,onDispose);
+			}
+			
+			
+			
+		]]>
+	</mx:Script>
+	
+		
+	<observer:SettingObserver id="bgColorBind" target="{this.controller.target.metadata.getNewSetting(BasicSettingType.NUMBER,ColumnMetaData.COLUMN_COLOR)}" change="onBGChange();" />
+	
+	
+	
+</mx:Box>

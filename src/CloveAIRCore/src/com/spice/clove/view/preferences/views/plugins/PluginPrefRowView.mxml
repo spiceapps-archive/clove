@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+		   buttonMode="true"
+		   width="100%"  
+		   backgroundColor="#000000" 
+		   backgroundAlpha="0" 
+		   click="{dispatchEvent(new Event('selectRow',true))}" xmlns:storage="com.spice.utils.storage.*">
+	
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.commandEvents.CloveEvent;
+			import com.spice.clove.plugin.load.IInstalledPluginFactoryInfo;
+			
+			[Bindable] 
+			private var _fact:IInstalledPluginFactoryInfo;
+			
+				
+				
+			override public function set data(value:Object) : void
+			{
+				super.data = value;
+				
+				_fact = IInstalledPluginFactoryInfo(value);
+				
+				
+				
+			}
+			
+			
+			private function uninstallPlugin():void
+			{
+				 new CloveEvent(CloveEvent.UNINSTALL_PLUGIN_COMPLETELY,_fact).dispatch();
+			}
+		]]>
+	</mx:Script>
+	<mx:HBox width="100%" 
+			 paddingLeft="10"
+			 paddingRight="8">
+			 
+		<!--<mx:Label text="{factoryName.data}" />-->
+		
+		<mx:Spacer width="100%" />
+		
+		<mx:Button styleName="removePluginButton" click="{uninstallPlugin();}" />
+	</mx:HBox>
+	
+	<!--<storage:SettingBind settings="{_fact.loadedPluginFactory.metadata}" name="name" id="factoryName"/>-->
+</mx:Canvas>

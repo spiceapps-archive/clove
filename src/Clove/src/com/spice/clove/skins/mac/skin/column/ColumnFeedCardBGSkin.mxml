@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin
+    xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="com.degrafa.skins.*" 
+	xmlns:paint="com.degrafa.paint.*" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*">
+
+    
+    <mx:Script>
+    	<![CDATA[
+    		import mx.controls.Alert;
+    	
+    	 	import com.spice.clove.skins.mac.MacSkinAssets;
+    		
+    		[Bindable] 
+    		public var awidth:Number = 50;
+    		
+    		
+    		[Bindable] 
+    		public var aheight:Number = 50;
+    		
+    		
+    		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+    		{
+    			super.updateDisplayList(unscaledWidth,unscaledHeight);
+    			
+    			
+    			this.awidth = unscaledWidth > 0 ? unscaledWidth : 50;
+    			this.aheight = unscaledHeight > 0 ? unscaledHeight : 50;
+    							
+    			
+    		}
+    	]]>
+    </mx:Script>
+    
+    
+    <fills>
+		<paint:BitmapFill source="{MacSkinAssets.HOVER_CARD_TOP}" 
+						  id="topFill" 
+						  repeatX="stretch" 
+						  repeatY="none" />
+		
+		<paint:BitmapFill source="{MacSkinAssets.HOVER_CARD_MID}"
+						  id="midFill"
+						  repeatX="stretch" 
+						  repeatY="stretch" />
+		
+		<paint:BitmapFill source="{MacSkinAssets.HOVER_CARD_BOTTOM}" 
+						  id="bottomFill"
+						  repeatX="stretch" 
+						  repeatY="none" />
+    </fills>
+    
+    <geometry>
+		<degrafa:GeometryComposition>
+			<geometry:RegularRectangle width="{awidth}"
+									   height="25" 
+									   fill="{topFill}" />
+			
+			<geometry:RegularRectangle width="{awidth}"
+									   x="1" y="25"
+									   height="{aheight-13-24}" 
+									   fill="{midFill}" />
+			
+			<geometry:RegularRectangle width="{awidth}" 
+									   height="13"
+									   y="{aheight-13}" 
+									   fill="{bottomFill}" />
+		</degrafa:GeometryComposition>
+    </geometry>
+    
+</GraphicBorderSkin>

@@ -1,0 +1,10 @@
+package com.cloveHello.plugin.installer
+{
+	public class HelloCloveServiceInstaller
+	{
+		public function HelloCloveServiceInstaller()
+		{
+		}
+
+	}
+}

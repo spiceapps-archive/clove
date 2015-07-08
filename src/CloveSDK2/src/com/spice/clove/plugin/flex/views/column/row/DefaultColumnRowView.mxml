@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<row:ColumnRowBody xmlns:mx="http://www.adobe.com/2006/mxml" 
+				   xmlns:row="com.spice.clove.plugin.flex.views.column.row.*" 
+				   creationPolicy="queued">
+	
+	
+	<row:ColumnRowIcon id="rowIcon"
+					   cloveData="{this.cloveData}" 
+					   x="7" />
+	
+	<row:ColumnRowTitle id="rowTitle"
+						x="62" 
+						text="{cloveData.getTitle()}" />
+	
+	<row:ColumnRowDateLabel id="dateLabel" 
+							cloveData="{this.cloveData}"  />
+	
+	<row:ColumnRowMessage left="62"
+						  right="7"
+						  y="{rowTitle.height+5}"
+						  htmlText="{cloveData.getMessage()}"  />
+	
+	
+	
+</row:ColumnRowBody>

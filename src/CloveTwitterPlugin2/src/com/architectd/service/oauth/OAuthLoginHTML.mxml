@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml">
+	<mx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			
+			import flash.html.HTMLLoader;
+			
+			
+			[Bindable] 
+			public var loginRequest:URLRequest;
+			
+			
+			private function changeLocation():void
+			{
+				
+				if(loginWindow.location == "http://twitter.com/oauth/authorize")
+				{
+					Tweener.addTween(authForm,{alpha:1,time:.5});
+				}
+			}
+			
+			
+			private function finish():void
+			{  
+				this.dispatchEvent(new DataEvent(DataEvent.DATA,true,true,pinTxt.text));
+			}
+			
+			private function readText():void
+			{
+			}
+		]]>
+	</mx:Script>
+	<mx:HTML id="loginWindow"
+			 location="{loginRequest.url}"
+			 locationChange="changeLocation();" complete="readText();" htmlDOMInitialize="readText();" htmlRender="readText();" />
+
+	<mx:Form id="authForm" 
+			 horizontalCenter="0" 
+			 backgroundColor="#000000"
+			 alpha="0"
+			 color="#FFFFFF" 
+			 fontSize="12">
+		<mx:FormItem label="Enter the PIN you see:">
+			<mx:HBox>	
+				<mx:TextInput color="#000000" id="pinTxt" enter="finish();" />
+				<mx:Button label="Done" alpha="{pinTxt.text.length > 0 ? 1 : 0}" includeInLayout="{pinTxt.text.length > 0}" click="this.finish();" />
+			</mx:HBox>
+		</mx:FormItem>
+	</mx:Form>
+</mx:Canvas>

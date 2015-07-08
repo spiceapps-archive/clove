@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/clove/!svn/ver/50/Clove/src/com/spice/air/utils/sql/manage
+END
+SQLiteTableMetadataManager.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/clove/!svn/ver/50/Clove/src/com/spice/air/utils/sql/manage/SQLiteTableMetadataManager.as
+END
+SQLiteTableMetadataHandler.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/svn/clove/!svn/ver/50/Clove/src/com/spice/air/utils/sql/manage/SQLiteTableMetadataHandler.as
+END
+SQLDataCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/clove/!svn/ver/50/Clove/src/com/spice/air/utils/sql/manage/SQLDataCollection.as
+END

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Button xmlns:mx="http://www.adobe.com/2006/mxml" label="install" click="{new CloveEvent(CloveEvent.DOWNLOAD_PLUGIN,data['package']).dispatch()}">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.commandEvents.CloveEvent;
+		
+		]]>
+	</mx:Script>
+	
+</mx:Button>

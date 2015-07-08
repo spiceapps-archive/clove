@@ -1,0 +1,23 @@
+package com.cloveHello.plugin.column.controller
+{
+	import com.spice.clove.plugin.column.control.ColumnController;
+	
+	public class HelloColumnController extends ColumnController
+	{
+		//--------------------------------------------------------------------------
+		//
+		//  Constructor
+		//
+		//--------------------------------------------------------------------------
+        
+        /**
+		 */
+		 
+		public function HelloColumnController()
+		{
+		}
+		
+		
+
+	}
+}

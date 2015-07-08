@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:WindowedApplication xmlns:mx="http://www.adobe.com/2006/mxml" 
+						close="{Application.application.nativeApplication.exit()}" 
+						minWidth="300" 
+						minHeight="400"
+						windowMove="onWindowResize();"  
+						windowResize="onWindowResize();"
+						showStatusBar="false"
+						horizontalScrollPolicy="off" paddingLeft="0"
+						verticalScrollPolicy="off"
+						title="{_model.lang.APPLICATION_TITLE}" 
+						layout="absolute"
+						creationComplete="init();"
+						xmlns:ac="com.adobe.ac.*" 
+						xmlns:control="com.spice.clove.control.*" xmlns:controls="com.spice.clove.controls.*" xmlns:core="com.spice.clove.view.core.*">
+
+
+<control:CloveAppController />
+
+
+<mx:Style source="com/spice/clove/skins/mac/style.css" />
+
+<mx:Script>
+	<![CDATA[
+		import com.spice.clove.core.storage.MainUISettings;
+		import com.spice.clove.model.CloveModelLocator;
+		
+		import flash.utils.clearTimeout;
+		import flash.utils.setTimeout;
+		
+		import mx.collections.IList;
+		import mx.core.Application;
+		
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Variables
+        //
+        //--------------------------------------------------------------------------
+
+		[Bindable]
+		private var _model:CloveModelLocator;
+		
+		
+		[Bindable] 
+		private var _saveSizeInt:int;
+		
+		
+		private var _initialized:Boolean;
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Methods
+        //
+        //--------------------------------------------------------------------------
+
+        /**
+		 */
+		private function init():void
+		{
+			
+			flash.utils.setTimeout(this.setWindowSize,1);
+			
+			
+			
+			
+			_model = CloveModelLocator.getInstance();
+			
+			
+			
+			
+			this.nativeWindow.x = 0;
+			this.nativeWindow.y = 0;
+			
+			
+		}
+		
+		/**
+		 */
+		
+		private function setWindowSize():void
+		{
+			var muis:MainUISettings = this._model.applicationSettings.mainUISettings;
+			
+			
+			
+			if(isNaN(muis.appWidth) || muis.appWidth == 0)
+			{
+				
+				this.nativeWindow.maximize();
+				
+			}
+			else
+			{
+				this.width 		    = muis.appWidth;
+				this.height		    = muis.appHeight;
+				this.nativeWindow.x = muis.appX;
+				this.nativeWindow.y = muis.appY;
+			}
+			
+			
+			this._initialized = true;
+			
+		}
+		
+
+		[Bindable]
+		private var _testData:IList;
+		
+		
+		
+		
+		override public function close():void
+		{
+			Logger.log("Clove::closing()");
+			NativeApplication.nativeApplication.dispatchEvent(new Event(Event.EXITING));
+			super.close();
+		}
+		
+		override public function exit():void
+		{
+			Logger.log("Clove::exiting()");
+			NativeApplication.nativeApplication.dispatchEvent(new Event(Event.EXITING));
+			super.exit();
+		}
+		
+		
+		private function onWindowResize():void
+		{
+			
+			if(!_initialized)
+				return;
+			
+			flash.utils.clearTimeout(_saveSizeInt);
+			_saveSizeInt = flash.utils.setTimeout(saveWindowSize,500);
+		}
+		
+		
+		private function saveWindowSize():void
+		{
+			
+			var s:MainUISettings = this._model.applicationSettings.mainUISettings;
+			
+			s.appX 		= this.nativeWindow.x;
+			s.appY 		= this.nativeWindow.y;
+			s.appWidth  = this.width;
+			s.appHeight = this.height;
+		}
+		
+		
+		
+		
+	
+	]]>
+</mx:Script>
+	
+	
+	<core:CloveApplication  />
+	
+</mx:WindowedApplication>

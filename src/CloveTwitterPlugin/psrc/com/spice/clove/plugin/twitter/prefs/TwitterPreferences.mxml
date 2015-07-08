@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+		   width="100%" 
+		   height="100%" 
+		   xmlns:plugin="com.spice.clove.plugin.*" 
+		   xmlns:twitter="com.spice.clove.ext.service.twitter.*" 
+		   implements="com.spice.clove.plugin.prefs.IClovePluginPreferences" 
+		   xmlns:binding="com.spice.binding.*"
+		   creationComplete="init();" xmlns:util="com.spice.clove.views.util.*">
+<mx:Script>
+	<![CDATA[
+		import com.architectd.twitter.data.TwitterError;
+		import com.architectd.twitter.calls.TwitterCall;
+		import com.architectd.twitter.events.TwitterEvent;
+		import com.architectd.twitter.calls.account.TwitterVerifyCredentialsCall;
+		import com.architectd.twitter.Twitter;
+		import com.spice.recycle.factory.RecyclingFactory;
+		import com.spice.clove.plugin.control.IPluginController;
+		import com.spice.clove.commandEvents.InstallSamePluginEvent;
+		import com.spice.clove.plugin.twitter.CloveTwitterPluginFactory;
+		import com.spice.clove.plugin.twitter.CloveTwitterPlugin;
+		import com.spice.clove.plugin.load.IInstalledPlugin;
+		import mx.collections.ArrayList;
+		
+		import com.spice.clove.commandEvents.CloveEvent;
+		import mx.controls.Alert;
+		import com.swfjunkie.tweetr.Tweetr;
+		import com.swfjunkie.tweetr.events.TweetEvent;
+	
+		[Bindable] 
+		private var _plugins:ArrayList;
+		
+		[Bindable] 
+		private var _verify:TwitterVerifyCredentialsCall;
+		
+		
+		private var _service:Twitter;
+		
+		
+		
+	
+		//--------------------------------------------------------------------------
+   	    //
+        //  Getters / Setters
+        //
+        //--------------------------------------------------------------------------
+
+		
+		/**
+		 */
+		
+		public function get plugins():ArrayList
+		{
+			return _plugins;
+		}
+		
+		/**
+		 */
+		
+		public function set plugins(value:ArrayList):void
+		{
+			_plugins = value;
+		}
+		
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /**
+		 */
+		
+		private function init():void
+		{
+			accountList.addEventListener('deleteAccount',deletePlugin);
+		}
+		
+		/**
+		 */
+		
+		private function deletePlugin(event:Event):void
+		{
+			event.stopImmediatePropagation();
+			
+			var child:DisplayObject = event.target as DisplayObject;
+			
+			var index:int = this.accountList.getChildIndex(child);
+			
+			new CloveEvent(CloveEvent.UNINSTALL_PLUGIN,_plugins.getItemAt(index)).dispatch();
+			
+		}
+		
+		/**
+		 */
+		
+		private function addAccount():void
+		{
+			_verify = new TwitterVerifyCredentialsCall();
+			_verify.addEventListener(TwitterEvent.CALL_COMPLETE,onVerify,false,0,true);
+			
+			if(!_service)
+				_service = new Twitter();
+			
+			_service.username = usernameTxt.text;
+			_service.password = passwordTxt.text;
+			
+			_service.call(_verify);
+		}
+		
+		/**
+		 */
+		
+		private function setCredentials(plugin:IPluginController):void
+		{
+			CloveTwitterPlugin(plugin.plugin).setCredentials(usernameTxt.text,passwordTxt.text);
+		}
+		
+		/**
+		 */
+		
+		private function onVerify(event:TwitterEvent):void
+		{
+			if(event.result.success)
+			{
+				new InstallSamePluginEvent(CloveTwitterPluginFactory,setCredentials).dispatch();
+			}
+			else
+			{
+				Alert.show(TwitterError.getMessage(event.result.status));
+				
+			}
+		}
+		
+		
+	]]>
+</mx:Script>
+	<mx:VBox id="accountList" x="31" y="141"/>
+	
+	<binding:DataBoundController target="{accountList}" dataProvider="{_plugins}" itemRenderer="{new RecyclingFactory(TwitterPluginPrefView)}" />
+	<mx:Form label="Add Account" x="0" y="0">
+		<mx:FormHeading label="Add Account"  width="100%"/>
+		<mx:FormItem label="Username:">
+			<mx:TextInput id="usernameTxt" enter="addAccount();"/>
+		</mx:FormItem>
+		<mx:FormItem label="Password:">
+			<mx:HBox verticalAlign="middle">
+				<mx:TextInput id="passwordTxt" enter="addAccount();" displayAsPassword="true" />
+				<util:CueProgressView loadState="{this._verify.state}" />
+			</mx:HBox>
+		</mx:FormItem>
+	</mx:Form>
+	<mx:Label x="31" y="115" text="Remove Account:"/>
+</mx:Canvas>

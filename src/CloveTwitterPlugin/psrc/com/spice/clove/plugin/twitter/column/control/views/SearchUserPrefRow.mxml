@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox verticalAlign="middle" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.spice.clove.views.controls.*">
+	<mx:Script>
+		<![CDATA[
+			import com.architectd.twitter.data.user.UserData;
+			
+			[Bindable] 
+			private var _user:UserData;
+			
+			override public function set data(value:Object) : void
+			{
+				super.data = value
+					
+				_user = UserData(value);
+			}
+		]]>
+	</mx:Script>
+	
+	<mx:Image width="16" height="16" source="{_user.icon}" />
+	<controls:ResizeableLabel text="{_user.name}" width="100%" />
+</mx:HBox>

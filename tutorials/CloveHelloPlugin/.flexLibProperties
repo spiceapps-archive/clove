@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties version="1">
+  <includeClasses>
+    <classEntry path="com.spice.cloveHello.columns.render.HelloColumnItemRenderer"/>
+    <classEntry path="com.spice.cloveHello.installer.ClovePluginInstaller"/>
+    <classEntry path="com.spice.cloveHello.icons.CloveHelloPluginIcon"/>
+    <classEntry path="com.spice.cloveHello.CloveHelloPlugin"/>
+    <classEntry path="com.spice.cloveHello.CloveHelloPluginFactory"/>
+    <classEntry path="com.spice.cloveHello.service.vo.MessageValueObject"/>
+    <classEntry path="com.spice.cloveHello.installer.ClovePluginInstallerView"/>
+    <classEntry path="com.spice.cloveHello.columns.controller.HelloColumnController"/>
+    <classEntry path="com.spice.cloveHello.CloveHelloPluginSettings"/>
+    <classEntry path="com.spice.cloveHello.preferences.CloveHelloPreferenceView"/>
+    <classEntry path="com.spice.cloveHello.service.cue.CallDataCue"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

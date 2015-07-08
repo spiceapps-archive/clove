@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GraphicBorderSkin
+    xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns="com.degrafa.skins.*" 
+	xmlns:paint="com.degrafa.paint.*" xmlns:degrafa="com.degrafa.*" xmlns:geometry="com.degrafa.geometry.*">
+
+    
+    <mx:Script>
+    	<![CDATA[
+    		import mx.controls.Alert;
+    	
+    	 	import com.spice.clove.skins.mac.MacSkinAssets;
+    		
+    		[Bindable] 
+    		public var awidth:Number;
+    		
+    		
+    		[Bindable] 
+    		public var aheight:Number;
+    		
+    		
+    		override protected function updateDisplayList(unscaledWidth:Number, unscaledHeight:Number):void
+    		{
+    			super.updateDisplayList(unscaledWidth,unscaledHeight);
+    			
+    			
+    			this.awidth = unscaledWidth;
+    			this.aheight = unscaledHeight;
+    			
+    		}
+    	]]>
+    </mx:Script>
+    
+    
+    <fills>
+		<paint:BitmapFill source="{MacSkinAssets.COLUMN_PREF_BG}" id="bgFill" />
+    </fills>
+    
+    <geometry>
+		<degrafa:GeometryComposition>
+			<geometry:RoundedRectangle width="{awidth}" height="{aheight}" cornerRadius="3" fill="{bgFill}" />
+		</degrafa:GeometryComposition>
+    </geometry>
+    
+    <filters>
+    	<mx:GlowFilter color="#FFFFFF" inner="true" strength=".5" blurX="10" blurY="10" quality="2"/>
+    	<mx:GlowFilter color="#000000" inner="true" blurX="80" blurY="80" strength=".6" quality="5"/>
+    </filters>
+</GraphicBorderSkin>
