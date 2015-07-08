@@ -8,5 +8,5 @@ Clove is a social media desktop application that was developed back in 2008. It 
 - [auto-post everywhere](https://www.youtube.com/watch?v=R1gFjgVzvPs)
 - [filtering content](https://www.youtube.com/watch?v=J9NWqjvhq8k)
 - [filtering scenes](https://www.youtube.com/watch?v=QR9jhARbFME)
-
-
+- [early days (pre GUI)](https://www.youtube.com/playlist?list=PL_9d3q-RYY-sEuTMOnuYjzhz_j5-YK1Sw)
+	
