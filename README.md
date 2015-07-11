@@ -3,8 +3,8 @@
 </p>
 
 Clove is a social media desktop application that was developed from 2008 to 2010. It was a competitor application to [Tweetdeck](https://tweetdeck.twitter.com/), and
-[HoutSuite](https://hootsuite.com/), and other social media platforms that aggregated all your content into one place. This project was created by two guys: [Tim Erickson](https://neutyp.com/) designed the application's interface, and
-[Craig Jefferds](http://craigjefferds.com) wrote all code for the application. It was written on Adobe AIR, a cross-platform runtime environment that compiled ActionScript to `.air` files which could be easily installed like other Mac or Windows applications. 
+[HootSuite](https://hootsuite.com/), and other social media platforms that aggregated all your content into one place. This project was created by two guys: [Tim Erickson](https://neutyp.com/) designed the application's interface, and
+[Craig Condon](http://crcn.io/) wrote all code for the application. It was written on Adobe AIR, a cross-platform runtime environment that compiled ActionScript to `.air` files which could be easily installed like other Mac or Windows applications. 
 
 The original version of Clove was targetted solely for power users to manage their various social network accounts— however, Clove would later grow to be used as an application to deliver branded, curated content within enterprise environments and niche interest-based communities. While not all branded versions of the application are included, there are included 2 of the publicly available sports themed applications. 
 
