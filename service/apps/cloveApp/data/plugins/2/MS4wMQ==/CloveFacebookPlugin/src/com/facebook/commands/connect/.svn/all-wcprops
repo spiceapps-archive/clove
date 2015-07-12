@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/connect
+END
+UnregisterUsers.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/connect/UnregisterUsers.as
+END
+RegisterUsers.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/connect/RegisterUsers.as
+END
+GetUnconnectedFriendsCount.as
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/connect/GetUnconnectedFriendsCount.as
+END

@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/users
+END
+GetLoggedInUser.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/users/GetLoggedInUser.as
+END
+HasAppPermission.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/users/HasAppPermission.as
+END
+GetInfo.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/users/GetInfo.as
+END
+SetStatus.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/users/SetStatus.as
+END
+IsAppUser.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/users/IsAppUser.as
+END
+GetStandardInfo.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/users/GetStandardInfo.as
+END

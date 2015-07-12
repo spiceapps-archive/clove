@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render
+END
+FacebookStatusItemRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/FacebookStatusItemRenderer.as
+END
+FacebookImage.mxml
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/FacebookImage.mxml
+END
+FacebookFriendStatusItemRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 126
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/FacebookFriendStatusItemRenderer.as
+END
+FacebookStreamItemRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 120
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/FacebookStreamItemRenderer.as
+END
+PhotoAttachments.mxml
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/PhotoAttachments.mxml
+END
+FacebookAttachementView.mxml
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/FacebookAttachementView.mxml
+END
+FacebookStatusView.mxml
+K 25
+svn:wc:ra_dav:version-url
+V 114
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/FacebookStatusView.mxml
+END
+FacebookFanPageItemRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/FacebookFanPageItemRenderer.as
+END
+FacebookPhotoItemRenderer.as
+K 25
+svn:wc:ra_dav:version-url
+V 119
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/FacebookPhotoItemRenderer.as
+END
+comments.png
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/spice/clove/plugin/facebook/column/render/comments.png
+END

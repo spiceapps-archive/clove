@@ -1,0 +1,95 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils
+END
+ValidationUtils.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/ValidationUtils.as
+END
+FacebookSessionUtil.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/FacebookSessionUtil.as
+END
+FacebookArrayCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/FacebookArrayCollection.as
+END
+FBJSBridgeUtil.as
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/FBJSBridgeUtil.as
+END
+FacebookStreamXMLParser.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/FacebookStreamXMLParser.as
+END
+JavascriptRequestHelper.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/JavascriptRequestHelper.as
+END
+PlayerUtils.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/PlayerUtils.as
+END
+PostRequest.as
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/PostRequest.as
+END
+EmailHashUtil.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/EmailHashUtil.as
+END
+IFacebookResultParser.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/IFacebookResultParser.as
+END
+DesktopSessionHelper.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/DesktopSessionHelper.as
+END
+FacebookConnectUtil.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/FacebookConnectUtil.as
+END
+FacebookUserXMLParser.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/FacebookUserXMLParser.as
+END
+FacebookDataUtils.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/FacebookDataUtils.as
+END
+FacebookXMLParserUtils.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/utils/FacebookXMLParserUtils.as
+END

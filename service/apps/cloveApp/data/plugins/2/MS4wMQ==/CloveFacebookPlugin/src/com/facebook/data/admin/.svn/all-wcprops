@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin
+END
+GetAllocationData.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/GetAllocationData.as
+END
+GetMetricsPeriodValues.as
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/GetMetricsPeriodValues.as
+END
+GetMetricsValues.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/GetMetricsValues.as
+END
+MetricsData.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/MetricsData.as
+END
+MetricsDataCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/MetricsDataCollection.as
+END
+GetAllocationValues.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/GetAllocationValues.as
+END
+GetAppPropertiesData.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/GetAppPropertiesData.as
+END
+GetMetricsData.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/GetMetricsData.as
+END
+RestrictionData.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/admin/RestrictionData.as
+END

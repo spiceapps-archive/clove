@@ -1,0 +1,386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<title>Clove App, A Social Media Management Desktop Application</title>
+		<link rel="stylesheet" href="/stylesheets/reset.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="/stylesheets/default.css" type="text/css" media="screen" charset="utf-8">
+		<link rel="stylesheet" href="/stylesheets/squeezebox.css" type="text/css" media="screen" charset="utf-8">
+		<script src="/javascripts/mootools-1.2-core.js" type="text/javascript"></script>
+		<script src="/javascripts/squeezebox.js" type="text/javascript"></script>
+		<script src="/javascripts/cufon-yui.js" type="text/javascript"></script>
+		<script src="/javascripts/Whitney_HTF_500-Whitney_HTF_600.font.js" type="text/javascript"></script>
+		<script src="/javascripts/cloveapp-scripts.js" type="text/javascript"></script>
+	</head>
+	<body>
+	<div id="menu-container">
+		<ul id="menu">
+			<li id="menu-aboutclove"><a href="/">About Clove</a></li>
+			<li id="menu-features"><a href="/features/">Features</a></li>
+			<li id="menu-developers" class="selected"><a href="/developer/">Developers</a></li>
+			<li id="menu-youraccount"><a href="/login/">Your Account</a></li>
+		</ul>
+	</div>
+	<div id="container">
+		<div id="sub-head"></div>
+		<div id="sub-content">
+			<div id="sub-left">
+			<h1>Developer Resources</h1>
+			<h5>Overview</h5>
+			<ul>
+				<li><a href="/developer/">Getting Started</a></li>
+				<li><a href="/developer/changelog/">Changelog</a></li>
+			</ul>
+			<!--
+			<h5>Tutorial Videos</h5>
+			<ul>
+				<li><a href="/developer/videos/">Beginner</a></li>
+				<li><a href="/developer/videos/">Intermediate</a></li>
+				<li><a href="/developer/videos/">Advanced</a></li>
+			</ul>
+			-->
+			<h5>Documentation</h5>
+			<ul>
+				<li><a href="/developer/docs/CloveSDK/">Clove SDK</a></li>
+				<li><a href="/developer/docs/SpiceKit/">Spice Kit</a></li>
+			</ul>
+			<h5>Download</h5>
+			<ul>
+				<li><a href="/developer/download/">Plugins Source Code</a></li>
+				<li><a href="/developer/download/">Dependencies</a></li>
+				<li><a href="/developer/download/">Sample Plugins</a></li>
+			</ul>
+
+			</div>
+			<div id="sub-right">
+			<hr />
+			<br />
+			<h3>Clove Beta 1.2</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>preferences now appear over all windows when opened</li>
+				<li>problem where columns were disappearing when toggling between collapsed / expanded view</li>
+				<li>fading in/out between columns</li>
+				<li>removed scroll bars on columns rows</li>
+				<li>problem with duplicating columns</li>
+				<li>problem with conversation for Twitter Plugin</li>
+			</ul>
+
+			<br />			
+			<strong>Added:</strong>
+			<ul>
+				<li>Facebook &amp; Twitter icons for groups</li>
+				<li>Digg button</li>
+				<li>All preference items</li>
+				<li>Update preference item</li>
+				<li>column flip animation</li>
+			</ul>
+			
+			<br />			
+			<strong>Changed:</strong>
+			<ul>
+				<li>Vertical and Horizontal Scroll bar colors</li>
+				<li>sort by diggs instead of date</li>
+				<li>Attachment view for post window</li>
+				<li>Changed clove icon</li>
+				<li>Changed splash page</li>
+				<li>removed columns on plugin uninstallation</li>
+				<li>on twitter column import, added groups now have the twitter account name instead of "Twitter"</li>
+			</ul>
+
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.19</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>RSS breaks if url is blank</li>
+				<li>Fixed scroll bars when resizing the application</li>
+				<li>Fixed race condition occurring with twitter requests</li>
+				<li>Fixed issue when deleting groups</li>
+				<li>Twitter @usernames would show in emails</li>
+				<li>Dates for RSS feeds</li>
+				<li>problem when removing feeds, then adding the same one again</li>
+				<li>problem when shortening URL's twice</li>
+				<li>problem where feeds weren't properly being removed</li>
+				<li>problem where Digg plugin was labeled as "Plugin"</li>
+			</ul>
+				
+			<br />			
+			<strong>Added:</strong>
+			<ul>
+				<li>support for multiple languages</li>
+				<li>progress for uploading files</li>
+				<li>added attachments background</li>
+				<li>"months", and "years" for post items</li>
+				<li>fade in / fade out when switching groups</li>
+				<li>comments to Facebook fan pages</li>
+			</ul>
+				
+			<br />			
+			<strong>Changed:</strong>
+			<ul>				
+				<li>turned column preferences off in single column mode</li>
+				<li>made random column colors more vibrant</li>
+			</ul>				
+				
+			<br />			
+			<strong>Optimized:</strong>
+			<ul>
+				<li>CPU performance</li>
+				<li>scrolling down is much more responsive</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.18</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>installer jitteriness</li>
+				<li>problem where twitter columns wouldn't load after installation</li>
+				
+			<br />			
+			<strong>Added:</strong>
+			<ul>
+				<li>added Digg plugin</li>
+				<li>added "dugg" cache when digging stories</li>
+				<li>added breadcrumb view</li>
+				<li>added ability to view Digg comments</li>
+				<li>added twitter conversations (double click status updates)</li>
+				<li>hit "enter" to go to the next page on the installation screen</li>
+				<li>spin to the load icons</li>
+				<li>Auto-scroll when a new column is added</li>
+			</ul>
+				
+			<br />			
+			<strong>Changed:</strong>
+			<ul>
+				<li>switch Facebook comments into breadcrumb view</li>
+				<li>Added Facebook login window in installer window</li>
+				<li>added dig login window in installer window</li>
+				<li>made left load spinner smaller</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.17</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>fixed issue where individual user Facebook posts were incorrect</li>
+				<li>fixed issue where links wouldn't select</li>
+				<li>Fixed problem where periods in words would be parsed as URL's</li>
+				<li>fixed issue where emails were being parsed as twitter users</li>
+				<li>fixed problem where columns wouldn't refresh individually</li>
+				<li>fixed problem where blank feeds could not be removed</li>
+				<li>fixed problem where some rows didn't show</li>
+				<li>better @username parsing for Clove</li>
+				<li>problem where multiple poster actions were being registered</li>
+			</ul>
+				
+			<br />			
+			<strong>Added:</strong>
+			<ul>
+				<li>added auto pagination. Support for Digg, Twitter, and Facebook.</li>
+				<li>added authentication in Twitter</li>
+				<li>added progress icon for each column</li>
+				<li>added color band for column rows. (useful in single column mode)</li>
+				<li>added color band for column rows</li>
+				<li>added Facebook fan pages</li>
+				<li>added hashtags in Twitter plugin</li>
+				<li>title in installer</li>
+			</ul>
+				
+			<br />			
+			<strong>Optimized:</strong>
+			<ul>
+				<li>increased CPU performance</li>
+			</ul>
+				
+			<br />			
+			<strong>Changed:</strong>
+			<ul>
+				<li>picked better color palette for columns</li>
+				<li>changed orange links to blue</li>
+				<li>no more "delete column" prompts with columns that contain no feed</li>
+				<li>removed ability to drag message composer when buttons are clicked</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.16</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>fixed hiding issues</li>
+				<li>fixed issue where titles would remain the same after a feed has been removed</li>
+				<li>fixed auto-scrolling</li>
+				<li>fixed issue where content would switch randomly in selecting feeds</li>
+				<li>fixed issue when changing feeds in the column preferences</li>
+			</ul>
+				
+			<br />			
+			<strong>Added:</strong>
+			<ul>
+				<li>added "Wipe Settings" menu item for users that get stuck</li>
+				<li>added icons to columns</li>
+				<li>added short urls &amp; image attachments</li>
+				<li>added tooltip with search items, such as Facebook friend searches</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.15</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>the main application now retains its size</li>
+				<li>fixed padding issues</li>
+				<li>fixed "14581 days ago" in Facebook comments</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.14</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>fixed collapsed / expanded view where the footer wouldn't work sometimes</li>
+				<li>fixed installation "flickering"</li>
+			</ul>
+				
+			<br />			
+			<strong>Added:</strong>
+			<ul>
+				<li>selecting columns on left side now scrolls the horizontal pane</li>
+			</ul>
+				
+			<br />			
+			<strong>Changed:</strong>
+			<ul>
+				<li>re-developed the twitter as3 API</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.13</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>fixed Facebook icons</li>
+				<li>folders and columns cannot be given blank names anymore</li>
+				<li>fixed Facebook installation process</li>
+			</ul>
+				
+			<br />			
+			<strong>Changed:</strong>
+			<ul>
+				<li>changed "Untitled Group" to "Untitled Folder"</li>
+				<li>minimum font size is now 9</li>
+				<li>removed auto-scroll. This can be re-enabled in the preference pane</li>
+			</ul>
+				
+			<br />			
+			<strong>Added:</strong>
+			<ul>
+				<li>added "like" function for Facebook</li>
+				<li>new columns now automatically flip to the back</li>
+				<li>1 feed is now automatically added to any new column</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.12</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>fixed bug reporting issue</li>
+				<li>the dock items retain their state on collapse / expand</li>
+			</ul>
+				
+			<br />			
+			<strong>Changed:</strong>
+			<ul>
+				<li>removed gear in the footer</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.11</h3>
+			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>fixed #hashtags for twitter searches</li>
+			</ul>
+				
+			<br />			
+			<strong>Changed:</strong>
+			<ul>
+				<li>removed link attachments for beta</li>
+			</ul>
+				
+			<br />			
+			<strong>Added:</strong>
+			<ul>
+				<li>added Clove beta icon</li>
+				<li>added demos, bug reporting, and support forms</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1.1</h3>
+			
+			<strong>Added:</strong>
+			<ul>
+				<li>added bug tracker. Errors are now automatically sent to the server</li>
+				<li>added bug reporter</li>
+				<li>added postable for twitter direct messages. D [USERNAME] no longer shows up.</li>
+			</ul>
+				
+			<br />			
+			<strong>Fixed:</strong>
+			<ul>
+				<li>fixed issue where individual groups would disappear on mouse click</li>
+				<li>fixed issue where columns be duplicate</li>
+				<li>fixed Facebook comments.</li>
+				<li>fixed blank Facebook status updates</li>
+			</ul>
+			
+			<br />
+			<hr />
+			<br />
+			<h3>Clove Beta 1</h3>
+			
+			<strong>Added:</strong>
+			<ul>
+				<li>added preference items: adjust cache limit, font size, and refresh rate.</li>
+				<li>added ability to completely remove plugins</li>
+			</ul>
+				
+			<br />			
+			<strong>Optimized:</strong>
+			<ul>
+				<li>decreased RAM consumption</li>
+				<li>increased CPU performance</li>
+			</ul>
+			
+
+			</div>
+		</div>
+		<div id="sub-foot"></div>
+	</div>
+	<div id="footer">We&rsquo;d love to chat. &nbsp;hello@spiceapps.com  <span>Our office is located at Ovative/Group, 1011 Washington Ave S Minneapolis, MN 55415</span></div>
+	</body>
+</html>

@@ -1,0 +1,60 @@
+#!/bin/bash
+# Invoke MXMLC to build a swf file.
+# By default, builds a relase-mode swf with networking
+# Enable as many warnings as possible with the latest mxmlc.
+
+if test -z $1 -o -z $2 ; then
+	echo $0 aspath swfpath 
+	echo
+	echo aspath Path to main Class file
+	echo
+	echo swfpath Where to export swf file, relative to project root
+	echo
+	exit 0
+fi
+
+# SRCDIR specifies where the source tree is
+if test -z $SRCDIR ; then SRCDIR=src; fi
+
+# ASDIR specifies intermediate preprocessor output directory
+if test -z $ASDIR ; then ASDIR=as; fi
+
+# Where to send compiler errors
+if test -z $ERRORS ; then ERRORS=errors; fi
+
+#  Specify an alternate path to sed (GNU stream editor)
+if test -z $SED ; then SED=sed; fi
+
+# Compile-time flags
+if test -z $MXMLFLAGS ; then 
+	MXMLFLAGS='-compiler.debug=false -compiler.optimize=true -use-network=true'
+fi
+MXMLFLAGS="-compiler.strict=true \
+	-compiler.show-actionscript-warnings=true \
+	-compiler.show-binding-warnings=true \
+	-compiler.show-deprecation-warnings=true \
+	-compiler.show-unused-type-selector-warnings=true \
+	$MXMLFLAGS"
+
+# Parse arguments to environment vars in URI format
+SRCAS=$1
+DSTSWF=$2
+
+# Set BASH options 
+set -o errexit	# Stop running the script if an error occurs
+set -o nounset	# Stop running the script if a variable isn't set
+#set -o verbose	# Echo every command
+
+# Invoke Flash with WINE
+mkdir -p $(dirname DSTSWF)
+
+# Compile the preprocessed code with MXMLC
+echo Building $DSTSWF...
+set +o errexit # Ignore error status to echo $ERRORS
+mxmlc $MXMLFLAGS -output $DSTSWF $SRCAS 2>$ERRORS
+if test -s $ERRORS ; then
+	$SED -e "s@$PWD/$ASDIR@$PWD/$SRCDIR@"  $ERRORS
+	exit 2
+fi
+rm $ERRORS
+

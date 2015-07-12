@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pref:ColumnPreferences xmlns:mx="http://www.adobe.com/2006/mxml" 
+						xmlns:pref="com.spice.clove.plugin.column.pref.*" 
+						xmlns:filters="com.spice.clove.views.filters.*">
+	 <mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.twitter.CloveTwitterPlugin;
+			import com.spice.clove.plugin.twitter.column.control.TwitterSearchBasedColumnController;
+			
+			
+			[Bindable] 
+			private var _controller:TwitterSearchBasedColumnController;
+			
+			[Bindable] 
+			private var _plugin:CloveTwitterPlugin;
+			
+			
+			[Disposable(onDispose="disposeController")]
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				_controller = TwitterSearchBasedColumnController(value);
+				
+				if(!_controller)
+				{
+					_plugin = null;
+					return;
+				}
+				_plugin = CloveTwitterPlugin(_controller.pluginController.plugin);
+				
+			}
+			
+			
+			public function dispose():void
+			{
+				this.data = undefined;
+			}
+			
+			
+			private function setSearch():void
+			{
+				_controller.search = searchTermTxt.text
+			}
+			
+			
+		]]>
+	</mx:Script>
+	<pref:formItems>
+		
+	 <mx:FormItem label="Search:" width="100%">
+	 	<filters:ToolTippedTextInput change="{setSearch();}" text="{_controller.search}" itemClick="setSearch();" width="100%" id="searchTermTxt" dataProvider="{_plugin.settings.friends}" itemRenderer="{new ClassFactory(SearchUserPrefRow)}" filterField="screenName" />
+	 </mx:FormItem>
+	</pref:formItems>
+</pref:ColumnPreferences>

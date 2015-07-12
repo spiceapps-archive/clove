@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" 
+		 fontSize="12"
+		 verticalGap="17"
+		 paddingTop="22" 
+		 paddingBottom="14" 
+		 width="420" 
+		 paddingLeft="3"
+		 paddingRight="3"
+		 verticalAlign="middle" xmlns:util="com.spice.clove.views.util.*">
+	
+	<mx:Script>
+		<![CDATA[
+			[Bindable] 
+			public var installer:TwitterServiceInstaller;
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				this.installer = TwitterServiceInstaller(value);
+				
+				
+			}
+			
+
+		]]>
+	</mx:Script>
+	<mx:HBox verticalAlign="middle" horizontalAlign="center" width="100%">
+		<mx:Image source="@Embed('Authenticate.png')"/>
+		<mx:Label text="Twitter requires your login information." fontSize="12" fontFamily="lucidaSans" fontWeight="bold" />
+		<util:CueProgressView loadState="{this.installer.verifyCue.state}" />
+	</mx:HBox>
+	<mx:Form x="0" y="0" width="100%" verticalGap="10" horizontalGap="8">
+		<mx:FormItem label="Username:" width="100%">
+			<mx:TextInput id="username" width="100%" creationComplete="{username.setFocus()}" change="{installer.username = username.text}" enter="installer.check()"/>
+		</mx:FormItem>
+		<mx:FormItem label="Password:" width="100%">
+			<mx:TextInput id="password" width="100%"  change="{installer.password = password.text}" enter="installer.check()" displayAsPassword="true"/>
+		</mx:FormItem>
+	</mx:Form>
+	
+	
+	
+</mx:VBox>

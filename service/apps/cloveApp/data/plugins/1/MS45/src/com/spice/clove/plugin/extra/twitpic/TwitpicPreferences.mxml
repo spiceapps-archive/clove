@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" width="100%" height="100%">
+
+<mx:Script>
+	<![CDATA[
+		public var plugin:TwitpicPlugin;
+		
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Methods
+        //
+        //--------------------------------------------------------------------------
+        
+        /*
+		 */
+		
+		private function save():void
+		{
+		}
+		
+	]]>
+</mx:Script>
+
+	<mx:VBox width="100%" height="100%">
+		<mx:Label x="10" y="10" text="Twitpic" fontSize="20" />
+		<mx:Text width="100%" text="Twitpic is a website that allows users to easily post pictures to the Twitter microblogging and social media service. Twitpic is often used by citizen journalists to upload and distribute pictures in near real-time as an event is taking place." />
+		<mx:Form>
+			<mx:FormItem label="twitter username:">
+				<mx:List />
+			</mx:FormItem>
+			
+		</mx:Form>
+	</mx:VBox>
+</mx:Canvas>

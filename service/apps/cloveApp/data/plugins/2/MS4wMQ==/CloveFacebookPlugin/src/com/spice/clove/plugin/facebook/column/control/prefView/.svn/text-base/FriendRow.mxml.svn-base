@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" verticalAlign="middle" verticalScrollPolicy="off" horizontalScrollPolicy="off" xmlns:controls="com.spice.clove.views.controls.*">
+	
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.facebook.data.FriendInfo;
+			
+			[Bindable] 
+			private var _friend:FriendInfo;
+			
+			
+			override public function set data(value:Object) : void
+			{
+				super.data = value;
+				
+				_friend = FriendInfo(value);
+			}
+		]]>
+	</mx:Script>
+	<mx:Image width="16" height="16" source="{_friend.pic_square}" />
+	<controls:ResizeableLabel width="100%" text="{_friend.name}" />
+</mx:HBox>

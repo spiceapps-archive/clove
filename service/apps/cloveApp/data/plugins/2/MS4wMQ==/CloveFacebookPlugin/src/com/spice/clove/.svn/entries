@@ -1,0 +1,41 @@
+9
+
+dir
+35
+http://clove.svn.beanstalkapp.com/plugins/CloveFacebookPlugin/src/com/spice/clove
+http://clove.svn.beanstalkapp.com/plugins
+
+
+
+2010-01-10T21:08:45.871078Z
+35
+cloveapp
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+a0b795e4-daa7-465e-af49-4d6186bf2e75
+
+
+
+
+
+
+0
+
+plugin
+dir
+
+views
+dir
+

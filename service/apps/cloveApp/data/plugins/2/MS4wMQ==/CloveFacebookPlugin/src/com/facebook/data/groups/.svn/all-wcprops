@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/groups
+END
+GroupCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/groups/GroupCollection.as
+END
+GetMemberData.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/groups/GetMemberData.as
+END
+GroupData.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/groups/GroupData.as
+END
+GetGroupData.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/groups/GetGroupData.as
+END

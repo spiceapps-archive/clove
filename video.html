@@ -1,0 +1,20 @@
+ 
+            <div id="flashcontent">
+              <strong>You need to install the Flash Player</strong>, <a href="?detectflash=false">bypass the detection</a> if you wish.
+            </div>
+            <script type="text/javascript">
+            // <![CDATA[
+
+            var so = new SWFObject("http://spiceapps.com/service/ginger/assets/swf/Bridge.swf", "bridge", "740", "463", "8", "#111111");
+            so.addVariable("script","http://spiceapps.com/service/ginger/assets/xml/GingerMediaPlayer.xml");
+            so.addVariable("plugins","http://spiceapps.com/service/ginger/assets/plugins/playlist.xml,http://spiceapps.com/service/ginger/assets/plugins/basicKeyControls.xml,http://spiceapps.com/service/ginger/assets/plugins/cueHandler.xml,http://spiceapps.com/service/ginger/assets/plugins/posterFrame.xml");
+            so.addVariable("movieData","http://spiceapps.com/videos/clove/gettingstarted.xml");						
+            so.addVariable("skin","http://spiceapps.com/service/ginger/assets/skins/Ginger/skin.xml");  
+            so.addVariable("host","http://spiceapps.com/service/ginger/assets/")
+            so.addParam("scale", "noscale");  
+            so.addParam("allowFullScreen","true");
+            so.addParam("allowScriptAccess","always");
+            so.write("flashcontent");
+
+            // ]]>
+            </script>

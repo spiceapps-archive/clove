@@ -1,0 +1,257 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data
+END
+GetAssociationDefinition.as
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetAssociationDefinition.as
+END
+RemoveAssociation.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/RemoveAssociation.as
+END
+GetUserPreference.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetUserPreference.as
+END
+CreateObject.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/CreateObject.as
+END
+GetCookies.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetCookies.as
+END
+GetAssociatedObjects.as
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetAssociatedObjects.as
+END
+RemoveAssociations.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/RemoveAssociations.as
+END
+SetObjectProperty.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/SetObjectProperty.as
+END
+GetAssociatedObjectCount.as
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetAssociatedObjectCount.as
+END
+DefineObjectProperty.as
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/DefineObjectProperty.as
+END
+GetObjectType.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetObjectType.as
+END
+GetHashValue.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetHashValue.as
+END
+RemoveHashKey.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/RemoveHashKey.as
+END
+UndefineAssociation.as
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/UndefineAssociation.as
+END
+GetObjectProperty.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetObjectProperty.as
+END
+DropObjectType.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/DropObjectType.as
+END
+UndefineObjectProperty.as
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/UndefineObjectProperty.as
+END
+UpdateObject.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/UpdateObject.as
+END
+SetCookie.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/SetCookie.as
+END
+IncHashValue.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/IncHashValue.as
+END
+SetHashValue.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/SetHashValue.as
+END
+GetAssociatedObjectCounts.as
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetAssociatedObjectCounts.as
+END
+SetAssociation.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/SetAssociation.as
+END
+GetObjects.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetObjects.as
+END
+GetUserPreferences.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetUserPreferences.as
+END
+RenameObjectType.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/RenameObjectType.as
+END
+CreateObjectType.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/CreateObjectType.as
+END
+GetAssociationDefinitions.as
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetAssociationDefinitions.as
+END
+GetObject.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetObject.as
+END
+SetAssociations.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/SetAssociations.as
+END
+RenameObjectProperty.as
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/RenameObjectProperty.as
+END
+SetUserPreferences.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/SetUserPreferences.as
+END
+DeleteObject.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/DeleteObject.as
+END
+RemoveAssociatedObjects.as
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/RemoveAssociatedObjects.as
+END
+DeleteObjects.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/DeleteObjects.as
+END
+GetAssociations.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetAssociations.as
+END
+SetUserPreference.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/SetUserPreference.as
+END
+DefineAssociation.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/DefineAssociation.as
+END
+RemoveHashKeys.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/RemoveHashKeys.as
+END
+GetObjectTypes.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetObjectTypes.as
+END
+GetCookiesData.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/GetCookiesData.as
+END
+RenameAssociation.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/data/RenameAssociation.as
+END

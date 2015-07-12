@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin
+END
+GetAppProperties.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/GetAppProperties.as
+END
+GetMetrics.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/GetMetrics.as
+END
+BanUsers.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/BanUsers.as
+END
+SetRestrictionInfo.as
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/SetRestrictionInfo.as
+END
+GetAllocation.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/GetAllocation.as
+END
+GetBannedUsers.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/GetBannedUsers.as
+END
+GetRestrictionInfo.as
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/GetRestrictionInfo.as
+END
+SetAppProperties.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/SetAppProperties.as
+END
+UnbanUsers.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/admin/UnbanUsers.as
+END

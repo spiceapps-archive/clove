@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/auth
+END
+GetSession.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/auth/GetSession.as
+END
+RevokeExtendedPermission.as
+K 25
+svn:wc:ra_dav:version-url
+V 99
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/auth/RevokeExtendedPermission.as
+END
+CreateToken.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/auth/CreateToken.as
+END
+ExpireSession.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/auth/ExpireSession.as
+END
+PromoteSession.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/auth/PromoteSession.as
+END
+RevokeAuthorization.as
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/auth/RevokeAuthorization.as
+END

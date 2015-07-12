@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<flexLibProperties includeAllClasses="false" version="1">
+  <includeClasses>
+    <classEntry path="com.spice.clove.plugin.facebook.postable.FacebookWallPostable"/>
+    <classEntry path="com.spice.clove.plugin.facebook.postable.FacebookMailPostable"/>
+    <classEntry path="com.spice.clove.plugin.facebook.utils.FacebookAuthentication"/>
+    <classEntry path="com.spice.clove.plugin.facebook.column.control.prefView.FriendRow"/>
+    <classEntry path="com.spice.clove.plugin.facebook.cue.StreamCallCue"/>
+    <classEntry path="com.spice.clove.plugin.facebook.postable.FacebookReplyPostable"/>
+    <classEntry path="com.spice.clove.plugin.facebook.icons.FacebookIcons"/>
+    <classEntry path="com.spice.clove.plugin.facebook.utils.FacebookLoginUtil"/>
+    <classEntry path="com.spice.clove.plugin.facebook.postable.FacebookPhotoPoster"/>
+    <classEntry path="com.spice.clove.plugin.facebook.CloveFacebookPlugin"/>
+    <classEntry path="com.spice.clove.plugin.facebook.install.FacebookServiceInstallerView"/>
+    <classEntry path="com.spice.clove.plugin.facebook.column.render.sub.FacebookCommentItemRenderer"/>
+    <classEntry path="com.spice.clove.plugin.facebook.utils.BetterFacebookSessionUtil"/>
+    <classEntry path="com.spice.clove.plugin.facebook.utils.AIRDesktopSession"/>
+    <classEntry path="com.spice.clove.plugin.facebook.CloveFacebookPluginFactory"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

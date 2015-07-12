@@ -1,3 +1,0 @@
-# clove
-clove desktop application
-

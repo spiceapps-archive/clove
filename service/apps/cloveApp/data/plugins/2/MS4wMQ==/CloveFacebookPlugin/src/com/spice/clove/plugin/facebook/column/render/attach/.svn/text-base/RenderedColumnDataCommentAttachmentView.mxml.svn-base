@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<render:RenderedColumnDataAttachmentView width="100%" 
+										 xmlns:mx="http://www.adobe.com/2006/mxml" 
+										 xmlns:render="com.spice.clove.plugin.column.render.*" 
+										 xmlns:binding="com.spice.binding.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.recycle.factory.RecyclingFactory;
+			import mx.controls.Alert;
+			import com.spice.clove.plugin.facebook.model.FacebookModelLocator;
+		
+			import mx.binding.utils.ChangeWatcher;
+			
+			
+			
+			private var _watch:ChangeWatcher;
+			
+			
+			[Bindable] 
+			private var _att:RenderedColumnDataCommentAttachment;
+			
+			override protected function onClick(event:MouseEvent):void
+			{
+				super.onClick(event);
+				
+				
+				_att = RenderedColumnDataCommentAttachment(this.attachment);
+				
+				if(!this.expanded)
+				{
+					this._att.postComments = null;
+				}
+				else
+				{
+					this._att.select();	
+				}
+				
+			}
+			
+			
+			private function onRendereData(event:Event):void
+			{
+				if(event.target.parent != comments)
+					return;
+					
+				var i:int = comments.numChildren;
+				
+				try
+				{
+					var c:CommentRowView = CommentRowView(this.comments.getChildAt(i-1));
+				
+					c.showSep = i != this._att.postComments.comments.length;
+				}catch(e:*)
+				{
+					Logger.logError(e);
+				}
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas width="100%" clipContent="false" styleName="columnRowCommentGrad">
+		
+		<mx:VBox x="18" id="comments" width="100%" visible="{this.expanded}" includeInLayout="{this.expanded}" added="onRendereData(event);" paddingRight="8" />
+	
+	</mx:Canvas>
+	
+	<binding:DataBoundController id="dbcController" 
+								 target="{comments}" 
+								 dataProvider="{this._att.postComments.comments}" 
+								 itemRenderer="{new RecyclingFactory(CommentRowView)}" />
+	
+</render:RenderedColumnDataAttachmentView>

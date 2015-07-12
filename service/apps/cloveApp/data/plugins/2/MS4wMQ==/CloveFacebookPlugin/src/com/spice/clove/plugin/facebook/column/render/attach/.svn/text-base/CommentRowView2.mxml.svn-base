@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml" height="100%" width="100%">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.clove.plugin.facebook.data.FriendInfo;
+			import com.spice.clove.plugin.facebook.model.FacebookModelLocator;
+			import com.facebook.data.stream.PostCommentData;
+			import mx.controls.Alert;
+			
+			
+			[Bindable] 
+			private var _pc:PostCommentData;
+			
+			[Bindable] 
+			private var _friendInfo:FriendInfo;
+			
+			[Bindable] 
+			private var _model:FacebookModelLocator = FacebookModelLocator.getInstance();
+			
+			
+			override public function set data(value:Object):void
+			{
+				super.data = value;
+				
+				var c
+				_pc = PostCommentData(value);
+				
+				_friendInfo = _model.friendModel.getFriendInfo(_pc.fromid);
+			}
+		]]>
+	</mx:Script>
+	<mx:Image source="{_friendInfo.pic_square}" />
+	<mx:VBox width="100%">
+		<mx:Label text="{_friendInfo.name}" fontWeight="bold" />
+		<mx:Text text="{_pc.text}" width="100%"/>
+	</mx:VBox>
+</mx:HBox>

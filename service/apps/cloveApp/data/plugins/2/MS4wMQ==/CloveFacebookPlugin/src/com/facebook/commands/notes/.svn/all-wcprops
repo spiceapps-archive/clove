@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/notes
+END
+GetNotes.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/notes/GetNotes.as
+END
+EditNotes.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/notes/EditNotes.as
+END
+DeleteNotes.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/notes/DeleteNotes.as
+END
+CreateNotes.as
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/notes/CreateNotes.as
+END

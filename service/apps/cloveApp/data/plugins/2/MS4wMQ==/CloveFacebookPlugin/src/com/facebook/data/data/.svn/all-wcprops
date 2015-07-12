@@ -1,0 +1,83 @@
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data
+END
+NameValueData.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/NameValueData.as
+END
+GetObjectTypesData.as
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/GetObjectTypesData.as
+END
+SetAssociationsData.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/SetAssociationsData.as
+END
+AssocInfoData.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/AssocInfoData.as
+END
+SetAssociationsDataCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/SetAssociationsDataCollection.as
+END
+GetObjectTypeData.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/GetObjectTypeData.as
+END
+PreferenceCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/PreferenceCollection.as
+END
+ObjectTypesCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/ObjectTypesCollection.as
+END
+PreferenceData.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/PreferenceData.as
+END
+NameValueCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/NameValueCollection.as
+END
+ObjectTypesData.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/ObjectTypesData.as
+END
+AssocTypeValue.as
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/AssocTypeValue.as
+END
+GetUserPreferencesData.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/data/GetUserPreferencesData.as
+END

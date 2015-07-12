@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:CheckBox xmlns:mx="http://www.adobe.com/2006/mxml" label="{data.name}" selected="{data.selected}" change="{data.selected = this.selected}">
+</mx:CheckBox>

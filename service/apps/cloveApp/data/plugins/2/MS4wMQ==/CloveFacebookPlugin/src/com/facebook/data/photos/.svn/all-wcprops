@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos
+END
+PhotoCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/PhotoCollection.as
+END
+AlbumCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/AlbumCollection.as
+END
+FacebookPhoto.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/FacebookPhoto.as
+END
+PhotoData.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/PhotoData.as
+END
+AlbumData.as
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/AlbumData.as
+END
+GetTagsData.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/GetTagsData.as
+END
+GetCreateAlbumData.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/GetCreateAlbumData.as
+END
+PhotoTagCollection.as
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/PhotoTagCollection.as
+END
+GetAlbumsData.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/GetAlbumsData.as
+END
+TagData.as
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/TagData.as
+END
+GetPhotosData.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/GetPhotosData.as
+END
+PhotoVisibleValue.as
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/data/photos/PhotoVisibleValue.as
+END

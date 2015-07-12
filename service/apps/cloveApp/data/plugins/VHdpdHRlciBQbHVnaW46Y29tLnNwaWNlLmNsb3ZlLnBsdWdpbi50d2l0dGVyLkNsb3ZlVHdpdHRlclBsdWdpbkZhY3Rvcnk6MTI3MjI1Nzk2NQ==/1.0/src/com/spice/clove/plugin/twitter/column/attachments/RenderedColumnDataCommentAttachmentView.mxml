@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<render:RenderedColumnDataAttachmentView creationComplete="init();" width="100%" xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:render="com.spice.clove.plugin.column.render.*" xmlns:binding="com.spice.binding.*">
+	<mx:Script>
+		<![CDATA[
+			import com.spice.recycle.factory.RecyclingFactory;
+			import com.spice.clove.views.column.TitleMessageIconView;
+			import mx.controls.Alert;
+		
+			
+			
+			[Bindable] 
+			private var _att:TwitterConversationAttachment;
+			
+			override protected function onClick(event:MouseEvent):void
+			{
+				super.onClick(event);
+				
+				
+				if(!this.expanded)
+				{
+					this._att.conversation = null;
+				}
+				else
+				{
+					this._att.select();	
+				}
+				
+			}
+			
+			private function init():void
+			{
+				_att = TwitterConversationAttachment(this.attachment);
+				
+			}
+			
+			private function onRendereData(event:Event):void
+			{
+				if(event.target.parent != comments)
+					return;
+					
+				var i:int = comments.numChildren;
+				
+				var c:CommentRowView = CommentRowView(this.comments.getChildAt(i-1));
+				
+				c.showSep = i != this._att.conversation.length;
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Canvas width="100%" clipContent="false" styleName="columnRowCommentGrad">
+		
+		<mx:VBox x="18" id="comments" width="100%" visible="{this.expanded}" added="onRendereData(event);" paddingRight="8" />
+	
+	</mx:Canvas>
+	<binding:DataBoundController id="dbcController" target="{comments}" dataProvider="{this._att.conversation}" itemRenderer="{new  RecyclingFactory(CommentRowView)}" />
+	
+</render:RenderedColumnDataAttachmentView>

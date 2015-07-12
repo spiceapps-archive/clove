@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/photos
+END
+GetTags.as
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/photos/GetTags.as
+END
+GetAlbums.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/photos/GetAlbums.as
+END
+AddTag.as
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/photos/AddTag.as
+END
+UploadPhotoTypes.as
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/photos/UploadPhotoTypes.as
+END
+GetPhotos.as
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/photos/GetPhotos.as
+END
+CreateAlbum.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/photos/CreateAlbum.as
+END
+UploadPhoto.as
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/plugins/!svn/ver/35/CloveFacebookPlugin/src/com/facebook/commands/photos/UploadPhoto.as
+END

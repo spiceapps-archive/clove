@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:VBox xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:controls="com.spice.controls.*" xmlns:render="com.spice.clove.ext.service.facebook.column.render.*">
+<mx:Script>
+	<![CDATA[
+		import com.spice.clove.ext.service.facebook.model.FacebookModel;
+		import com.facebook.commands.photos.GetAlbums;
+		import com.ei.utils.ObjectUtils;
+		import com.facebook.commands.photos.GetPhotos;
+		import mx.core.UIComponent;
+		import mx.controls.Alert;
+		import com.facebook.data.stream.StreamStoryData;
+		import mx.binding.utils.BindingUtils;
+		import com.facebook.data.photos.PhotoData;
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Private Variables
+        //
+        //--------------------------------------------------------------------------
+
+		
+		private var _renderedData:Object;
+		
+		
+		[Bindable] 
+		private var _fbModel:FacebookModel = FacebookModel.getInstance();
+		
+		//--------------------------------------------------------------------------
+   	    //
+        //  Getters / Setters
+        //
+        //--------------------------------------------------------------------------
+
+		
+		/**
+		 */
+		
+		public function get renderedData():Object
+		{
+			return _renderedData;
+		}
+		
+		/**
+		 */
+		
+		public function set renderedData(value:Object):void
+		{
+			
+			_renderedData = value;
+			photoRow.photos = [];
+			
+			this.visible		 = value.attachment != null && value.attachment.media.length > 0;
+			this.includeInLayout = this.visible;
+			
+			
+			
+			if(this.visible)
+			{
+				var d:PhotoData;
+				
+				
+				
+				var med:FacebookImage;
+				
+				var photoData:Object = new Object();
+				photoData.photos = [];
+				ObjectUtils.traceRoute(value.attachment.media);
+				
+				for each(var media:Object in value.attachment.media)
+				{
+					
+					if(media.photo != null)
+					{
+						
+						photoData.aid = media.photo.aid;
+						photoData.photos.push(media.photo.pid);
+									
+					}
+				}
+				
+				
+				if(photoData.photos.length > 0)
+				{
+					photoRow.subjid 	  = value.post_id;
+					photoRow.photos		  = photoData.photos;
+				}
+				//photoRow.aid 		  = photoData.aid;
+				//photoRow.renderedData = _renderedData;
+				//photoRow.photos 	  = photoData.photos;
+				
+				
+			}
+		}
+		
+		
+	]]>
+</mx:Script>
+<render:PhotoAttachments id="photoRow" />
+</mx:VBox>
