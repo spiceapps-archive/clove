@@ -26,3 +26,4 @@ The first, Scout it Out, allowed users to self-select players from their Fantasy
 - [Ameriprise demo](https://www.youtube.com/watch?v=v1EYy-qLHJE)
 - [fantasy victory](https://www.youtube.com/watch?v=3XQishsk3OI)
 - [Scout it Out](https://www.youtube.com/watch?v=Lhbk0Jo3C9Y)
+- [3 more Scout it Out videos](https://www.youtube.com/playlist?list=PL_9d3q-RYY-ubIBC8fyT1uRi3GlcTJbch)
