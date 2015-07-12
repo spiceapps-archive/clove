@@ -1,0 +1,346 @@
+<Skin xmlns:LM2="com.bridge.module.LoadManagerModule">
+
+   <Variable:set name="ytSkinRoot" value="{host+'/skins/Youtube/'}" />
+
+   <!-- Load in the required font for this skin -->
+   <external:asset source="{ytSkinRoot+'WhitneyHTFSemiBold.swf'}" type="font" />
+   <external:asset source="{ytSkinRoot+'style.xml'}" type="script" />
+  <change:property target="{LM2}" pauseMethod="pauseAll" />
+  <LM2:execute />   
+
+	<Image buttonMode="{true}" instance:id="soundControl" source="{#LM2:media(ytSkinRoot+'ui/volumeBackground.gif')}" right="66" bottom="-87">
+		<Container instance:id="soundControlTrack" styleName=".ytsoundControlTrack" buttonMode="{true}">
+			
+			<Image buttonMode="{true}" instance:id="soundControlBar" source="{#LM2:media(ytSkinRoot+'ui/volumeControl.gif')}" y="-2" horizontalCenter="" />
+			
+			<action:script>
+				<![CDATA[
+					var dragger:Dragger = new Dragger(soundControlBar,'dragAll',false,new Rectangle(soundControlBar.x,soundControlBar.y,0,soundControlTrack.height+2));
+					
+					dragger.boundToSize = true;
+					
+					dragger.addEventListener('dragging',onDragging);
+					
+					function onDragging(event:Event)
+					{
+
+						videoPlayer.volume = 100-(100 * soundControlBar.y) / (soundControlTrack.height-soundControlBar.height);
+
+					}        
+					
+				]]>
+			</action:script>
+			
+			<observer:listen to="{soundControl}" for="mouseOut">
+				<action:script>
+					<![CDATA[
+					
+						Sleep.timeout(800,checkMouse);	
+						
+						function checkMouse()
+						{
+						
+							if(mouseIsOut(soundControl) && !isOverVolume)
+							{
+								var tween:Tween = new Tween(soundControl,"bottom",soundControl.bottom,0-soundControl.height,1000);
+								tween.easingFunction = Strong.easeOut;
+
+								toggleSoundControl = !toggleSoundControl;
+							}
+						}						
+					
+					]]>
+				</action:script>
+			</observer:listen>
+			
+		</Container>
+	</Image buttonMode="{true}">
+		
+	<Image buttonMode="{true}" instance:id="movieInfo" source="{#LM2:media(ytSkinRoot+'ui/extraWindow.gif')}" right="2" bottom="-100" observer:mouseOver="extraOver()" observer:mouseOut="extraOut()">			
+			
+			<action:script>
+				<![CDATA[
+					
+					function animateInfoIn(target)
+					{
+				 			
+						Sleep.timeout(500,startData)
+
+						function startData()
+						{
+                           //new Tween(target,'alpha',0,1,200);
+						}
+						
+						Sleep.timeout(2000,tweenOut)
+						
+						function tweenOut()
+						{                        
+							//animateInfoOut(target);
+						}
+					 
+					}
+					
+					function animateInfoOut(target)
+					{
+						//new Tween(target,'alpha',1,0,200);
+					
+					}
+					
+				]]>
+			</action:script>
+			
+			<Image buttonMode="{true}" instance:id="annUp" source="{#LM2:media(ytSkinRoot+'ui/annUp.gif')}" horizontalCenter="0" y="1" observer:mouseOver="animateInfoIn(annNotAvaliable)"  />
+			
+			<Image buttonMode="{true}" source="{#LM2:media(ytSkinRoot+'ui/captionUp.gif')}" horizontalCenter="0" y="26" observer:mouseOver="animateInfoIn(captNotAvaliable)" />
+		
+	</Image buttonMode="{true}">
+	
+	<Image buttonMode="{true}" instance:id="annNotAvaliable" source="{#LM2:media(ytSkinRoot+'ui/annNA.gif')}" alpha="0" y="1" right="55" bottom="55" />
+	
+	<Image buttonMode="{true}" instance:id="captNotAvaliable" source="{#LM2:media(ytSkinRoot+'ui/captionNA.gif')}"  alpha="0" y="1" right="55" bottom="30" />	
+	
+	<Container styleName=".ytcontrols" instance:id="mediaControls" alignment="horizontal">
+	   
+	   		
+			<Image buttonMode="{true}" instance:id="playButton" source="{#LM2:media(ytSkinRoot+'ui/ytplayUp.gif')}" visible="{true}" />  					
+            <Image buttonMode="{true}" instance:id="pauseButton" source="{#LM2:media(ytSkinRoot+'ui/ytpauseUp.gif')}" visible="{false}" />  					
+                                                                                              
+			<observer:listen to="{playButton}" for="click">     
+				<Bridge run="{videoPlayer.play()}" />
+			</observer:listen>
+			
+			<observer:listen to="{pauseButton}" for="click">    
+				<Bridge run="{videoPlayer.pause()}" />
+			</observer:listen>
+			
+			<observer:listen to="{videoPlayer}" for="resume">
+				<Bridge run="{isPlaying(true)}" />
+			</observer:listen>
+			
+			<observer:listen to="{videoPlayer}" for="pause">
+				<Bridge run="{isPlaying(false)}" />
+				
+			</observer:listen>
+		
+			<action:script>
+				<![CDATA[
+					function isPlaying(value:Boolean)
+					{
+						playButton.visible  = !value; 
+						pauseButton.visible = value;
+					}
+				]]>
+			</action:script> 
+			
+		<Container width="10" height="1" alpha="0"/>
+
+		<Container instance:id="seekBackground" buttonMode="{true}" styleName=".ytseekBackground" verticalCenter="0" percentWidth="100" height="9">    
+			
+			<Container instance:id="buffer" styleName=".ytbuffer">
+			    <observer:listen to="{videoPlayer}" for="progress">
+						<action:script>
+						<![CDATA[
+						
+							buffer.percentWidth = videoPlayer.percentLoaded;
+
+							seekerDragger.bounds = getScrubArea();
+
+						]]>
+					</action:script>
+				</observer:listen> 
+				
+				<observer:listen to="{buffer}" for="mouseUp">
+					<action:script>
+						<![CDATA[
+							videoPlayer.seek((100 * seekBackground.mouseX) / (seekBackground.width));
+							videoPlayer.play();
+						]]>
+					</action:script>
+				</observer:listen> 
+	
+			</Container>		
+			
+			<Container styleName=".progressBar" instance:id="progressBar" />
+			
+			<Image buttonMode="{true}" instance:id="seekerButton" source="{#LM2:media(ytSkinRoot+'ui/ytscrubberUp.gif')}" x="-2" verticalCenter="0" />  
+			
+			<action:script>
+				<![CDATA[
+					var seekerDragger:Dragger = new Dragger(seekerButton,'dragAll',false,new Rectangle(seekerButton.x,seekerButton.y,seekBackground.width,0));
+					seekerDragger.boundToSize = true;
+					
+					seekerDragger.addEventListener('dragStart',onDragStart);
+					seekerDragger.addEventListener('dragging',onSeekDrag);
+					seekerDragger.addEventListener('dragStop',onDragStop);
+					
+					function onDragStart(event:Event)
+					{
+						seekerButton.percentWidth = NaN;
+					}
+					
+					function onSeekDrag(event:Event)
+					{
+					
+						videoPlayer.seek((100 * seekerButton.x) / (seekBackground.width));
+						progressBar.width = seekerButton.x+10;
+					}
+					
+					function onDragStop(event)
+					{
+						videoPlayer.play();
+					}
+					
+					var startX:Number = seekerButton.x;
+					var startY:Number = seekerButton.y;
+					
+					function getScrubArea()
+					{
+						return new Rectangle(startX,startY,buffer.width,0);
+					}
+				]]>
+			</action:script>
+		
+ 		</Container>	   
+		
+		<Label instance:id="totalTime" text="0:00/0:00" verticalCenter="0" style="fontColor:#000000;fontSize:12;" />
+		
+		<Spacer width="10" height="1" alpha="0" />
+		
+	    <Image buttonMode="{true}" instance:id="soundButton" source="{#LM2:media(ytSkinRoot+'ui/ytsoundUp4x.gif')}" verticalCenter="0"  buttonMode="{true}">
+			<Bridge run="{var isMuted:Boolean = false; var recordedPosition:Number; var recordedVolume:Number;}" />
+			<observer:listen to="{soundButton}" for="mouseOver">
+				<action:script>
+					<![CDATA[			       
+
+						var isOverVolume = true;
+						
+						var tween:Tween = new Tween(soundControl,"bottom",soundControl.bottom,mediaControls.height,1000);
+						
+						tween.easingFunction = Strong.easeOut;
+						
+						toggleSoundControl = !toggleSoundControl;
+						
+						
+					]]>
+				</action:script>
+		
+				<observer:listen to="{soundButton}" for="mouseOut">
+					<Bridge run="{isOverVolume = false}" />
+				</observer:listen>
+			</observer:listen>
+			
+			<observer:listen to="{soundButton}" for="click">
+					<action:script>
+						<![CDATA[
+						
+							var tween:Tween;
+							
+							if(isMuted)
+							{
+								tween = new Tween(soundControlBar,'y',soundControlBar.y,recordedPosition,500);
+								videoPlayer.volume = recordedVolume;
+							}
+							else
+							{
+								recordedPosition = soundControlBar.y;
+								recordedVolume = videoPlayer.volume;
+								
+								tween = new Tween(soundControlBar,'y',soundControlBar.y,soundControlTrack.height - soundControlBar.height,500);
+								
+							}
+							
+							soundControlBar.addEventListener("enterFrame",onTweening);
+							tween.addEventListener("tweenComplete",onTweenComplete);
+							
+							function onTweening(event)
+							{
+								videoPlayer.volume = 100-(100 * soundControlBar.y) / (soundControlTrack.height-soundControlBar.height);
+							}
+							
+							function onTweenComplete(event)
+							{
+								soundControlBar.removeEventListener("enterFrame",onTweening);
+							}
+							
+							tween.easingFunction = Strong.easeOut;
+						
+							isMuted = !isMuted;
+						
+						]]>
+					</action:script>
+			</observer:listen>
+		</Image buttonMode="{true}">
+
+		<Image buttonMode="{true}" instance:id="advanced" source="{#LM2:media(ytSkinRoot+'ui/ytFullScreenUp.gif')}" verticalCenter="0" buttonMode="true" observer:click="toggleFullScreen();" />
+		
+		<Image buttonMode="{true}" instance:id="extra" source="{#LM2:media(ytSkinRoot+'ui/ytextraUp.gif')}" verticalCenter="0" buttonMode="true" observer:mouseOver="extraOver()" observer:mouseOut="extraOut()" />
+		<action:script>
+			<![CDATA[                   
+				function extraOver()
+				{                   
+				    if(!mouseIsOut(movieInfo))
+				    {
+					  return; 
+				    }
+				 	new Tween(movieInfo,'bottom',movieInfo.bottom,25,1000).easingFunction = Strong.easeOut;                 
+				} 
+				
+				function extraOut()
+				{                         
+				     if(!mouseIsOut(movieInfo)) 
+					 {
+						return;
+				     }
+				 	new Tween(movieInfo,'bottom',movieInfo.bottom,0-100,1000).easingFunction = Strong.easeOut;                 
+				}
+			   
+			]]>
+		</action:script>
+		
+		<action:script>
+			<![CDATA[
+				
+				function toggleFullScreen()
+				{
+					
+					if(stage.displayState=='fullScreen')
+					{
+					
+						stage.displayState = 'normal';
+					}
+					else
+					{
+						stage.displayState='fullScreen';
+					}
+				}
+			]]>
+		</action:script>
+	</Container> 
+        
+	<observer:listen to="{videoPlayer}" for="playing">
+		<action:script>
+			<![CDATA[
+				
+				//seekerButton.x = (videoPlayer.percentDone * (seekBackground.width-seekerButton.width+2)) / 100 - 2;
+				seekerButton.percentX = videoPlayer.percentDone;
+				progressBar.percentWidth = videoPlayer.percentDone;
+				buffer.percentWidth = videoPlayer.percentLoaded;
+				
+                
+                totalTime.text = videoPlayer.currentTimeString+"/"+videoPlayer.totalTimeString;
+				
+			]]>
+		</action:script>
+	</observer:listen>  
+	<observer:listen to="{videoPlayer}" for="loaded">
+		<action:script>
+			<![CDATA[
+			
+				//so the button and text resets
+				videoPlayer.dispatchEvent(new Event("playing"));
+				
+			]]>
+		</action:script>
+	</observer:listen>
+
+</Skin>

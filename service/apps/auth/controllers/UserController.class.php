@@ -56,7 +56,7 @@ class UserController extends AuthController {
 	
 	
 	/**
-	  * !Route GET, lostPassword
+	  * !Route GET, lostpassword/
 	  */
 
 	function lostPassword()
@@ -66,8 +66,8 @@ class UserController extends AuthController {
 	}
 	
 	/**
-	  * !Route GET, lostPassword/reset/$token
-	  * !Route POST, lostPassword/reset/$token
+	  * !Route GET, lostpassword/reset/$token
+	  * !Route POST, lostpassword/reset/$token
 	  */
 	
 	function resetLostPassword($token='')
@@ -126,7 +126,7 @@ class UserController extends AuthController {
 	
 	
 	/**
-	  * !Route POST, lostPassword
+	  * !Route POST, lostpassword/
 	  */
 
 	function postLostPassword()
@@ -134,7 +134,7 @@ class UserController extends AuthController {
 		$this->_form->to(Methods::POST, $this->urlTo('lostPassword'));
 		
 		
-		$email  = InputSafety::cleanse($this->request->data('email'),'email','invalid email.');
+		$email  = InputSafety::cleanse($this->request->data('email'),'email','We could not find that email address in our database.');
 		
 		$errors = InputSafety::dumpErrors();
 		
@@ -173,17 +173,17 @@ class UserController extends AuthController {
 		
 		
 		$message = 
-		"
-		".$user->email.",
+"
+".$user->email.",
 
-		This email was sent in response to your request to recover your password. To reset your password and access your account, click on the link below.
+This email was sent in response to your request to recover your password. To reset your password and access your account, click on the link below.
 
-		<a href=\"http://".$_SERVER['HTTP_HOST']."/".$this->urlTo("resetLostPassword",$loginToken->token)."\">Reset Password</a>
+http://".$_SERVER['HTTP_HOST']."/".$this->urlTo("resetLostPassword",$loginToken->token)."
 
-		The link will reset your forgotten password, and let you create a new one.
+The link will reset your forgotten password, and let you create a new one.
 
-		If you did not request that we send this Forgotten Password email to you, just ignore it.
-		";
+If you did not request that we send this Forgotten Password email to you, just ignore it.
+";
 		
 		
 		$this->send_email($user->email,"Forgotten Password",$message);

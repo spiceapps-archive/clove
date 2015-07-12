@@ -31,31 +31,45 @@ class SceneController extends CloveController
 	function index() 
 	{
 		
-		$scene = new Scene();
-		$username = $this->request->data('username');
+		$user_id = $this->request->data('user_id');
+		$email = $this->request->data('email');
 		
-		if($username)
+		
+		$user = new User();
+		
+		try
 		{
-			try
+			if($email)
 			{
-				$user = new User();
-				$user->username = InputSafety::cleanse($username,'string');
-				
-				if(!$user->exists())
-				{
-					return $this->ok_notFound("User \"$username\" doesn't exist.");
-				}
-				$user = $user->select()->first();
-			}catch(Exception $e)
+				$user->email = InputSafety::cleanse($email,'email');
+			}
+			else
+			if($user_id)
 			{
-				return $this->ok_error($e->getMessage());
+				$user->id = InputSafety::cleanse($user_id,'integer');
+			}
+			else
+			{
+				return $this->ok_success("Success","scenes");
 			}
 			
+			if(!$user->exists())
+			{
+				return $this->ok_notFound("User doesn't exist.");
+			}
+			
+			$scene = new Scene();
 			$scene->user = $user->id;
+			$this->sceneSet = $scene->select();
+			
+		}catch(Exception $e)
+		{
+			return $this->ok_error($e->getMessage());
 		}
 		
 		
-		$this->sceneSet = $scene->select();
+		
+		
 		
 
 		return $this->ok_success("Success","scenes");
@@ -75,7 +89,7 @@ class SceneController extends CloveController
 		
 		try
 		{
-			$name = InputSafety::cleanse($this->request->data('name'),'string',"The scene name is invalid.");
+			$name = InputSafety::cleanse($this->request->data('name'),'*',"The scene name is invalid.");
 			$desc = InputSafety::cleanse($this->request->data('description'),'*','The scene description is invalid');
 		}catch(Exception $e)
 		{
@@ -101,8 +115,10 @@ class SceneController extends CloveController
 		$this->scene->id = $sc->id;
 		$this->scene = $sc->select()->first();
 		
+		$this->sceneSet = $this->scene->select();
 		
-		return $this->ok_success("Successfully created Scene.");
+		
+		return $this->ok_success("Successfully created Scene.","scenes");
 	}
 	
 	

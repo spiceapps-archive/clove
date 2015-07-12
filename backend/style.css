@@ -1,7 +1,7 @@
 body {
-	font: 12px "Helvetica", "Arial", sans-serif;
-	margin: 0px;
+	font: 12px Helvetica,Arial,sans-serif;
 	line-height: 1.45em;
+	margin: 0;
 }
 
 a {
@@ -10,18 +10,18 @@ a {
 
 table {
 	border: 1px solid #eee;
-	margin: 20px;
 	text-align: left;
+	margin: 20px;
 }
 
 #front-center {
-	margin: 20px auto auto;
 	width: 350px;
+	margin: 20px auto auto;
 }
 
 #main-left {
 	text-align: center;
-	left: 0px;
+	left: 0;
 	border-bottom: 1px solid #CCC;
 	padding-bottom: 20px;
 }
@@ -30,7 +30,6 @@ table {
 	padding-top: 20px;
 	width: 250px;
 }
-
 
 #title {
 	margin-top: 10px;
@@ -52,7 +51,7 @@ table {
 	text-decoration: none;
 	font-weight: bold;
 	font-size: 18px;
-	margin-bottom: 0.2em;
+	margin-bottom: .2em;
 }
 
 .main-topic:hover {
@@ -70,26 +69,23 @@ table {
 }
 
 #header-feeds {
-	padding: 10px;
-	padding-top: 15px;
-	padding-left: 20px;
 	font-size: 18px;
 	font-weight: bold;
 	color: #333b43;
-	background: #bec9d2 url(../images/backend/feed-bg.png) top left repeat-x;
-	text-shadow: #edf4fb 0px 1px 0px;
+	background: #bec9d2 url(/backend/feed-bg.png) top left repeat-x;
+	text-shadow: #edf4fb 0 1px 0;
 	border-bottom: 1px solid #939da6;
+	padding: 15px 10px 10px 20px;
 }
 
 #header {
-	padding: 15px;
-	padding-left: 20px;
 	font-size: 18px;
 	font-weight: bold;
 	color: #444;
 	background: #F9F9F9;
-	text-shadow: #FFF 0px 1px 0px;
+	text-shadow: #FFF 0 1px 0;
 	border-bottom: 1px solid #EEE;
+	padding: 15px 15px 15px 20px;
 }
 
 .light {
@@ -106,22 +102,17 @@ table {
 }
 
 #content {
-	padding-left: 20px;
-	padding-right: 20px;
-	padding-top: 6px;
-	padding-bottom: 40px;
+	padding: 6px 20px 40px;
 }
 
 .topic {
 	font-weight: bold;
-	padding: 1em;
-	padding-bottom: 0.9em;
-	padding-left: 31px;
 	border: 1px solid #CCC;
 	margin-top: 10px;
 	margin-bottom: 10px;
-	background: url(../images/backend/arrow-c.png) 15px center no-repeat;
+	background: url(/backend/arrow-c.png) 15px center no-repeat;
 	cursor: hand;
+	padding: 1em 1em .9em 31px;
 }
 
 .topic:hover {
@@ -141,11 +132,9 @@ table {
 
 p img {
 	vertical-align: middle;
-	padding-bottom: 4px;
-	padding-top: 4px;
-	margin-top: -5px;
-	margin-left: 3px;
-	margin-right: 3px;
+	padding: 4px 0;
+	margin-top: -5px 3px 0 3px;
+
 }
 
 li {
@@ -153,27 +142,26 @@ li {
 }
 
 .tip {
-	border: 1px dashed #DDD;
-	padding: 10px;
-	padding-left: 25px;
-	background: url(../images/backend/tip.png) 10px 11px no-repeat;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
+	background: url(/backend/tip.png) 10px 11px no-repeat;
 }
 
 .error {
-	border: 1px dashed #DDD;
-	padding: 10px;
-	padding-left: 25px;
-	background: url(../images/backend/warning.png) 10px 11px no-repeat;
-	-webkit-border-radius: 5px;
-	-moz-border-radius: 5px;
+	background: url(/backend/warning.png) 10px 11px no-repeat;
 }
 
-
+.error, .tip, fieldset {
+	border: 1px dashed #DDD;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	padding: 10px 10px 10px 25px;
+}
 
 form {
 	margin-top: 30px;
+}
+
+legend {
+	font-weight: bold;
 }
 
 input, textarea, select {
@@ -193,3 +181,4 @@ label span {
 input[type=text], input[type=password], select, textarea {
 	width: 240px;
 }
+

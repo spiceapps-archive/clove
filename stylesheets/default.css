@@ -3,11 +3,13 @@
 /* GLOBAL CSS */
 
 html, body {
-	background: url(../images/tile.jpg) repeat;
+	background-image: url(/images/tile.jpg);
+	background-repeat: repeat;
 	font: 13px Helvetica, Arial, sans-serif;
 	line-height: 20px;
 	width: 100%;
   	height: 100%;
+  	padding-bottom: 30px;
 }
 
 h1 {
@@ -33,7 +35,7 @@ h5 {
 	font-weight: bold;
 }
 hr {
-	background: url(../images/hr.png);
+	background-image: url(/images/hr.png);
 	height: 2px;
 	border: 0px;
 }
@@ -91,11 +93,13 @@ ul#menu li {
 	list-style-type: none;
 }
 ul#menu li:hover {
-	background: url(../images/menu-hover.gif) no-repeat;
+	background-image: url(/images/menu-hover.gif);
+	background-repeat: no-repeat;
 	background-position: center -14px;
 }
 ul#menu li.selected {
-	background: url(../images/menu-tab.gif) no-repeat;
+	background-image: url(/images/menu-tab.gif);
+	background-repeat: no-repeat;
 	background-position: center -14px;
 }
 
@@ -112,20 +116,51 @@ ul#menu li#menu-youraccount {
 /* PAGE STRUCTURE */
 
 #container {
-	background: url(../images/bg.jpg) repeat-x;
+	background-image: url(/images/bg.jpg);
+	background-repeat: repeat-x;
 	padding-top: 25px;
 }
 #content-boxlower {
-	background: url(../images/shadow.jpg) no-repeat;
+	background-image: url(/images/shadow.jpg);
+	background-repeat: no-repeat;
 	width: 920px;
 	padding: 0;
 	margin: 0 auto;
 }		
 #content-box {
 	width: 920px;
-	margin: 0 auto;
-	background: url(../images/content-boxbg.jpg);
 	height: 380px;
+	margin: 0 auto;
+	background-image: url(/images/content-boxbg.jpg);
+}
+
+/* TEMPORARY MARKETING STYLING */
+
+#worldcup-container {
+	background-image: url(/images/worldcup/worldcupbanner.jpg);
+	background-repeat: no-repeat;
+	background-color: #1b2f07;
+	background-position: top center;
+	height: 90px;
+	width: 100%;
+}
+#worldcup-download {
+	position: relative;
+	left: 340px;
+	top: 26px;
+	width: 190px;
+	height: 56px;
+	margin: 0 auto;
+	background-image: url(/images/worldcup/downloadapp.png);
+}
+#worldcup-download a {
+	display: block;
+	width: 190px;
+	height: 56px;
+	cursor: pointer;
+}
+#worldcup-download:active {
+	background-position: 0 56px !important;
 }
 
 /* SUB PAGE STRUCTURE */
@@ -133,11 +168,13 @@ ul#menu li#menu-youraccount {
 #sub-head {
 	width: 922px;
 	height: 11px;
-	background: url(../images/sub-head.png);
+	background-image: url(/images/sub-head.png);
 	margin: 10px auto 0 auto;
 }
 #sub-content {
-	background: url(../images/sub-fade.jpg) no-repeat #fff;
+	background-color: #fff;
+	background-image: url(/images/sub-fade.jpg);
+	background-repeat: no-repeat;
 	margin: 0 auto;
 	width: 920px;
 	min-height: 720px;
@@ -150,7 +187,7 @@ ul#menu li#menu-youraccount {
 	height: 10px;
 	margin: 0 auto;
 	clear: both;
-	background: url(../images/sub-foot.png);
+	background-image: url(/images/sub-foot.png);
 }
 
 #sub-left {
@@ -187,7 +224,7 @@ ul#menu li#menu-youraccount {
 
 #signup {
 	float: right;
-	background: transparent;
+	background-color: transparent;
 	height: 250px;
 	width: 202px;
 	margin: 17px 20px 0 0;
@@ -233,7 +270,7 @@ ul#menu li#menu-youraccount {
 
 
 input#code, input#password, input#email, input#name {
-	background: url(../images/input.png);
+	background: transparent url(/images/input.png);
 	padding: 8px\9; /* IE Hack \9 */ 
 } 
 
@@ -244,12 +281,13 @@ input#code, input#password, input#email, input#name {
 #signup input#name { background-position: 0 132px; }
 
 #signup input:focus, input.done {
-	background: transparent url(../images/input.png) !important;
+	background: transparent url(/images/input.png) !important;
+	background-position: 0 0;
 }
 
 #signup input[type=checkbox] {
 	padding: 0;
-	background: none !important;
+	background-image: none !important;
 	margin-top: 15px;
 	width: 20px;
 	height: 12px;
@@ -260,7 +298,8 @@ input#code, input#password, input#email, input#name {
 	float: left;
 }
 #signup input[type=submit] {
-	background: url(../images/go.png);
+	background-color: transparent;
+	background-image: url(/images/go.png);
 	height: 33px;
 	width: 46px;
 	padding: 0;
@@ -313,17 +352,18 @@ ul#gallery li {
 	list-style-type: none;
 	float: left;
 }
-ul#gallery li#one { background: url(../images/thumbs/1.png); }
-ul#gallery li#two { background: url(../images/thumbs/2.png); }
-ul#gallery li#three { background: url(../images/thumbs/3.png); }
-ul#gallery li#four { background: url(../images/thumbs/4.png); }
-ul#gallery li#five { background: url(../images/thumbs/5.png); }
-ul#gallery li#six { background: url(../images/thumbs/6.png); }
-ul#gallery li#seven { background: url(../images/thumbs/7.png); }
-ul#gallery li#eight { background: url(../images/thumbs/8.png); }
+ul#gallery li#one { background-image: url(/images/thumbs/1.png); }
+ul#gallery li#two { background-image: url(/images/thumbs/2.png); }
+ul#gallery li#three { background-image: url(/images/thumbs/3.png); }
+ul#gallery li#four { background-image: url(/images/thumbs/4.png); }
+ul#gallery li#five { background-image: url(/images/thumbs/5.png); }
+ul#gallery li#six { background-image: url(/images/thumbs/6.png); }
+ul#gallery li#seven { background-image: url(/images/thumbs/7.png); }
+ul#gallery li#eight { background-image: url(/images/thumbs/8.png); }
 
 ul#gallery li .hover {
-	background: url(../images/hover.png) no-repeat;
+	background-image: url(/images/hover.png);
+	background-repeat: no-repeat;
 	height: 104px;
 	width: 214px;
 	display: none;
@@ -337,13 +377,13 @@ ul#gallery li:hover .hover {
 table#table-content {
 	height: 528px;
 	width: 920px;
-	background: url(../images/table-tile.gif);
+	background-image: url(/images/table-tile.gif);
 	font-size: 12px;
 	color: #222;
 	border-bottom: 1px solid #ccc;
 }
 table#table-head {
-	background: url(../images/table-head.gif);
+	background-image: url(/images/table-head.gif);
 	width: 920px;
 	height: 30px;
 	font-size: 15px;
@@ -376,7 +416,8 @@ td:last-child {
 }
 
 .chk {
-	background: url(../images/check.png) no-repeat;
+	background-image: url(/images/check.png);
+	background-repeat: no-repeat;
 	background-position: center;
 }
 
@@ -391,8 +432,8 @@ td:last-child {
 	margin-right: 8px;
 }
 #networks .grey {
-	opacity:0.4;
-	filter:alpha(opacity=40);
+	opacity: 0.4;
+	filter: alpha(opacity=40);
 }
 
 
@@ -400,12 +441,12 @@ td:last-child {
 
 
 #footer {
-	background: url(../images/footer.png);
+	background-image: url(/images/footer.png);
 	height: 20px;
 	width: 880px;
+	clear: both;
 	margin: 30px auto;
 	padding: 15px 20px;
-	clear: both;
 	color: #fff;
 }
 

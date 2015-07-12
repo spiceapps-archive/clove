@@ -1,0 +1,7 @@
+<Plugin>
+	<action:script>
+	   <![CDATA[    	  
+		  keyboardControl.setCombo([Keyboard.SPACE],videoPlayer.togglePlay); 
+		]]>
+	</action:script>        
+</Plugin>

@@ -1,0 +1,27 @@
+<Plugin>
+	<observer:listen to="{currentVideo.proxyListener}" for="change"> 
+		<action:script>
+			<![CDATA[ 
+		        
+			  	videoPlayer.clearCuePoints();
+		   
+				//NOTE: calling length() on XML calls length (the node) instead
+				for(var i = 0; i < ObjectUtils.getLength(currentVideo.cue); i++)
+				{
+					var cue = currentVideo.cue[i];   
+					var func:String = cue["@type"];  
+				      
+					var funcInst = cueHandlers[func];
+				    
+				   	if(funcInst)
+					{                                                        
+						videoPlayer.addCuePoint(funcInst,cue["@time"],(cue["@reusable"] == "true"),cue);
+					}
+				
+				
+				}
+			]]>
+		</action:script>
+	</observer:listen>            
+</Plugin>
+                                                                                           

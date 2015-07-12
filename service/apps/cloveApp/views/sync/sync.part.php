@@ -9,5 +9,5 @@ Part::input($sync, 'Sync');
  <?=Part::draw("screen/screen",$sync->screen()); ?>
  <?=Part::draw("scene/scene",$sync->scene()); ?>
  <created_at><?=$sync->created_at; ?></created_at>
- <data><?=$sync->syncData; ?></data>
+ <url><?=$sync->downloadUrl; ?></url>
 </sync>

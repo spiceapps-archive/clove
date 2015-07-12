@@ -1,0 +1,9 @@
+
+<Bridge>
+
+<classDefinition source="com.neem.ext.extra.twitpic.TwitpicPlugin" />
+
+
+<clove:plugin usePlugin="{new TwitpicPlugin(clove.settings)}" />
+
+</Bridge>

@@ -1,0 +1,9 @@
+
+<Bridge>
+
+<classDefinition source="com.neem.ext.services.facebook.FacebookPlugin" />
+
+
+<clove:plugin usePlugin="{new FacebookPlugin(clove.settings)}" />
+
+</Bridge>

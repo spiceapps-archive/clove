@@ -1,8 +1,10 @@
 <?php
+
 Part::input($form, 'ModelForm');
 Part::input($title, 'string');
 Part::input($statusMessage, 'string');
 Part::input($statusCode, 'string');
+
 ?>
 <?php if(isset($statusMessage)): ?>
 	<div class="<?=$statusCode ? 'error' : '' ?>">
@@ -11,6 +13,7 @@ Part::input($statusCode, 'string');
 <?php endif; ?>
 
 <?php $form->begin(); ?>
+
 	<fieldset>
 		<legend><?php echo $title ?></legend>
 		<?php $form->input('id'); ?>		
@@ -38,6 +41,6 @@ Part::input($statusCode, 'string');
 		</p>
 		
 
-		<input type="submit" value="Save" />
+		<input type="submit" value="Submit" />
 	</fieldset>
 <?php $form->end(); ?>

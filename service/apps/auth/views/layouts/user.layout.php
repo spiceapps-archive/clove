@@ -1,10 +1,10 @@
 <?php
+Layout::input($breadcrumbs, 'array');
 Layout::extend('layouts/master');
 Layout::input($title, 'string');
 Layout::input($body, 'Block');
 
-$title .= 'User - ';
-$breadcrumbs = array();
+$title .= '';
 
 $navigation = Part::block('parts/navigation');
 ?>

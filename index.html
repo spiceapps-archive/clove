@@ -11,8 +11,24 @@
 		<script src="/javascripts/swfobject.js" type="text/javascript"></script>
 		<script src="/javascripts/Whitney_HTF_500-Whitney_HTF_600.font.js" type="text/javascript"></script>
 		<script src="/javascripts/cloveapp-scripts.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-95487-4']);
+		  _gaq.push(['_trackPageview']);
+		
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		
+		</script>
 	</head>
 	<body>
+	<div id="worldcup-container" class="hide">
+		<div id="worldcup-download"><a href="http://cloveapp.com/download/Clove%20World%20Cup.air"></a></div>
+	</div>
 	<div id="menu-container">
 		<ul id="menu">
 			<li id="menu-aboutclove" class="selected"><a href="/">About Clove</a></li>
@@ -30,8 +46,9 @@
 			<div id="signup">
 			<h4 class="cufon" id="stepone">Step 1. Install Adobe AIR</h4>
 			<span class="cufon">Don't have it yet?</span><a href="http://get.adobe.com/air/"><img src="/images/btn/installair.png" /></a>
-			<h4 class="cufon" id="steptwo">Step 2. Create an account</h4>
-			<form method="post" action="/service/auth/user/">
+			<!--<h4 class="cufon" id="steptwo">Step 2. Create an account</h4>-->
+			<h4 class="cufon" id="steptwo">Step 2. Download Clove</h4>
+			<!--<form method="post" action="/service/auth/user/">
 				<input type="hidden" name="id" />
 				<input type="hidden" name="username" />
 				<input type="text" name="name" value="" id="name" onblur="hover();" />
@@ -39,7 +56,50 @@
 				<input type="password" name="password" value="" id="password" onblur="hover();" />
 				<input type="checkbox" name="subscribe" value="" checked="checked" /><label for="subscribe"><strong>Join newsletter</strong></label>
 				<input type="submit" name="" value="" />
-			</form>
+			</form>-->
+			<div id="flashcontent" style="width:202px; height:169px;">
+				<strong>Please upgrade your Flash Player</strong>
+				This is the content that would be shown if the user does not have Flash Player 6.0.65 or higher installed.
+			</div>
+
+			<script type="text/javascript">
+				// <![CDATA[
+
+				// version 9.0.115 or greater is required for launching AIR apps.
+				var so = new SWFObject("airinstall/AIRInstallBadge.swf", "Badge", "202", "169", "9.0.115", "#FFFFFF");
+				so.useExpressInstall('airinstall/expressinstall.swf');
+
+				// these parameters are required for badge install:
+				so.addVariable("airversion", "2.0"); // version of AIR runtime required
+				so.addVariable("appname", "Clove"); // application name to display to the user
+				so.addVariable("appurl", "http://cloveapp.com/download/CloveApp.air"); // absolute URL (beginning with http or https) of the application ".air" file
+
+				// these parameters are required to support launching apps from the badge (but optional for install):
+				so.addVariable("appid", "Clove"); // the qualified application ID (ex. com.gskinner.air.MyApplication)
+				so.addVariable("pubid", ""); // publisher id
+
+				// this parameter is required in addition to the above to support upgrading from the badge:
+				so.addVariable("appversion", " Beta 1.21"); // AIR application version
+
+				// these parameters are optional:
+				so.addVariable("image", "airinstall/icon.png"); // URL for an image (JPG, PNG, GIF) or SWF to display in the badge (205px wide, 170px high)
+				so.addVariable("appinstallarg", "installed from web"); // passed to the application when it is installed from the badge
+				so.addVariable("applauncharg", "launched from web"); // passed to the application when it is launched from the badge
+				so.addVariable("helpurl", "help.html"); // optional url to a page containing additional help, displayed in the badge's help screen
+				so.addVariable("hidehelp", "false"); // hides the help icon if "true"
+				so.addVariable("skiptransition", "false"); // skips the initial transition if "true"
+				so.addVariable("titlecolor", "#00AAFF"); // changes the color of titles
+				so.addVariable("buttonlabelcolor", "#00AAFF"); // changes the color of the button label
+				so.addVariable("appnamecolor", "#00AAFF"); // changes the color of the application name if the image is not specified or loaded
+
+				// these parameters allow you to override the default text in the badge:
+				// supported strings: str_error, str_err_params, str_err_airunavailable, str_err_airswf, str_loading, str_install, str_launch, str_upgrade, str_close, str_launching, str_launchingtext, str_installing, str_installingtext, str_tryagain, str_beta3, str_beta3text, str_help, str_helptext
+				so.addVariable("str_err_airswf", "<u>Running locally?</u><br/><br/>The AIR proxy swf won't load properly when this demo is run from the local file system."); // overrides the error text when the AIR proxy swf fails to load
+
+				so.write("flashcontent");
+
+				// ]]>
+			</script>
 			</div>
 			<br class="clear" />
 		</div>
@@ -47,7 +107,7 @@
 			
 			<div id="video">
 			<h3>Video Introduction</h3>
-			<a href="video.html" rel="boxed"><img src="images/video.png" /></a>
+			<a href="video.html" rel="boxed"><img src="/images/video.png" /></a>
 			</div>
 			<ul id="gallery">
 			<h3>Screenshots</h3>
@@ -80,5 +140,6 @@
 		</div>
 	</div>
 	<div id="footer">We&rsquo;d love to chat. &nbsp;hello@spiceapps.com  <span>Our office is located at Ovative/Group, 1011 Washington Ave S Minneapolis, MN 55415</span></div>
+	<br class="clear" />
 	</body>
 </html>

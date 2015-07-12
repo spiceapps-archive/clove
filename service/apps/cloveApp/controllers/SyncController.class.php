@@ -51,6 +51,19 @@ class SyncController extends CloveController
 		return $this->ok_success("Success");
 	}
 	
+	/** !Route GET, download/$id
+	 */
+	
+	function downloadSync($id)
+	{
+		
+		$sync = new Sync($id);
+		$sync = $sync->select()->first();
+		
+		
+		die(file_get_contents($this->getSyncPath($sync->screen()->user()->id,$sync->scene,$sync->name)));
+	}
+	
 	/** !Route GET, get
 	 */
 	
@@ -119,7 +132,7 @@ class SyncController extends CloveController
 		{
 			try
 			{
-				$sync->syncData = file_get_contents($this->getSyncDir($sync->screen()->user()->id,$sync->scene).$sync->name);
+				$sync->downloadUrl = "http://".$_SERVER['HTTP_HOST'].$this->urlTo("downloadSync",$sync->id);//file_get_contents($this->getSyncDir($sync->screen()->user()->id,$sync->scene).$sync->name);
 			}catch(Exception $e)
 			{
 				$sync->syncData = "";
@@ -146,8 +159,8 @@ class SyncController extends CloveController
 		
 		
 		
-		if(!isset($_FILES['sync']) && !$this->request->data('sync'))
-			return $this->ok_notFound("No sync being uploaded.");
+		// if(!isset($_FILES['sync'])) && !$this->request->data('sync'))
+			// return $this->ok_notFound("No sync being uploaded.");
 			
 		
 		if(!($sync = $this->setSyncPostInfo($e)))
@@ -217,7 +230,7 @@ class SyncController extends CloveController
 		}
 		else
 		{
-			$result =  file_put_contents($localSyncPath,stripslashes($this->request->data('sync')));
+			$result =  file_put_contents($localSyncPath,file_get_contents('php://input'));
 		}
 		
 		

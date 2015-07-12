@@ -1,0 +1,9 @@
+
+<Bridge>
+
+<classDefinition source="com.neem.ext.services.RSS.RSSPlugin" />
+
+
+<clove:plugin usePlugin="{new RSSPlugin(clove.settings)}" />
+
+</Bridge>

@@ -1,0 +1,97 @@
+
+<!-- the style used for the Ginger Skin. -->
+
+<Style>
+	
+	.seekBackground
+	{
+		backgroundColors:#979797;
+		lineColors:#373737;
+		lineThickness:1;
+	
+	}
+	
+    
+
+
+	.controls
+	{
+		left:0;
+		right:0;  
+		height:30;  
+		bottom:0;
+		backgroundColors:#000000; 
+		backgroundAlphas:0.8;
+	}
+
+	.soundControl
+	{
+		backgroundColors:#0;
+		backgroundAlphas:0.8;
+		width:30;
+		height:100;
+		cornerRadius:6;
+	}
+
+	.soundControlTrack
+	{
+		lineColors:#373737;
+		lineThickness:1;
+		backgroundColors:#979797;
+		width:4;
+		height:80;
+		verticalCenter:0;
+		horizontalCenter:1;
+	}
+
+	.soundControlBar
+	{
+		backgroundColors:#5699f4;
+		height:90;
+		width:3;
+	}
+
+	.buffer
+	{
+		backgroundColors:#FF6600;
+		left:0;
+		percentHeight:100;
+	} 
+	
+	.bufferHitArea
+	{
+		percentWidth:100;
+		height:10;
+		backgroundColors:#000000;
+		verticalCenter:0;
+	}
+
+	Label,.controlTime
+	{
+	  fontColor:#B6B6B6;                    
+	}
+	
+	.controlTime
+	{  
+		verticalCenter:0;
+		fontSize:12;
+		fontFace:'WhitneyHTFSemiBold';
+	}
+	
+	.embedMedia
+	{
+		backgroundColors:#000000;
+		backgroundAlphas:0.8;
+		width:320;
+		height:170;
+		verticalCenter:0;
+		horizontalCenter:0;
+		topLeftRadius:5;
+		topRightRadius:5;
+		bottomLeftRadius:5;
+		bottomRightRadius:5;
+	}
+
+	
+	
+</Style>

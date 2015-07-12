@@ -1,0 +1,10 @@
+<Plugin>
+	<videoConstrictor>
+		<Image instance:id="posterFrame" source="{currentVideo.preview}" scaling="stretch" verticalCenter="0" horizontalCenter="0" observer:change="posterFrame.visible=true" />
+	</videoConstrictor>
+	
+	
+	<observer:listen to="{videoPlayer}" for="resume">
+		<change:property target="{posterFrame}" visible="{false}" />  
+	</observer:listen>
+</Plugin>

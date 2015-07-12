@@ -1,0 +1,148 @@
+<Style>
+
+
+.currentPosition
+{
+	backgroundColors:#FF6600;
+	top:0;
+	bottom:0;
+}
+
+
+.taseekBackground
+{
+	backgroundColors:#ffffff;
+	backgroundAlphas:1;
+	height:2;
+
+}
+
+
+
+.playPauseBackground
+{
+	lineColors:#727374;       
+	lineThickness:1;
+	backgroundColors:#5c5f5f;
+	topLeftRadius:1;
+	topRightRadius:1;
+	bottomLeftRadius:1;
+	bottomRightRadius:1;
+	width:42;
+	height:26;
+} 
+
+
+.tacontrols
+{
+	left:0;
+	right:0;
+	bottom:0;  
+	height:33;
+	backgroundColors:#000000;  
+}
+
+.soundControl
+{
+	backgroundColors:#0;
+	backgroundAlphas:0.8;
+	width:30;
+	height:100;
+	topLeftRadius:6;
+	topRightRadius:6;
+}
+
+
+
+.soundControlBar
+{
+	backgroundColors:#5699f4;
+	height:90;
+	width:3;
+}
+
+.tabuffer
+{
+	backgroundColors:#FFFFFF;
+	lineColors:#666666;
+	lineThickness:2;
+	left:0; 
+	y:-3;
+	height:6; 
+	topLeftRadius:5;
+	topRightRadius:5;
+	bottomLeftRadius:5;
+	bottomRightRadius:5;
+}
+
+
+.currentTime
+{
+	fontColor:#000000;
+	fontSize:12;
+}
+
+
+
+
+.background
+{
+	backgroundColors:#000000;
+	percentWidth:100;
+	percentHeight:100;
+}    
+
+
+.embedMedia
+{
+	backgroundColors:#000000;
+	backgroundAlphas:0.8;
+	width:320;
+	height:170;
+	verticalCenter:0;
+	horizontalCenter:0;
+	alpha:0;
+	topLeftRadius:10;
+	topRightRadius:10;
+	bottomLeftRadius:10;
+	bottomRightRadius:10;
+}
+
+.embedText
+{
+	fontColor:#FFFFFF;
+	fontFace:WhitneyHTFSemiBold; 
+	horizontalCenter:0;  
+	fontSize:12;
+}
+
+.timeText
+{
+   fontColor:#FFFFFF;
+   fontFace:'WhitneyHTFSemiBold';   
+   fontSize:12;
+}
+
+.seekerButton
+{
+	width:8;
+	height:8;
+	backgroundColors:#FFFFFF;
+	topLeftRadius:10;
+	topRightRadius:10;
+	bottomLeftRadius:10;
+	bottomRightRadius:10;
+}
+
+.showControls
+{
+	backgroundColors:#000000; 
+	backgroundAlphas:0.6;
+	width:100;
+	height:37;
+	topRightRadius:5;
+	topLeftRadius:5;
+}
+
+</Style>
+

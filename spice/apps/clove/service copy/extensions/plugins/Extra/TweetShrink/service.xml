@@ -1,0 +1,45 @@
+<NeemPlugin type="extra" name="Tweet Shrink">
+	
+	<default:setting id="keystrokeCommand" value="-shrink" />
+	
+	<variable:set name="flags" value="is" />
+ 	
+	<keyCommand:add id="resultCommand" command="{thisPlugin.getSetting('keystrokeCommand')}">
+		
+		<!-- remove the shrink -->
+		<change:property target="{resultCommand}" replacement="" />
+		
+		<!-- set the target text to shrink -->
+		<change:property target="{resultCommand}" targetText="{resultCommand.text}" />
+		
+		<URLLoader instance:id="tweetShrinkLoader" />
+		
+		<observer:listen to="{tweetShrinkLoader}" for="complete" limit="1">
+			<change:property target="{resultCommand}" replacement="{tweetShrinkLoader.data}" />
+		</observer:listen>
+		
+		<call:function target="{tweetShrinkLoader.load}">
+			<URLRequest url="http://tweetshrink.com/shrink?format=string&text={resultCommand.text}" />
+		</call:function>
+	</keyCommand:add>
+	
+	
+	<view:preference name="Tweet Shrink" category="Extra">
+		<View>
+			<VBox percentWidth="100" percentHeight="100">
+				<Label x="10" y="10" text="Tweet Shrink" style:fontSize="20"/>
+				<Text  y="48" text="Tweet shrink enables you to shorten any text." height="116" percentWidth="100" />
+				<Form percentWidth="100" percentHeight="100">
+					<FormItem label="Command:">
+						<TextInput instance:id="newCommand"  text="{thisPlugin.getSetting('keystrokeCommand')}" />
+					</FormItem>
+					<FormItem>
+						<Button instance:id="saveButton" label="save"  observer:click="thisPlugin.saveSetting('keystrokeCommand',newCommand.text);" />
+					</FormItem>
+				</Form>
+				
+			</VBox>
+		</View>
+	</view:preference>
+	
+</NeemPlugin>

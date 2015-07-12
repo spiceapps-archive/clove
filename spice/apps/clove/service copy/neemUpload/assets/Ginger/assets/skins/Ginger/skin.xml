@@ -1,0 +1,257 @@
+<Skin xmlns:GingerSkinLoadManager="com.bridge.module.LoadManagerModule">                                                           
+    
+	<Variable:set name="gingerSkinRoot" value="{host+'/skins/Ginger/'}" />
+    
+                                             
+    <!-- Load in the required font for this skin -->
+	
+	<external:asset  source="{gingerSkinRoot+'WhitneyHTFSemiBold.swf'}" type="font" />
+	<external:asset  source="{gingerSkinRoot+'style.xml'}" type="script" />  
+	<change:property target="{GingerSkinLoadManager}" pauseMethod="pauseAll" />
+	
+	
+	<Label instance:id="preloader" style="fontSize:20;fontFace:WhitneyHTFSemiBold;fontColor:#B6B6B6;" verticalCenter="0" text="loading..." horizontalCenter="0"  />   
+
+     <observer:listen to="{GingerSkinLoadManager}" for="progress"> 
+		
+		<change:property target="{preloader}" text="loading skin: {Math.round(GingerSkinLoadManager.bytesLoaded/GingerSkinLoadManager.bytesTotal*100)}%" />
+	 </observer:listen>                                      
+	<!-- scan the entire document for items to load -->	
+	
+	<GingerSkinLoadManager:execute  /> 
+	 
+	                                                                           
+	<change:property target="{preloader}" visible="{false}" />  
+	                                                                          
+	<Container instance:id="controls" styleName=".controls" alignment="horizontal" gap="10">     
+		<Spacer width="2" alpha="0" />
+		
+	    <Image instance:id="playButton" buttonMode="{true}" source="{#GingerSkinLoadManager:media(gingerSkinRoot+'ui/play.png')}" verticalCenter="0" observer:click="videoPlayer.togglePlay()"/>
+		<Image instance:id="pauseButton" buttonMode="{true}" source="{#GingerSkinLoadManager:media(gingerSkinRoot+'ui/pause.png')}" verticalCenter="0" visible="{false}" /> 
+		
+	    <observer:listen to="{playButton}" for="click">     
+			<action:script>
+				<![CDATA[
+					if(complete)
+					{
+						videoPlayer.seek(0);
+					}
+					
+					videoPlayer.dispatchEvent(new Event("playing"));
+					videoPlayer.play();
+					
+					complete = false;
+					
+				]]>
+			</action:script>
+		</observer:listen>                             
+		
+		<observer:listen to="{pauseButton}" for="click">    
+			<Bridge run="{videoPlayer.pause()}" />
+		</observer:listen>
+		
+		<observer:listen to="{videoPlayer}" for="resume">
+			<Bridge run="{isPlaying(true)}" />
+		</observer:listen>
+		
+		<observer:listen to="{videoPlayer}" for="pause">
+			<Bridge run="{isPlaying(false)}" />
+		</observer:listen>		 	
+	
+		<action:script>
+			<![CDATA[
+				function isPlaying(value:Boolean)
+				{
+					playButton.visible  = !value; 
+					pauseButton.visible = value;
+					                                           
+				}
+			]]>
+		</action:script> 
+		<Label instance:id="currentTime" text="0:00" styleName=".controlTime" />
+		<Container name="test" instance:id="seekBackground" styleName=".seekBackground" height="3" verticalCenter="0" percentWidth="100">  
+			<Container name="buffer" instance:id="buffer" styleName=".buffer">
+			    <observer:listen to="{videoPlayer}" for="progress">
+						<action:script>
+						<![CDATA[						
+                            
+							buffer.percentWidth = videoPlayer.percentLoaded;
+
+						 	seekerDragger.bounds = getScrubArea();
+												                                                          
+							totalTime.text  = videoPlayer.totalTimeString;
+						]]>
+					</action:script>
+				</observer:listen>
+			
+			</Container>
+			<Container name="bufferHitArea" buttonMode="{true}" percentWidth="100" instance:id="bufferHitArea" alpha="0" styleName=".bufferHitArea" observer:mouseDown="var videoWasPaused = videoPlayer.paused">
+				<observer:listen to="{bufferHitArea}" for="mouseUp">
+					<action:script>
+						<![CDATA[ 
+						
+						    
+							videoPlayer.seek((100 * seekBackground.mouseX) / (seekBackground.width));  
+							
+							
+							if(!videoWasPaused)
+							{
+							   videoPlayer.play();
+							}
+								                                                
+						]]>
+					</action:script>
+				</observer:listen>
+				
+			</Container>
+			
+			 <Image name="seekerButton" instance:id="seekerButton" buttonMode="{true}" source="{#GingerSkinLoadManager:media(gingerSkinRoot+'ui/slide.png')}" x="-1" verticalCenter="0" />
+			
+			<action:script>
+				<![CDATA[
+					var seekerDragger:Dragger = new Dragger(seekerButton,'dragAll',false,new Rectangle(seekerButton.x,seekerButton.y,seekBackground.width,0));
+					seekerDragger.boundToSize = true;
+					
+					seekerDragger.addEventListener('dragStart',onDragStart);
+					seekerDragger.addEventListener('dragging',onSeekDrag);
+					seekerDragger.addEventListener('dragStop',onDragStop);
+
+					var videoWasPaused:Boolean = true;
+
+					function onDragStart(event:Event)
+					{  
+						videoWasPaused = videoPlayer.paused;
+						
+						videoPlayer.pause();
+						
+					}					
+
+
+
+					function onSeekDrag(event:Event)
+					{  
+						videoPlayer.seek(Math.round((100 * seekerButton.x) / (seekBackground.width - seekerButton.width)));
+					}					
+
+					function onDragStop(event)
+					{   
+						if(!videoWasPaused)
+						{
+							//videoPlayer.play();
+						}
+					}
+
+					var startX:Number = seekerButton.x;
+					var startY:Number = seekerButton.y;					
+					
+					function getScrubArea()
+					{
+						return new Rectangle(startX,startY,buffer.width,0);
+					}
+				]]>
+			</action:script>
+			
+			
+		</Container> 
+		<Label instance:id="totalTime" text="0:00" styleName=".controlTime" />
+		<Image instance:id="soundButton" source="{#GingerSkinLoadManager:media(gingerSkinRoot+'ui/sound.png')}" buttonMode="{true}" verticalCenter="0">
+			<Bridge run="{var toggleSoundControl:Boolean = true}"/>
+			<observer:listen to="{soundButton}" for="mouseUp">
+				<action:script>
+					<![CDATA[
+
+						var tween:Tween;
+
+						if(toggleSoundControl)
+						{
+							tween = new Tween(soundControl,"bottom",soundControl.bottom,30,1000);
+
+						}
+						else
+						{
+							tween = new Tween(soundControl,"bottom",soundControl.bottom,0-soundControl.height,1000);
+						}
+
+						tween.easingFunction = Strong.easeOut;
+
+						toggleSoundControl = !toggleSoundControl;
+
+
+					]]>
+				</action:script>
+			</observer:listen>
+			
+		</Image> 
+		<Image source="{#GingerSkinLoadManager:media(gingerSkinRoot+'ui/fullscreen.png')}" buttonMode="{true}" observer:click="toggleFullScreen();" verticalCenter="0" />
+		<action:script>
+			<![CDATA[
+				
+				function toggleFullScreen()
+				{
+					
+					if(stage.displayState=='fullScreen')
+					{
+					
+						stage.displayState = 'normal';
+					}
+					else
+					{
+						stage.displayState='fullScreen';
+					}					                                         
+					
+				}
+			]]>
+		</action:script> 
+		<Image source="{#GingerSkinLoadManager:media(gingerSkinRoot+'ui/embed.png')}" buttonMode="{true}" verticalCenter="0" />
+		
+		<Spacer width="2"  /> 
+	</Container>
+	<Container instance:id="soundControl" styleName=".soundControl" right="59" bottom="-100">
+		<Container instance:id="soundControlTrack" styleName=".soundControlTrack" buttonMode="{true}">
+			
+			<Image instance:id="soundControlBar" source="{#GingerSkinLoadManager:media(gingerSkinRoot+'ui/vertical slide.png')}" y="-2" horizontalCenter="" />			
+			
+			<action:script>
+				<![CDATA[
+					var dragger:Dragger = new Dragger(soundControlBar,'dragAll',false,new Rectangle(soundControlBar.x,soundControlBar.y,0,soundControlTrack.height+2));
+					
+					dragger.boundToSize = true;
+					
+					dragger.addEventListener('dragging',onDragging);
+					
+					function onDragging(event:Event)
+					{
+					
+						videoPlayer.volume = 100-(100 * soundControlBar.y) / (soundControlTrack.height-soundControlBar.height);
+						
+					}
+				]]>
+			</action:script>
+			
+		</Container>		
+	</Container>
+	
+	<Container instance:id="soundControlMask" styleName=".soundControl" right="{soundControl.right}" bottom="{controls.height}">
+		<Bridge run="{soundControl.mask = soundControlMask}" />
+	</Container>
+	<observer:listen to="{videoPlayer}" for="playing">
+		<action:script>
+			<![CDATA[ 
+			                                                                                                                 
+				seekerButton.percentX = videoPlayer.percentDone;
+				totalTime.text  = videoPlayer.totalTimeString;
+				buffer.percentWidth = videoPlayer.percentLoaded;
+				
+				currentTime.text   = videoPlayer.currentTimeString;
+			]]>
+		</action:script>
+	</observer:listen>
+	<observer:listen to="{videoPlayer}" for="loaded">
+		<action:script>
+			<![CDATA[
+				totalTime.text  = videoPlayer.totalTimeString;
+			]]>
+		</action:script>
+	</observer:listen>
+	 
+</Skin>

@@ -1,0 +1,9 @@
+
+<Bridge>
+
+<classDefinition source="com.neem.ext.services.flickr.FlickrPlugin" />
+
+
+<clove:plugin usePlugin="{new FlickrPlugin(clove.settings)}" />
+
+</Bridge>

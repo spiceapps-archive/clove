@@ -1,0 +1,69 @@
+<NeemPlugin type="extra" name="Tiny Url">
+	
+	
+	<default:setting id="keystrokeCommand" value="tu-([^\s]+)" />
+	<default:setting id="commandExample"	 value="tu-http://google.com " />
+
+
+	<keyCommand:add id="resultCommand" command="{thisPlugin.getSetting('keystrokeCommand')}">
+		
+		<URLLoader instance:id="linkShrinker" />
+		
+		<run script="{trace(resultCommand.resultTest)}" />
+		
+		<!--add the browser to the queue now since the photo is uploading -->
+		<!--<run script="{model.progressModel.addItem(linkShrinker,'progress','complete')}" />-->
+		
+		<observer:listen id="shrinkResult" to="{linkShrinker}" for="complete" limit="1">
+			<change:property target="{resultCommand}" replacement="{shrinkResult.event.target.data}" />
+		</observer:listen>
+		
+		<call:function target="{linkShrinker.load}">
+			<URLRequest url="http://tinyurl.com/api-create.php?url={resultCommand.resultTest[1]}" />
+		</call:function>
+		
+	</keyCommand:add>
+	
+	
+	<view:preference>
+		<View>
+			<create:function id="checkNewRegexp">
+				<!--<RegExp instance:id="newTestRegExp" pattern="{newCommand.text}" flags="{flags}" />
+				
+				<call:function returnId="testResult" target="{newTestRegExp.exec}">
+					<String value="{commandTest.text}" />
+				</call:function>
+				<change:property target="{commandResult}" text="no results" />
+				<change:property target="{saveButton}" enabled="{false}" />
+				
+				<condition:check if="{testResult}">
+					<condition:check if="{testResult[1]}">
+						<change:property target="{commandResult}" text="{testResult[1]}" />
+						<change:property target="{saveButton}" enabled="{true}" />
+					</condition:check>
+				</condition:check>-->
+			</create:function>
+			<VBox percentWidth="100" percentHeight="100">
+				<Label x="10" y="10" text="Tiny URL" style:fontSize="20"/>
+				<Text  y="48" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Sed sodales ipsum id diam. Morbi lacus. Morbi hendrerit. Maecenas libero. Ut nisi sapien, rhoncus a, euismod sed, rhoncus sit amet, sapien. Cras posuere nibh id dui. Phasellus odio. Morbi eu nisl. Nulla sodales mollis orci. Nullam in lacus vel massa porta dapibus. Nunc rutrum magna gravida risus. Sed non sem vel orci consectetuer dapibus. Sed dui. Suspendisse potenti. Integer vel lectus.&#xd;&#xd;Phasellus vitae ligula fermentum nulla mattis adipiscing. Ut mauris magna, egestas ac, tempus tincidunt, aliquet in, augue. Vivamus tristique laoreet est. Curabitur aliquam lectus et eros. Sed scelerisque pulvinar nisl. Aliquam pellentesque, sapien quis interdum porttitor, augue felis dignissim risus, vitae pellentesque nibh lacus id lectus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vivamus dictum mi sit amet diam. Quisque sed mi. In pharetra, lectus non viverra blandit, quam eros egestas justo, ullamcorper iaculis lorem neque a magna. Fusce elit erat, cursus sed, placerat vitae, bibendum sit amet, tellus. Maecenas nec leo. Nunc interdum. Pellentesque faucibus, nulla ultrices rhoncus ornare, ante risus venenatis enim, vel commodo dui tortor eget mi. Nulla et nunc. Sed mattis, purus vel eleifend mollis, risus nisl porta nulla, et mollis libero urna mollis enim. " height="116" percentWidth="100" />
+				<Form percentWidth="100" percentHeight="100">
+					<FormItem label="Command:">
+						<TextInput instance:id="newCommand"  text="{thisPlugin.getSetting('keystrokeCommand')}" observer:change="checkNewRegexp();"/>
+					</FormItem>
+					<FormItem label="Test:">
+						<TextInput instance:id="commandTest" text="{thisPlugin.getSetting('commandExample')}" observer:change="checkNewRegexp();"/>
+					</FormItem>
+					<FormItem label="Result:">
+						<Label instance:id="commandResult" />
+					</FormItem>
+					<FormItem>
+						<Button instance:id="saveButton" label="save" enabled="{false}" observer:click="thisPlugin.saveSetting('keystrokeCommand',newCommand.text); thisPlugin.saveSetting('commandExample',commandTest.text);"/>
+					</FormItem>
+				</Form>
+				
+				<call:function target="{checkNewRegexp}" />
+			</VBox>
+		</View>
+	</view:preference>
+	
+</NeemPlugin>

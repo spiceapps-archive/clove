@@ -1,0 +1,12 @@
+
+
+<playList>
+	
+	<video>
+		<name>Ginger</name>            
+		<preview>http://localhost/work/spice/Ginger/Caroline.png</preview>
+		<src>http://localhost/work/spice/Ginger/Caroline.mov</src>
+		<cue time="0:05" type="skinRotator" reusable="true" skin="Youtube" />                                                                  
+	</video>
+	
+</playList>
