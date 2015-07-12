@@ -1,0 +1,1 @@
+Craig Condon is a multi-language web developer, coding professionally since age 16, to develop modular architectures, computational linguistics, and a love for well crafted code. In 2009 he co-founded Spice Apps, which has built web technologies and communities around social content for major household brands.

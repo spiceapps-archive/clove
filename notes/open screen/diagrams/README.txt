@@ -1,1 +1,0 @@
-Bridge CPP explanation.pdf - 
