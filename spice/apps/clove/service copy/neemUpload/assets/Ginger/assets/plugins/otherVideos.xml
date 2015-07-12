@@ -1,9 +1,0 @@
-<Plugin>
-	<observer:listen to="{videoPlayer}" for="end">
-		<change:property target="{videoPlayer}" horizontalCenter="{NaN}" verticalCenter="{NaN}" />
-		<Tween target="{videoConstrictor}" property="percentWidth" start="100" stop="50" duration="5000" />
-		<Tween target="{videoConstrictor}" property="percentHeight" start="100" stop="50" duration="500" />
-		
-		
-	</observer:listen>
-</Plugin>

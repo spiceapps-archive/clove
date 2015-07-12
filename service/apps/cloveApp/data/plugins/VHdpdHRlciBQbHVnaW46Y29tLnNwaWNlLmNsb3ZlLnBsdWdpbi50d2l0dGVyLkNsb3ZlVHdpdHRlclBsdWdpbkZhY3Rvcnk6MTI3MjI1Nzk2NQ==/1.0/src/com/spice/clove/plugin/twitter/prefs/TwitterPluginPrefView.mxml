@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<mx:HBox xmlns:mx="http://www.adobe.com/2006/mxml">
-	<mx:Button styleName="minusButton" buttonMode="true" click="{dispatchEvent(new Event('deleteAccount',true,true))}"/>
-	<mx:Label text="{data.displayName}"/>
-</mx:HBox>

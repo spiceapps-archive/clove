@@ -3,7 +3,7 @@
 // download
 
 
-/*require_once dirname(__FILE__)."/../spice/apps/clove/services/public/CloveUserService.php";
+require_once dirname(__FILE__)."/../spice/apps/clove/services/public/CloveUserService.php";
 
 
 $service = new CloveUserService();
@@ -15,7 +15,7 @@ try
 }catch(Exception $e)
 {
 	header("Location: ../");
-}*/
+}
 
 
 $file = "../../files/CloveApp.air";

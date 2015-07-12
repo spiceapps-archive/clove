@@ -1,9 +1,0 @@
-
-<Bridge>
-
-<classDefinition source="com.neem.ext.extra.textExpander.TextExpanderPlugin" />
-
-
-<clove:plugin usePlugin="{new TextExpanderPlugin(clove.settings)}" />
-
-</Bridge>

@@ -1,9 +1,0 @@
-
-<Bridge>
-
-<classDefinition source="com.neem.ext.services.tumblr.TumblrPlugin" />
-
-
-<clove:plugin usePlugin="{new TumblrPlugin(clove.settings)}" />
-
-</Bridge>

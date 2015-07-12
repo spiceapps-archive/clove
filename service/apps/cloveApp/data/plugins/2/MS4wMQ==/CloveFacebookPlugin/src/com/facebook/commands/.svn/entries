@@ -1,116 +1,0 @@
-9
-
-dir
-35
-http://clove.svn.beanstalkapp.com/plugins/CloveFacebookPlugin/src/com/facebook/commands
-http://clove.svn.beanstalkapp.com/plugins
-
-
-
-2010-01-10T21:08:45.871078Z
-35
-cloveapp
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-a0b795e4-daa7-465e-af49-4d6186bf2e75
-
-
-
-
-
-
-0
-
-admin
-dir
-
-application
-dir
-
-auth
-dir
-
-batch
-dir
-
-comments
-dir
-
-connect
-dir
-
-data
-dir
-
-events
-dir
-
-fbml
-dir
-
-feed
-dir
-
-fql
-dir
-
-friends
-dir
-
-groups
-dir
-
-intl
-dir
-
-links
-dir
-
-livemessage
-dir
-
-message
-dir
-
-notes
-dir
-
-notifications
-dir
-
-pages
-dir
-
-photos
-dir
-
-profile
-dir
-
-sms
-dir
-
-status
-dir
-
-stream
-dir
-
-users
-dir
-
-video
-dir
-

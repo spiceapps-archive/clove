@@ -177,7 +177,7 @@ ul#menu li#menu-youraccount {
 	background-repeat: no-repeat;
 	margin: 0 auto;
 	width: 920px;
-	min-height: 720px;
+	/* min-height: 720px; */
 	overflow: auto;
 	border-left: 1px solid #bec9d1;
 	border-right: 1px solid #bec9d1;

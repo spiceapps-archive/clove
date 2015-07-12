@@ -1,9 +1,0 @@
-
-<Bridge>
-
-<classDefinition source="com.neem.ext.extra.translate.TranslatePlugin" />
-
-
-<clove:plugin usePlugin="{new TranslatePlugin(clove.settings)}" />
-
-</Bridge>

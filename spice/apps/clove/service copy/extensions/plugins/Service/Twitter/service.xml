@@ -1,9 +1,0 @@
-
-<Bridge>
-
-<classDefinition source="com.neem.ext.services.twitter.TwitterPlugin" />
-
-
-<clove:plugin usePlugin="{new TwitterPlugin(clove.settings)}" />
-
-</Bridge>
