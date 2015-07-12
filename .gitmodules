@@ -1,0 +1,4 @@
+[submodule "site/cloveapp.com"]
+	path = site/cloveapp.com
+	url = git@github.com:crcn/clove.git
+	branch = gh-pages
