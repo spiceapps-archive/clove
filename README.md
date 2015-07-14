@@ -39,3 +39,5 @@ The first, Scout it Out, allowed users to self-select players from their Fantasy
 
 
 ## Technical Notes
+
+TODO
