@@ -11,7 +11,7 @@ The original version of Clove was targeted solely for power users to manage thei
 
 The first, Scout it Out, allowed users to self-select players from their Fantasy Football team, and receive real-time updates, videos and stats for all players. The second allowed users to follow their favorite teams in the 2010 FIFA World Cup, providing real-time updates and scores.
 
-### Videos
+## Videos
 
 ##### End-user demo
 - [Getting started with Clove in 60 seconds](https://www.youtube.com/watch?v=-evt55kkfo8)
