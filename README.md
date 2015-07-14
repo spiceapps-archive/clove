@@ -12,7 +12,7 @@ The original version of Clove was targeted solely for power users to manage thei
 The first, Scout it Out, allowed users to self-select players from their Fantasy Football team, and receive real-time updates, videos and stats for all players. The second allowed users to follow their favorite teams in the 2010 FIFA World Cup, providing real-time updates and scores.
 
 ### Videos
-##### End-user demo videos
+##### End-user demo
 - [Getting started with Clove in 60 seconds](https://www.youtube.com/watch?v=-evt55kkfo8)
 - [auto-post everywhere](https://www.youtube.com/watch?v=R1gFjgVzvPs)
 - [filtering content](https://www.youtube.com/watch?v=J9NWqjvhq8k)
@@ -21,7 +21,15 @@ The first, Scout it Out, allowed users to self-select players from their Fantasy
 - [Clove Scene Sync Demo](https://www.youtube.com/watch?v=dgrVWxYM7Ik)
 - [early days (pre GUI)](https://www.youtube.com/playlist?list=PL_9d3q-RYY-sEuTMOnuYjzhz_j5-YK1Sw)
 
-##### Branded demo videos
+##### Developing plugins
+- [Hello Clove popup](https://www.youtube.com/watch?v=R6ifiva5Jzg&feature=youtu.be)
+- [Plugin preferences](https://youtu.be/MnkIuIB74mc)
+- [Custom feed rows](https://www.youtube.com/watch?v=wFASqCYWBSM&feature=youtu.be)
+- [Custom postables](https://www.youtube.com/watch?v=EisDsSuXIBk&feature=youtu.be)
+- [Creating an installer](https://www.youtube.com/watch?v=vJe5sbpMYo8&feature=youtu.be)
+- [adding columns](https://www.youtube.com/watch?v=n3ME85D00OI&feature=youtu.be)
+
+##### Branded demo
 - [Branded Clove](https://www.youtube.com/watch?v=oZ2HeK3nx7Y)
 - [Ameriprise demo](https://www.youtube.com/watch?v=v1EYy-qLHJE)
 - [fantasy victory](https://www.youtube.com/watch?v=3XQishsk3OI)
