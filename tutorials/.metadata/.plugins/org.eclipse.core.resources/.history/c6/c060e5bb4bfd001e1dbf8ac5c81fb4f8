@@ -1,9 +1,0 @@
-package com.cloveHello.plugin
-{
-	[Bindable] 
-	public class CloveHelloPluginSettings
-	{
-		[Settings]
-		public var userName:String = "Craig";
-	}
-}

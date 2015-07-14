@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<row:ColumnRowBody xmlns:mx="http://www.adobe.com/2006/mxml" itemRenderer="{new ClassFactory(HelloColumnRowView)}" xmlns:row="com.spice.clove.views.column.row.*" />
