@@ -2,7 +2,7 @@
   <img src="https://raw.githubusercontent.com/crcn/clove/master/design/Clove%20Icon/Clove.png" width="256" height="256" />
 </p>
 
-Clove is a social media desktop application that was developed from 2008 to 2010. It was a competitor application to [Tweetdeck](https://tweetdeck.twitter.com/), and [HootSuite](https://hootsuite.com/), and other social media platforms that aggregated all your content into one place. This project was created by two guys: [Tim Erickson](https://neutyp.com/) designed the application's interface, and
+Clove is a social media desktop application that was developed from 2008 to 2011. It was a competitor application to [Tweetdeck](https://tweetdeck.twitter.com/), and [HootSuite](https://hootsuite.com/), and other social media platforms that aggregated all your content into one place. This project was created by two guys: [Tim Erickson](https://neutyp.com/) designed the application's interface, and
 [Craig Condon](http://crcn.io/) wrote all code for the application. It was written on Adobe AIR, a cross-platform runtime environment that compiled ActionScript to `.air` files which could be easily installed like other Mac or Windows applications.
 
 A more thorough writeup can be found, as written in 2010, in [`/notes/open screen/`](https://github.com/crcn/clove/blob/master/notes/open%20screen/Writeup.pdf).
