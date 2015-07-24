@@ -22,14 +22,6 @@ The first, Scout it Out, allowed users to self-select players from their Fantasy
 - [Clove Scene Sync Demo](https://www.youtube.com/watch?v=dgrVWxYM7Ik)
 - [early days (pre GUI)](https://www.youtube.com/playlist?list=PL_9d3q-RYY-sEuTMOnuYjzhz_j5-YK1Sw)
 
-##### Developing plugins
-- [Hello Clove popup](https://www.youtube.com/watch?v=R6ifiva5Jzg&feature=youtu.be)
-- [Plugin preferences](https://youtu.be/MnkIuIB74mc)
-- [Custom feed rows](https://www.youtube.com/watch?v=wFASqCYWBSM&feature=youtu.be)
-- [Custom postables](https://www.youtube.com/watch?v=EisDsSuXIBk&feature=youtu.be)
-- [Creating an installer](https://www.youtube.com/watch?v=vJe5sbpMYo8&feature=youtu.be)
-- [adding columns](https://www.youtube.com/watch?v=n3ME85D00OI&feature=youtu.be)
-
 ##### Branded demo
 - [Branded Clove](https://www.youtube.com/watch?v=oZ2HeK3nx7Y)
 - [Ameriprise demo](https://www.youtube.com/watch?v=v1EYy-qLHJE)
@@ -41,3 +33,23 @@ The first, Scout it Out, allowed users to self-select players from their Fantasy
 ## Technical Notes
 
 TODO
+
+##### Developing plugins
+
+###### Tutorial 1: 
+Watch the tutorial video on creating a [Hello Clove popup](https://www.youtube.com/watch?v=R6ifiva5Jzg&feature=youtu.be) and follow along with the [tutorial files](https://github.com/crcn/clove/tree/master/tutorial%20demos%20\(video\)/1%20hello%20clove/)
+
+###### Tutorial 2: 
+Watch the tutorial video on creating a [service installer](https://www.youtube.com/watch?v=vJe5sbpMYo8&feature=youtu.be) and follow along with the [tutorial files](https://github.com/crcn/clove/tree/master/tutorial%20demos%20\(video\)/2%20creating%20a%20service%20installer/)
+
+###### Tutorial 3: 
+Watch the tutorial video on creating [plugin preferences](https://youtu.be/MnkIuIB74mc) and follow along with the [tutorial files](https://github.com/crcn/clove/tree/master/tutorial%20demos%20\(video\)/3%20creating%20preferences)
+
+###### Tutorial 4: 
+Watch the tutorial video on [adding columns](https://www.youtube.com/watch?v=n3ME85D00OI&feature=youtu.be) and follow along with the [tutorial files](https://github.com/crcn/clove/tree/master/tutorial%20demos%20\(video\)/4%20creating%20columns)
+
+###### Tutorial 5: 
+Watch the tutorial video on creating [custom feed rows](https://www.youtube.com/watch?v=wFASqCYWBSM&feature=youtu.be) and follow along with the [tutorial files](https://github.com/crcn/clove/tree/master/tutorial%20demos%20\(video\)/5%20custom%20column%20rows)
+
+###### Tutorial 6: 
+Watch the tutorial video on creating [custom postables](https://www.youtube.com/watch?v=EisDsSuXIBk&feature=youtu.be) and follow along with the [tutorial files](https://github.com/crcn/clove/tree/master/tutorial%20demos%20\(video\)/6%20creating%20postables)
